@@ -62,7 +62,45 @@ const updateStatusOrder = asyncHandler(async (req, res) => {
     }
 });
 
+const getOrdersOfCurrentUser = asyncHandler(async (req, res) => {
+    try {
+        const { _id } = req.user;
+        const orders = await Order.find({orderBy: _id});
+        return res.status(200).json({
+            message: 'Successfully',
+            orders: orders
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Cannot get order'
+        });
+    }
+});
+
+const getOrders = asyncHandler(async (req, res) => {
+    try {
+        const orders = await Order.find();
+        if(orders.length <= 0) {
+            return res.status(404).json({
+                message: 'Data is empty'
+            });
+        }
+        return res.status(200).json({
+            message: 'Successfully',
+            Orders: orders
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Cannot get orders'
+        });
+    }
+});
+
 module.exports = {
     createOrder,
     updateStatusOrder,
+    getOrdersOfCurrentUser,
+    getOrders
 }
