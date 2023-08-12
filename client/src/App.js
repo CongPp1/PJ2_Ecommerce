@@ -7,7 +7,7 @@ import path from './utils/path';
 
 function App() {
   return (
-    <div className="min-h-screen font-main">
+    <div className="min-h-screen font-main flex justify-center">
       <Routes>
         <Route path={path.PUBLIC} element={<Public />}>
           <Route path={path.LOGIN} element={<Login />} />

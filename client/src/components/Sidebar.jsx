@@ -1,9 +1,22 @@
-
+import { useEffect, useState } from "react";
+import { apiGetCategories } from "../APIs/app";
 
 const Sidebar = () => {
-    return (
-        <div className="">Sidebar</div>
-    )
-}
+    const [categories, setCategories] = useState(null);
 
-export default Sidebar
+    const fetchCategories = async () => {
+        const response = await apiGetCategories();
+        // if (response.message === "Success") {
+        //     setCategories(response.ProductCategories);
+        // }
+        console.log(response);
+    };
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+    console.log(categories);
+    return <div className="">Sidebar</div>;
+};
+
+export default Sidebar;
