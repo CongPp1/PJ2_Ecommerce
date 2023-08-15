@@ -6,7 +6,7 @@ const Banner = () => {
       <img
         src={banner_girl}
         alt="text2-slideshow1-home2_600x.png"
-        className="w-full object-contain"
+        className="h-[360px] w-full object-cover"
       />
     </div>
   );
