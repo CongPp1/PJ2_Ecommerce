@@ -4,7 +4,7 @@ const { verifyAccessToken } = require('../../middlewares/verifyToken.js');
 const uploader = require('../../config/cloundinary-config.js');
 
 router.post('/createProduct', verifyAccessToken, productController.createProduct);
-router.get('/products', verifyAccessToken, productController.getAllProducts);
+router.get('/products', productController.getAllProducts);
 router.get('/products/:_id', verifyAccessToken, productController.getProductById);
 router.put('/updateProduct/:_id', verifyAccessToken, productController.updateProductById);
 router.delete('/deleteProduct/:_id', verifyAccessToken, productController.deleteProductById);
