@@ -14,7 +14,7 @@ const BestSeller = () => {
     ]
 
     const settings = {
-        dots: true,
+        dots: false,
         infinite: true,
         speed: 250,
         slidesToShow: 3,
