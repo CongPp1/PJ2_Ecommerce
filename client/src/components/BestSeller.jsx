@@ -9,8 +9,8 @@ const BestSeller = () => {
     const [activeTab, setActiveTab] = useState(1);
 
     const tab = [
-        { id: 1, name: "Best Sellers", isActive: false },
-        { id: 1, name: "New Arrivals", isActive: false },
+        { id: 1, name: "Best Sellers" },
+        { id: 2, name: "New Arrivals" },
     ]
 
     const settings = {
@@ -37,14 +37,15 @@ const BestSeller = () => {
     useEffect(() => {
         fetchedProducts();
     }, []);
+
     return (
         <div>
             <div className="flex text-[20px] gap-8 pb-4 border-b-2 border-main">
                 {tab.map((element) => (
                     <span
                         key={element.id}
-                        className={`font-bold capitalize border-r cursor-pointer text-gray-400 ${activeTab === element.id ? 'text-black' : ''}`}
                         onClick={() => setActiveTab(element.id)}
+                        className={`font-bold capitalize border-r cursor-pointer ${activeTab === element.id ? 'text-black' : 'text-gray-400'}`}
                     >
                         {element.name}
                     </span>
@@ -52,10 +53,17 @@ const BestSeller = () => {
             </div>
             <div className="mt-4 mx-[-10px]">
                 <Slider {...settings}>
-                  {bestSellers?.map((element, index) => (
-                    <Product key={index} productData={element}/>
-                  ))}
+                    {activeTab === 1 ? (bestSellers?.map((element, index) => (
+                        <Product key={index} productData={element} isNew={false} />
+                    ))) : (newProducts.map((element, index) => (
+                        <Product key={index} productData={element} isNew={true} />
+                    )))
+                    }
                 </Slider>
+            </div>
+            <div className="mt-10 w-full flex gap-4">
+                <img src="https://digital-world-2.myshopify.com/cdn/shop/files/banner2-home2_2000x_crop_center.png?v=1613166657" alt="image" className="flex-1 object-contain"/>
+                <img src="https://digital-world-2.myshopify.com/cdn/shop/files/banner1-home2_2000x_crop_center.png?v=1613166657" alt="image" className="flex-1 object-contain"/>
             </div>
         </div>
     )
