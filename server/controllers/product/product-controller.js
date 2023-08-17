@@ -49,13 +49,6 @@ const getAllProducts = asyncHandler(async (req, res) => {
             formatedStringQuery.title = { $regex: queries.title, $options: 'i' }; //'i': không phân biệt chữ hoa chữ thường
         }
 
-        //Sort
-        if (req.query.sort) {
-            let sortOptions = {};
-            const sortBy = req.query.sort.split(',').join(' ');//Nếu trong query string có tham số sort, phân tách các trường sắp xếp bằng dấu phẩy và thay thế bằng dấu cách
-            sortOptions = sortBy; // Gán giá trị sắp xếp vào đối tượng sortOptions
-        }
-
         //Fields limittings
         if (req.query.fields) {
             console.log("req.query.fields", req.query.fields);
@@ -74,8 +67,31 @@ const getAllProducts = asyncHandler(async (req, res) => {
 
 
         // Find and Count documents
-        const products = await Product.find(formatedStringQuery);
-        const quantity = await Product.countDocuments(formatedStringQuery);
+        let products = await Product.find(formatedStringQuery);
+        let quantity = await Product.countDocuments(formatedStringQuery);
+
+        //Sort
+        if (req.query.sort) {
+            const sortBy = req.query.sort.split(',').join(' ');//Nếu trong query string có tham số sort, phân tách các trường sắp xếp bằng dấu phẩy và thay thế bằng dấu cách
+            products = products.sort((a, b) => {
+                if (sortBy === 'price') {
+                    return a.price - b.price;
+                }
+                if (sortBy === '-price') {
+                    return b.price - a.price;
+                }
+                if(sortBy === 'createdAt') {
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+                }
+                if(sortBy === '-createdAt') {
+                    return new Date(a.createdAt) - new Date(b.createdAt);
+                }
+                if(sortBy === '-sold'){
+                    return b.sold - a.sold;
+                }
+                return 0;
+            })
+        }
 
         return res.status(200).json({
             message: 'Get all products successfully',

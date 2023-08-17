@@ -3,6 +3,7 @@ import Sidebar from "../../components/Sidebar";
 import BestSeller from "../../components/BestSeller";
 import DealDaily from "../../components/DealDaily";
 import FeaturedProducts from "../../components/FeaturedProducts";
+import NewArrvals from "../../components/NewArrvals";
 
 const Home = () => {
 
@@ -19,8 +20,11 @@ const Home = () => {
                     <BestSeller />
                 </div>
             </div>
-            <div>
+            <div className="my-8">
                 <FeaturedProducts />
+            </div>
+            <div className="my-8">
+                <NewArrvals />
             </div>
         </>
     )
