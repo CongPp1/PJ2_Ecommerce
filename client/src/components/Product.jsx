@@ -12,7 +12,7 @@ const Product = ({ productData, isNew }) => {
     const handleOnMouseEnter = (event) => {
         event.stopPropagation();
         setIsShowOption(true);
-    };  
+    };
 
     const handleOnMouseLeave = (event) => {
         event.stopPropagation();
