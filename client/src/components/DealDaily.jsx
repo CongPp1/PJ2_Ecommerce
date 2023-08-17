@@ -28,7 +28,6 @@ const DealDaily = () => {
 
     const fetchedDealDaily = async () => {
         const response = await apiGetProducts();
-        console.log('Deal Daily', response);
         if (response.message === 'Get all products successfully') {
             const productArr = response.data.products;
             const randomDealDailyIndex = Math.floor(Math.random() * +productArr.length);
@@ -46,9 +45,9 @@ const DealDaily = () => {
     useEffect(() => {
         if (expiredTime) {
             fetchedDealDaily();
-            setHour(0);
-            setMinutes(0);
-            setSeconds(10);
+            setHour(23);
+            setMinutes(59);
+            setSeconds(60);
         }
     }, [expiredTime]);
 
