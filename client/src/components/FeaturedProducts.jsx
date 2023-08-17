@@ -27,8 +27,10 @@ const FeaturedProducts = () => {
 
     return (
         <div className='w-full'>
-            <h3 className='text-[20px] font-semibold py-[15px] border-b-2 mt-4 border-main'>FEATURED PRODUCTS</h3>
-            <div className='flex flex-wrap mt-[15px] mt-[15px] mx-[-10px]'>
+            <div>
+                <h3 className='text-[20px] font-semibold py-[15px] border-b-2 mt-4 border-main'>FEATURED PRODUCTS</h3>
+            </div>
+            <div className='flex flex-wrap mt-[15px] mx-[-10px]'>
                 {featuredProducts?.map((element) => (
                     <ProductCard
                         key={element.id}

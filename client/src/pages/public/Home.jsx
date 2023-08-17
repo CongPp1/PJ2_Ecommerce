@@ -9,7 +9,7 @@ const Home = () => {
 
 
     return (
-        <>
+        <div className="">
             <div className="w-main flex">
                 <div className="flex flex-col gap-5 w-[20%] flex-auto">
                     <Sidebar />
@@ -26,7 +26,7 @@ const Home = () => {
             <div className="my-8">
                 <NewArrvals />
             </div>
-        </>
+        </div>
     )
 }
 

@@ -42,7 +42,7 @@ const getProductCategories = asyncHandler(async (req, res) => {
 const getProductCategoryById = asyncHandler(async (req, res) => {
     try {
         const { _id } = req.params;
-        const category = await ProductCategory.findById(_id);
+        const category = await ProductCategory.findById(_id).populate('products');
         if (!category) {
             return res.status(404).json({
                 message: `Product category with Id: ${_id} not found`

@@ -14,7 +14,7 @@ function App() {
     dispatch(getCategories());
   }, []);
   return (
-    <div className="min-h-screen font-main flex justify-center">
+    <div className="min-h-screen font-main flex justify-items-center">
       <Routes>
         <Route path={path.PUBLIC} element={<Public />}>
           <Route path={path.LOGIN} element={<Login />} />
