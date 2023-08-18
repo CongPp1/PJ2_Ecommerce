@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { apiGetProducts } from '../APIs/product';
+import { apiGetCategoryById, apiGetCategories } from '../APIs/app';
 import Slider from "react-slick";
 import Product from './Product';
 
-const NewArrvals = () => {
-    const [newArrivals, setNewArrivals] = useState(null);
+const NewArrivals = () => {
+    const [productOfCategory, setProductOfCategory] = useState(null);
     const [activeTab, setActiveTab] = useState(1);
-
-    const tabs = [
-        { id: 1, name: 'Smart phone' },
-        { id: 2, name: 'Tablet' },
-        { id: 3, name: 'Laptop' }
-    ];
+    const [tabs, setTabs] = useState(null);
 
     const settings = {
         dots: false,
@@ -21,39 +16,67 @@ const NewArrvals = () => {
         slidesToScroll: 1
     };
 
-    const fetchNewArrvals = async () => {
-        const response = await apiGetProducts({ sort: 'createdAt' })
-        const newArrvalsArr = response.data.products.slice(0, 5);
-        setNewArrivals(newArrvalsArr);
-    }
+    const fetchCategoryById = async (id) => {
+        const category = await apiGetCategoryById(id);
+        if (category.message === 'Success') {
+            setProductOfCategory(category.ProductCategory.products);
+            console.log('category', category.ProductCategory.products);
+        } else {
+            return;
+        }
+    };
+
+    const handleTabClick = async (categoryId) => {
+        setActiveTab(categoryId);
+        await fetchCategoryById(categoryId);
+        console.log(categoryId);
+    };
+
     useEffect(() => {
-        fetchNewArrvals();
+        const loadCategories = async () => {
+            const categories = await apiGetCategories();
+            const filteredCategories = categories.ProductCategories.filter(category =>
+                category.title === 'Smart Phone' || category.title === 'Laptop' || category.title === 'Tablet'
+            );
+            setTabs(filteredCategories);
+            
+            // Khi tải lần đầu, chọn danh mục Smart Phone và gọi fetchCategoryById
+            const smartPhoneCategory = filteredCategories.find(category => category.title === 'Smart Phone');
+            if (smartPhoneCategory) {
+                handleTabClick(smartPhoneCategory._id);
+            }
+        };
+
+        loadCategories();
     }, []);
+
+    console.log('ProductCategory', productOfCategory)
     return (
         <div className='w-full'>
             <div className='flex justify-between border-b-2 mt-4 border-main'>
                 <h3 className='text-[20px] font-semibold py-[15px] '>NEW ARRIVALS</h3>
                 <div className='items-end flex gap-10 px-6 mb-4 mr-[-20px]'>
-                    {tabs.map((element, index) => (
+                    {tabs?.map((element, index) => (
                         <span
                             key={index}
-                            onClick={() => setActiveTab(element.id)}
-                            className={`cursor-pointer ${activeTab === element.id ? 'text-red-600' : 'text-gray-400'}`}
+                            onClick={() => handleTabClick(element._id)}
+                            className={`cursor-pointer ${activeTab === element._id ? 'text-red-600' : 'text-gray-400'}`}
                         >
-                            {element.name}
+                            {element.title}
                         </span>
                     ))}
                 </div>
             </div>
             <div className="mt-4 mx-[-10px]">
                 <Slider {...settings}>
-                    {newArrivals?.map((element, index) => (
-                        <Product key={index} productData={element} />
-                    ))}
+                    {(productOfCategory?.map((element, index) => (
+                            <Product key={index} productData={element} />
+                        )))}
                 </Slider>
+
             </div>
         </div>
     );
 };
 
-export default NewArrvals;
+export default NewArrivals;

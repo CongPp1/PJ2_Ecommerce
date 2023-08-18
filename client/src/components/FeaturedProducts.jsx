@@ -31,9 +31,9 @@ const FeaturedProducts = () => {
                 <h3 className='text-[20px] font-semibold py-[15px] border-b-2 mt-4 border-main'>FEATURED PRODUCTS</h3>
             </div>
             <div className='flex flex-wrap mt-[15px] mx-[-10px]'>
-                {featuredProducts?.map((element) => (
+                {featuredProducts?.map((element, index) => (
                     <ProductCard
-                        key={element.id}
+                        key={index}
                         images={element.images[0]}
                         title={element.title}
                         totalRatings={element.totalRatings}

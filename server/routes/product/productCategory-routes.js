@@ -4,7 +4,7 @@ const productCategoryController = require('../../controllers/product/productCate
 
 router.post('/create', verifyAccessToken, productCategoryController.createProductCategory);
 router.get('/productCategories', productCategoryController.getProductCategories);
-router.get('/productCategory/:_id', verifyAccessToken, productCategoryController.getProductCategoryById);
+router.get('/productCategory/:_id', productCategoryController.getProductCategoryById);
 router.put('/update/:_id', verifyAccessToken, productCategoryController.updateProductCategoryById);
 router.delete('/delete/:_id', verifyAccessToken, productCategoryController.deleteProductCategoryById);
 

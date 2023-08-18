@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getCategories } from "../store/asyncAction.js"
 
-const ab = getCategories();
-console.log("================================",ab);
 export const apSlice = createSlice({
     name: 'app',
     initialState: {
