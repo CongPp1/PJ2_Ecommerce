@@ -45,9 +45,9 @@ const DealDaily = () => {
     useEffect(() => {
         if (expiredTime) {
             fetchedDealDaily();
-            setHour(23);
-            setMinutes(59);
-            setSeconds(60);
+            setHour(0);
+            setMinutes(0);
+            setSeconds(10);
         }
     }, [expiredTime]);
 
