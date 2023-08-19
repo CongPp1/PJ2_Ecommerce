@@ -4,9 +4,11 @@ import BestSeller from "../../components/BestSeller";
 import DealDaily from "../../components/DealDaily";
 import FeaturedProducts from "../../components/FeaturedProducts";
 import NewArrvals from "../../components/NewArrvals";
+import HotCollection from "../../components/HotCollection";
+import BlogPosts from "../../components/BlogPosts";
+import { memo } from "react";
 
 const Home = () => {
-
 
     return (
         <div className="">
@@ -26,8 +28,14 @@ const Home = () => {
             <div className="my-8">
                 <NewArrvals />
             </div>
+            <div className="my-8">
+                <HotCollection />
+            </div>
+            <div className="my-8">
+                <BlogPosts />
+            </div>
         </div>
     )
 }
 
-export default Home;
+export default memo(Home);

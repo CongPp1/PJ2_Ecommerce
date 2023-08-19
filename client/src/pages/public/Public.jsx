@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "../../components/Header";
 import Navigation from "../../components/Navigation";
+import { memo } from "react";
 
 const Public = () => {
   return (
@@ -15,4 +16,4 @@ const Public = () => {
   );
 };
 
-export default Public;
+export default memo(Public);

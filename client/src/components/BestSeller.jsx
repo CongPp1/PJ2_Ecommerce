@@ -1,5 +1,5 @@
 import { apiGetProducts } from "../APIs/product";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import Slider from "react-slick";
 import Product from "./Product";
 
@@ -69,4 +69,4 @@ const BestSeller = () => {
     )
 }
 
-export default BestSeller;
+export default memo(BestSeller);

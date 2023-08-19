@@ -19,8 +19,8 @@ const NewArrivals = () => {
     const fetchCategoryById = async (id) => {
         const category = await apiGetCategoryById(id);
         if (category.message === 'Success') {
+            console.log('Category', category.ProductCategory.products)
             setProductOfCategory(category.ProductCategory.products);
-            console.log('category', category.ProductCategory.products);
         } else {
             return;
         }
@@ -50,7 +50,6 @@ const NewArrivals = () => {
         loadCategories();
     }, []);
 
-    console.log('ProductCategory', productOfCategory)
     return (
         <div className='w-full'>
             <div className='flex justify-between border-b-2 mt-4 border-main'>
@@ -60,7 +59,7 @@ const NewArrivals = () => {
                         <span
                             key={index}
                             onClick={() => handleTabClick(element._id)}
-                            className={`cursor-pointer ${activeTab === element._id ? 'text-red-600' : 'text-gray-400'}`}
+                            className={`cursor-pointer ${activeTab === element._id ? 'text-main' : 'text-gray-400'}`}
                         >
                             {element.title}
                         </span>
@@ -73,7 +72,6 @@ const NewArrivals = () => {
                             <Product key={index} productData={element} />
                         )))}
                 </Slider>
-
             </div>
         </div>
     );

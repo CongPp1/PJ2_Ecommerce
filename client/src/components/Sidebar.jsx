@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { format } from "../utils/helper";
 import { useSelector } from "react-redux";
+import { memo } from "react";
 
 const Sidebar = () => {
     const { categories } = useSelector(state => state.appReducer)
@@ -18,4 +19,4 @@ const Sidebar = () => {
     )
 };
 
-export default Sidebar;
+export default memo(Sidebar);

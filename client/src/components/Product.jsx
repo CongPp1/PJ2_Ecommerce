@@ -3,7 +3,7 @@ import label from "../../src/assets/label.png";
 import label_new from "../../src/assets/label-new.png";
 import SelectOption from "./SelectOption";
 import icons from '../utils/icons.js';
-import { useState } from "react";
+import { memo, useState } from "react";
 
 const Product = ({ productData, isNew }) => {
     const { AiFillEye, BsFillSuitHeartFill, IoIosMenu } = icons;
@@ -47,4 +47,4 @@ const Product = ({ productData, isNew }) => {
     )
 }
 
-export default Product;     
+export default memo(Product);     
