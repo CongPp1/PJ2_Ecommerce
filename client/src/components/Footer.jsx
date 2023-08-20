@@ -3,19 +3,19 @@ import React, { memo } from 'react';
 
 const Footer = () => {
     return (
-        <div className='w-full'>
-            <div className='h-[103px] bg-main flex items-center justify-center w-main'>
-                <div className='w-main text-white items-center justify-between'>
+        <div className='w-full flex flex-col'>
+            <div className='h-24 bg-main items-center justify-center'>
+                <div className=' text-white items-center justify-between'>
                     <div className='flex flex-col'>
                         <span>SIGN UP TO NEWLETTER</span>
                         <small>Subscribe now and receive weekly newsletter</small>
                     </div>
                     <input type='text' name='' id=''/>
                 </div>
-                <div className='h-[407px] bg-gray-700 text-white'>
+            </div>
+                <div className='bg-gray-700 text-white h-72'>
                     Footer
                 </div>
-            </div>
         </div>
     );
 };
