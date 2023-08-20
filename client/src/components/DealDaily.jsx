@@ -1,6 +1,6 @@
 import icons from "../utils/icons";
 import { apiGetProducts } from "../APIs/product";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { formatPrice, renderStars } from "../utils/helper";
 import CountdownTimer from "./CountdownTimer";
 import Swal from 'sweetalert2';
@@ -45,9 +45,9 @@ const DealDaily = () => {
     useEffect(() => {
         if (expiredTime) {
             fetchedDealDaily();
-            setHour(23);
-            setMinutes(59);
-            setSeconds(60);
+            setHour(0);
+            setMinutes(0);
+            setSeconds(10);
         }
     }, [expiredTime]);
 
@@ -108,4 +108,4 @@ const DealDaily = () => {
     )
 }
 
-export default DealDaily;
+export default memo(DealDaily);

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import logo from "../assets/logo_digital_new_250x.png";
 import icons from "../utils/icons.js";
 import path from "../utils/path";
@@ -44,4 +45,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default memo(Header);

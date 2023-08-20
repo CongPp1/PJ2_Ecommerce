@@ -20,7 +20,7 @@ const createProductCategory = asyncHandler(async (req, res) => {
 
 const getProductCategories = asyncHandler(async (req, res) => {
     try {
-        const response = await productCategory.find();
+        const response = await productCategory.find().populate('brands');
         if (response.length <= 0) {
             return res.status(200).json({
                 message: 'Product Category is empty',
@@ -42,7 +42,7 @@ const getProductCategories = asyncHandler(async (req, res) => {
 const getProductCategoryById = asyncHandler(async (req, res) => {
     try {
         const { _id } = req.params;
-        const category = await ProductCategory.findById(_id);
+        const category = await ProductCategory.findById(_id).populate('products');
         if (!category) {
             return res.status(404).json({
                 message: `Product category with Id: ${_id} not found`
@@ -99,10 +99,34 @@ const deleteProductCategoryById = asyncHandler(async (req, res) => {
     }
 });
 
+const uploadImage = asyncHandler(async (req, res) => {
+    try {
+        const { _id } = req.params;
+        if (!req.files) {
+            return res.status(400).json({
+                messagage: 'Please select files first'
+            });
+        }
+        const response = await ProductCategory.findByIdAndUpdate(_id, {
+            $push: { images: { $each: req.files.map((element) => element.path) } }
+        }, { new: true });
+        return res.status(200).json({
+            messagage: 'Uploading image oke'
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            messagage: 'Error uploading image',
+            error: error.messagage
+        });
+    }
+});
+
 module.exports = {
     createProductCategory,
     getProductCategories,
     getProductCategoryById,
     updateProductCategoryById,
-    deleteProductCategoryById
+    deleteProductCategoryById,
+    uploadImage
 }

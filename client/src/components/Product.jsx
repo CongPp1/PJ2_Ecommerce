@@ -3,7 +3,9 @@ import label from "../../src/assets/label.png";
 import label_new from "../../src/assets/label-new.png";
 import SelectOption from "./SelectOption";
 import icons from '../utils/icons.js';
-import { useState } from "react";
+import { memo, useState } from "react";
+import { Link } from 'react-router-dom';
+import path from "../utils/path.js"
 
 const Product = ({ productData, isNew }) => {
     const { AiFillEye, BsFillSuitHeartFill, IoIosMenu } = icons;
@@ -21,7 +23,12 @@ const Product = ({ productData, isNew }) => {
 
     return (
         <div className="w-full text-base px-[10px]">
-            <div className="w-full border p-[15px] flex flex-col items-center" onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
+            <Link
+                to={ `/${path.DETAIL_PRODUCT}/${productData?._id}/${productData?.title}`}
+                className="w-full border p-[15px] flex flex-col items-center"
+                onMouseEnter={handleOnMouseEnter}
+                onMouseLeave={handleOnMouseLeave}
+            >
                 <div className="w-full relative">
                     <div className="relative">
                         {isShowOption && <div className="absolute flex left-0 right-0 justify-center bottom-0 gap-2 animate-slide-top">
@@ -42,9 +49,9 @@ const Product = ({ productData, isNew }) => {
                     <span className="line-clamp-1">{productData?.title}</span>
                     <span>{formatPrice(productData?.price)} VND</span>
                 </div>
-            </div>
+            </Link>
         </div>
     )
 }
 
-export default Product;     
+export default memo(Product);     
