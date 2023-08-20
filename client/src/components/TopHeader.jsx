@@ -7,7 +7,7 @@ const TopHeader = () => {
         <div className='h-[50px] w-full bg-main flex items-center justify-center'>
             <div className='w-main flex items-center justify-between text-xs text-white'>
                 <span>ORDER ONLINE OR CALL US (+1800) 000 8808 </span>
-                <Link to={`${path.LOGIN}`}>Sign In or Create Account</Link>
+                <Link to={`${path.LOGIN}`}>Sign In or Create Accountt</Link>
             </div>
         </div>
     );
