@@ -8,7 +8,7 @@ const Footer = () => {
                 <div className='w-main text-white items-center justify-between'>
                     <div className='flex flex-col'>
                         <span>SIGN UP TO NEWLETTER</span>
-                        <small>Subscribe now and receive weekly newslettert</small>
+                        <small>Subscribe now and receive weekly newsletter</small>
                     </div>
                     <input type='text' name='' id=''/>
                 </div>
