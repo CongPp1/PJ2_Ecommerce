@@ -1,17 +1,20 @@
 import { Outlet } from "react-router-dom";
 import Header from "../../components/Header";
 import Navigation from "../../components/Navigation";
+import TopHeader from "../../components/TopHeader";
+import Footer from "../../components/Footer";
 import { memo } from "react";
 
 const Public = () => {
   return (
-    <div className="w-full flex flex-col justify-items-center">
+    <div className="w-full flex flex-col items-center">
+      <TopHeader />
       <Header />
       <Navigation />
-      {console.log('[Debug] da chay vao day')}
       <div className="w-main">
         <Outlet />
       </div>
+      <Footer />
     </div>
   );
 };

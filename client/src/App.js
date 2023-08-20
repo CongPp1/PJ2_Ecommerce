@@ -22,7 +22,6 @@ function App() {
     <div className="min-h-screen font-main flex justify-items-center">
       <Routes>
         <Route path={path.PUBLIC} element={<Public />}>
-          <Route path={path.LOGIN} element={<Login />} />
           <Route path={path.HOME} element={<Home />} />
           <Route path={path.DETAIL_PRODUCT__PID__TITLE} element={<DetailProduct />} />
           <Route path={path.FAQs} element={<FAQs />} />
@@ -30,6 +29,7 @@ function App() {
           <Route path={path.OUR_SERVICES} element={<Sevices />} />
           <Route path={path.PRODUCTS} element={<Products />} />
         </Route>
+        <Route path={path.LOGIN} element={<Login />} />
       </Routes>
     </div>
   );

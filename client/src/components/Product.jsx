@@ -23,8 +23,7 @@ const Product = ({ productData, isNew }) => {
 
     return (
         <div className="w-full text-base px-[10px]">
-            <Link
-                to={ `/${path.DETAIL_PRODUCT}/${productData?._id}/${productData?.title}`}
+            <div
                 className="w-full border p-[15px] flex flex-col items-center"
                 onMouseEnter={handleOnMouseEnter}
                 onMouseLeave={handleOnMouseLeave}
@@ -36,7 +35,9 @@ const Product = ({ productData, isNew }) => {
                             <SelectOption icon={<BsFillSuitHeartFill color="red" />} />
                             <SelectOption icon={<IoIosMenu color="red" />} />
                         </div>}
-                        <img src={productData?.images[0] || ''} alt="image" className="w-full object-cover" />
+                        <Link to={ `/${path.DETAIL_PRODUCT}/${productData?._id}/${productData?.title}`}>
+                            <img src={productData?.images[0] || ''} alt="image" className="w-full object-cover" />
+                        </Link>
                         {isNew === true ?
                             <img src={label_new} alt="label" className="absolute top-[-15px] left-[-20px] w-[100px] h-[35px] object-cover" />
                             :
@@ -49,7 +50,7 @@ const Product = ({ productData, isNew }) => {
                     <span className="line-clamp-1">{productData?.title}</span>
                     <span>{formatPrice(productData?.price)} VND</span>
                 </div>
-            </Link>
+            </div>
         </div>
     )
 }

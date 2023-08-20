@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { apiGetCategoryById, apiGetCategories } from '../APIs/app';
 import Slider from "react-slick";
 import Product from './Product';
@@ -19,7 +19,6 @@ const NewArrivals = () => {
     const fetchCategoryById = async (id) => {
         const category = await apiGetCategoryById(id);
         if (category.message === 'Success') {
-            console.log('Category', category.ProductCategory.products)
             setProductOfCategory(category.ProductCategory.products);
         } else {
             return;
@@ -29,7 +28,6 @@ const NewArrivals = () => {
     const handleTabClick = async (categoryId) => {
         setActiveTab(categoryId);
         await fetchCategoryById(categoryId);
-        console.log(categoryId);
     };
 
     useEffect(() => {
@@ -77,4 +75,4 @@ const NewArrivals = () => {
     );
 };
 
-export default NewArrivals;
+export default memo(NewArrivals);
