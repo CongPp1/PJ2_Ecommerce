@@ -6,9 +6,9 @@ const jwt = require('jsonwebtoken')
 const crypto = require('crypto');
 
 const register = asyncHandler(async (req, res) => {
-    const { firstName, lastName, email, password, mobile } = req.body;
+    const { firstName, lastName, email, password } = req.body;
 
-    if (!firstName || !lastName || !email || !password || !mobile) {
+    if (!firstName || !lastName || !email || !password) {
         return res.status(400).json({
             message: 'Please provide all fields',
         });

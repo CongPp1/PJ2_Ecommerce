@@ -4,7 +4,7 @@ const InputField = ({ value, setValue, nameKey, type, invalidFields, setInvalidF
     const [isFocus, setIsFocus] = useState(false);
 
     const handleOnChange = (event) => {
-        setValue((prev) => ({ ...prev, [nameKey]: event.target.vlue }))
+        setValue((prev) => ({ ...prev, [nameKey]: event.target.value }))
     };
 
     return (
@@ -24,6 +24,7 @@ const InputField = ({ value, setValue, nameKey, type, invalidFields, setInvalidF
                 value={value}
                 onChange={handleOnChange}
             />
+            {console.log('value: ' + value)}
         </div>
     );
 };

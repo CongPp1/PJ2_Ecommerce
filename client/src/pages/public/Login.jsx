@@ -1,17 +1,47 @@
 import { memo, useCallback, useState } from "react";
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
+import { apiRegister } from "../../APIs/user";
+import Swal from "sweetalert2";
 
 const Login = () => {
     const [payload, setPayload] = useState({
         email: '',
         password: '',
-        name: ''
+        firstName: '',
+        lastName: ''
     });
     const [isRegister, setIsRegister] = useState(false);
 
-    const handleSubmit = useCallback(() => {
-        console.log('payload', payload);
+    const loginSuccess = () => {
+        Swal.fire({
+            icon: 'success',
+            title: 'Ban da dang ky tai khoan thanh cong',
+        })
+    };
+
+    const loginFail = () => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Ban da dang ky tai khoan that bai',
+        })
+    }
+
+    const handleSubmit = useCallback(async () => {
+        const { firstName, lastName, ...data } = payload;
+        if (isRegister) {
+            const response = await apiRegister(payload)
+            if (response.message === 'User created successfully') {
+                console.log('User created successfully')
+                loginSuccess();
+            } else {
+                loginFail()
+            }
+        } else {
+            
+            console.log('data', data);
+        }
+
     }, [payload]);
 
     const handleChangeStatus = () => {
@@ -29,11 +59,18 @@ const Login = () => {
                 <div className="p-8 bg-white rounded-md min-w-[500px] border shadow-2xl">
                     <h1 className=" text-[28px] text-main mb-8 flex flex-col items-center font-semibold">{isRegister ? 'Register' : 'Login'}</h1>
                     {isRegister && (
-                        <InputField
-                            value={payload.name}
-                            setValue={setPayload}
-                            nameKey='name'
-                        />
+                        <div>
+                            <InputField
+                                value={payload.firstName}
+                                setValue={setPayload}
+                                nameKey='firstName'
+                            />
+                            <InputField
+                                value={payload.lastName}
+                                setValue={setPayload}
+                                nameKey='lastName'
+                            />
+                        </div>
                     )}
                     <InputField
                         value={payload.email}
@@ -46,6 +83,7 @@ const Login = () => {
                         nameKey='password'
                         type='password'
                     />
+
                     <Button
                         name={isRegister ? 'Create account' : 'Login'}
                         handleOnClick={handleSubmit}
