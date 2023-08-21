@@ -8,7 +8,7 @@ const Header = () => {
   const { RiPhoneFill, MdEmail, BsHandbagFill, FaUserCircle } = icons;
 
   return (
-    <div className="border w-main flex justify-between h-[110px] py-[35px]">
+    <div className="border-b w-main flex justify-between h-[110px] py-[35px]">
       <div>
         <Link to={`/${path.HOME}`}>
           <img

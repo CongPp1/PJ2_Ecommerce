@@ -1,5 +1,5 @@
 import { memo } from "react";
-import banner_girl from "../assets/09-fc-bayern-away-trikot-23-24.png";
+import banner_girl from "../assets/bestSeller.jpg";
 
 const Banner = () => {
   return (
