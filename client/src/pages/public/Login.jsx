@@ -1,47 +1,78 @@
 import { memo, useCallback, useState } from "react";
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
-import { apiRegister } from "../../APIs/user";
+import { apiRegister, apiLogin } from "../../APIs/user";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import path from "../../utils/path.js";
+import { register } from "../../store/userSlice";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [payload, setPayload] = useState({
         email: '',
         password: '',
         firstName: '',
-        lastName: ''
+        lastName: '',
+        mobile: ''
     });
     const [isRegister, setIsRegister] = useState(false);
 
-    const loginSuccess = () => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Ban da dang ky tai khoan thanh cong',
+    const resetPayload = () => {
+        setPayload({
+            email: '',
+            password: '',
+            firstName: '',
+            lastName: '',
+            mobile: ''
         })
     };
 
-    const loginFail = () => {
+    const loginSuccess = (result) => {
+        Swal.fire({
+            icon: 'success',
+            title: `${isRegister ? 'Ban da dang ky tai khoan thanh cong' : 'Bang da dang nhap thanh cong'}`,
+            text: result
+        }).then(() => {
+            setIsRegister(false)
+            resetPayload()
+        });
+    };
+
+    const loginFail = (result) => {
         Swal.fire({
             icon: 'error',
-            title: 'Ban da dang ky tai khoan that bai',
+            title: `${isRegister ? 'Ban da dang ky tai khoan that bai' : 'Ban da dang nhap that bai'}`,
+            text: result
         })
     }
 
     const handleSubmit = useCallback(async () => {
-        const { firstName, lastName, ...data } = payload;
+        const { firstName, lastName, mobile, ...data } = payload;
         if (isRegister) {
-            const response = await apiRegister(payload)
-            if (response.message === 'User created successfully') {
-                console.log('User created successfully')
-                loginSuccess();
-            } else {
-                loginFail()
+            try {
+                const response = await apiRegister(payload)
+                if (response.message === 'User created successfully') {
+                    loginSuccess(response.message);
+                }
+            } catch (error) {
+                loginFail(error);
             }
         } else {
-            
-            console.log('data', data);
+            try {
+                const response = await apiLogin(data);
+                console.log('response', response);
+                if (response.message === 'User logged in successfully') {
+                    loginSuccess(response.message);
+                    dispatch(register({ isLogin: true, token: response.accessToken, userData: response.result }));
+                    navigate(`/${path.HOME}`);
+                }
+            } catch (error) {
+                loginFail(error);
+            }
         }
-
     }, [payload]);
 
     const handleChangeStatus = () => {
@@ -69,6 +100,11 @@ const Login = () => {
                                 value={payload.lastName}
                                 setValue={setPayload}
                                 nameKey='lastName'
+                            />
+                            <InputField
+                                value={payload.mobile}
+                                setValue={setPayload}
+                                nameKey='mobile'
                             />
                         </div>
                     )}
@@ -104,7 +140,6 @@ const Login = () => {
                         )
                             :
                             (
-
                                 <span
                                     className="text-blue-500 hover:underline cursor-pointer w-full text-center"
                                     onClick={() => setIsRegister(false)}

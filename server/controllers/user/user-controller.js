@@ -6,9 +6,9 @@ const jwt = require('jsonwebtoken')
 const crypto = require('crypto');
 
 const register = asyncHandler(async (req, res) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, mobile } = req.body;
 
-    if (!firstName || !lastName || !email || !password) {
+    if (!firstName || !lastName || !email || !password || !mobile) {
         return res.status(400).json({
             message: 'Please provide all fields',
         });
@@ -34,6 +34,7 @@ const login = asyncHandler(async (req, res) => {
             message: 'Please provide all fields',
         });
     }
+    console.log(req.body);
     const result = await User.findOne({ email: email });
     if ((result && await result.isCorrectEmail(email) && await result.isCorrectPassword(password))) {
         const accessToken = generateAccessToken(result._id, result.role);

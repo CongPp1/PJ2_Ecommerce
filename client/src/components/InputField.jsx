@@ -24,7 +24,6 @@ const InputField = ({ value, setValue, nameKey, type, invalidFields, setInvalidF
                 value={value}
                 onChange={handleOnChange}
             />
-            {console.log('value: ' + value)}
         </div>
     );
 };
