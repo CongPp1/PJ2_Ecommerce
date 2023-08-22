@@ -35,7 +35,7 @@ const Login = () => {
     const loginSuccess = (result) => {
         Swal.fire({
             icon: 'success',
-            title: `${isRegister ? 'Ban da dang ky tai khoan thanh cong' : 'Ban da dang nhap thanh cong'}`,
+            title: `${isRegister ? 'Ban da dang ky tai khoan thanh congg' : 'Ban da dang nhap thanh cong'}`,
             text: result
         }).then(() => {
             setIsRegister(false)
@@ -46,7 +46,7 @@ const Login = () => {
     const loginFail = (result) => {
         Swal.fire({
             icon: 'error',
-            title: `${isRegister ? 'Ban da dang ky tai khoan that bai' : 'Ban da dang nhap that bai'}`,
+            title: `${isRegister ? 'Ban da dang ky tai khoan that baii' : 'Ban da dang nhap that bai'}`,
             text: result
         })
     }
