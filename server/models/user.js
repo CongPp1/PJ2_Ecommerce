@@ -59,6 +59,9 @@ const userSchema = new mongoose.Schema({
     },
     passwordResetTokenExpiredIn: {
         type: String
+    },
+    registerToken: {
+        type: String
     }
 }, {
     timestamps: true

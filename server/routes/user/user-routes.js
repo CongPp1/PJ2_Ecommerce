@@ -4,6 +4,7 @@ const { verifyAccessToken } = require('../../middlewares/verifyToken.js');
 
 //Authentication
 router.post('/register', userController.register);
+router.get('/register/finalRegister/:token', userController.finalRegister);
 router.post('/login', userController.login);
 router.post('/refreshToken', userController.newAccessToken);
 router.post('/logout', userController.logout);

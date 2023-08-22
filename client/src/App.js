@@ -11,6 +11,7 @@ import Products from './pages/public/Products';
 import path from './utils/path';
 import { useDispatch } from 'react-redux';
 import { getCategories } from './store/asyncAction';
+import FinalRegister from './pages/public/FinalRegister';
 
 function App() {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ function App() {
           <Route path={path.OUR_SERVICES} element={<Sevices />} />
           <Route path={path.PRODUCTS} element={<Products />} />
         </Route>
+        <Route path={path.FINAL_REGISTER} element={<FinalRegister />} />
         <Route path={path.LOGIN} element={<Login />} />
       </Routes>
     </div>

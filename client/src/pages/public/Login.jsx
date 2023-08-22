@@ -3,7 +3,7 @@ import InputField from "../../components/InputField";
 import Button from "../../components/Button";
 import { apiRegister, apiLogin } from "../../APIs/user";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import path from "../../utils/path.js";
 import { register } from "../../store/userSlice";
 import { useDispatch } from "react-redux";
@@ -11,6 +11,8 @@ import { useDispatch } from "react-redux";
 const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
+    console.log(location);
     const [payload, setPayload] = useState({
         email: '',
         password: '',
@@ -33,7 +35,7 @@ const Login = () => {
     const loginSuccess = (result) => {
         Swal.fire({
             icon: 'success',
-            title: `${isRegister ? 'Ban da dang ky tai khoan thanh cong' : 'Bang da dang nhap thanh cong'}`,
+            title: `${isRegister ? 'Ban da dang ky tai khoan thanh cong' : 'Ban da dang nhap thanh cong'}`,
             text: result
         }).then(() => {
             setIsRegister(false)
@@ -63,7 +65,6 @@ const Login = () => {
         } else {
             try {
                 const response = await apiLogin(data);
-                console.log('response', response);
                 if (response.message === 'User logged in successfully') {
                     loginSuccess(response.message);
                     dispatch(register({ isLogin: true, token: response.accessToken, userData: response.result }));

@@ -4,26 +4,86 @@ const { generateAccessToken, generateRefreshToken } = require('../../middlewares
 const { sendMail } = require('../../utils/sendmail.js')
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto');
+const makeToken = require('uniqid');
+
+// const register = asyncHandler(async (req, res) => {
+//     const { firstName, lastName, email, password, mobile } = req.body;
+
+//     if (!firstName || !lastName || !email || !password || !mobile) {
+//         return res.status(400).json({
+//             message: 'Please provide all fields',
+//         });
+//     }
+//     const isRegister = await User.findOne({ email: email });
+//     if (isRegister) {
+//         return res.status(200).json({
+//             message: 'User already exists',
+//         });
+//     }
+//     const result = await User.create(req.body);
+//     res.status(201).json({
+//         message: 'User created successfully',
+//         result
+//     });
+// });
 
 const register = asyncHandler(async (req, res) => {
-    const { firstName, lastName, email, password, mobile } = req.body;
-
-    if (!firstName || !lastName || !email || !password || !mobile) {
-        return res.status(400).json({
-            message: 'Please provide all fields',
-        });
-    }
-    const isRegister = await User.findOne({ email: email });
-    if (isRegister) {
+    try {
+        const { email, password, firstName, lastName, mobile } = req.body;
+        if (!email || !password || !firstName || !lastName || !mobile) {
+            return res.status(400).json({
+                message: 'Please provide all fields'
+            });
+        }
+        const isRegister = await User.findOne({ email: email });
+        if (isRegister) {
+            return res.status(200).json({
+                message: 'User already exists',
+            });
+        }
+        const token = makeToken();
+        res.cookie('dataRegister', { ...req.body, token }, { httpOnly: true, maxAge: 15 * 60 * 1000 });
+        const html = `Xin vui lòng click vào link dưới đây để hoàn tất quá trình đăng kí tài khoản:
+         <a href=${process.env.URL_SERVER}/api/user/register/finalRegister/${token}>Click Here</a>`;
+        sendMail({ email, html, subject: 'Hoàn tất đăng kí Digital World' })
         return res.status(200).json({
-            message: 'User already exists',
+            message: 'Please check your email to activate your account',
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Internal Server Error',
+            error: error
         });
     }
-    const result = await User.create(req.body);
-    res.status(201).json({
-        message: 'User created successfully',
-        result
-    });
+});
+
+const finalRegister = asyncHandler(async (req, res) => {
+    try {
+        const cookie = req.cookies;
+        const { token } = req.params;
+        if (!cookie || cookie?.dataRegister?.token !== token) {
+            return res.redirect(`${process.env.CLIENT_URL}/finalRegister/failed`);
+        }
+        const result = await User.create({
+            email: cookie?.dataRegister?.email,
+            password: cookie?.dataRegister?.password,
+            mobile: cookie?.dataRegister?.mobile,
+            firstName: cookie?.dataRegister?.firstName,
+            lastName: cookie?.dataRegister?.lastName
+        });
+        if(result) {
+            return res.redirect(`${process.env.CLIENT_URL}/finalRegister/success`);
+        } else {
+            return res.redirect(`${process.env.CLIENT_URL}/finalRegister/failed`);
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Internal Server Error',
+            error: error
+        });
+    }
 });
 
 const login = asyncHandler(async (req, res) => {
@@ -133,7 +193,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
          <a href=${process.env.URL_SERVER}/api/user/resetPassword/${resetToken}>Click Here</a>`;
         const data = {
             email,
-            html
+            html,
+            subject: 'Forgot Password',
         }
         sendMail(data);
         return res.status(200).json({
@@ -363,6 +424,7 @@ const updateUserCart = asyncHandler(async (req, res) => {
 
 module.exports = {
     register,
+    finalRegister,
     login,
     getUSer,
     newAccessToken,
