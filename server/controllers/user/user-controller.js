@@ -47,6 +47,7 @@ const register = asyncHandler(async (req, res) => {
          <a href=${process.env.URL_SERVER}/api/user/register/finalRegister/${token}>Click Here</a>`;
         sendMail({ email, html, subject: 'Hoàn tất đăng kí Digital World' })
         return res.status(200).json({
+            success: true,
             message: 'Please check your email to activate your account',
         })
     } catch (error) {

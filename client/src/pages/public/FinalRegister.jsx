@@ -20,7 +20,7 @@ const FinalRegister = () => {
     const registerSuccess = () => {
         Swal.fire({
           icon: 'success',
-          title: 'Oops...',
+          title: 'Chuc mung',
           text: 'Ban dang ki thanh cong',
         }).then(() => {
             navigate(`/${path.LOGIN}`);

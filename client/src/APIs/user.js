@@ -4,7 +4,8 @@ export const apiRegister = (data) => {
     return axios({
         url: '/user/register',
         method: 'POST',
-        data
+        data,
+        withCredentials: true,
     })
 }
 apiRegister()

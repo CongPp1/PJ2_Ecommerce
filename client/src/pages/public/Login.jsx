@@ -11,8 +11,8 @@ import { useDispatch } from "react-redux";
 const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const location = useLocation();
-    console.log(location);
+    // const location = useLocation();
+    // console.log(location);
     const [payload, setPayload] = useState({
         email: '',
         password: '',
@@ -56,7 +56,8 @@ const Login = () => {
         if (isRegister) {
             try {
                 const response = await apiRegister(payload)
-                if (response.message === 'User created successfully') {
+                console.log('response', response);
+                if (response.success === true) {
                     loginSuccess(response.message);
                 }
             } catch (error) {
