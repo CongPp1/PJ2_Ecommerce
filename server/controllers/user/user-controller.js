@@ -64,6 +64,7 @@ const finalRegister = asyncHandler(async (req, res) => {
         const cookie = req.cookies;
         const { token } = req.params;
         if (!cookie || cookie?.dataRegister?.token !== token) {
+            res.clearCookie('dataRegister');
             return res.redirect(`${process.env.CLIENT_URL}/finalRegister/failed`);
         }
         const result = await User.create({
@@ -73,6 +74,7 @@ const finalRegister = asyncHandler(async (req, res) => {
             firstName: cookie?.dataRegister?.firstName,
             lastName: cookie?.dataRegister?.lastName
         });
+        res.clearCookie('dataRegister');
         if(result) {
             return res.redirect(`${process.env.CLIENT_URL}/finalRegister/success`);
         } else {
@@ -174,7 +176,7 @@ const logout = async (req, res) => {
 };
 
 const forgotPassword = asyncHandler(async (req, res) => {
-    const { email } = req.query;
+    const { email } = req.body;
     try {
         if (!email) {
             return res.status(400).json({
@@ -183,23 +185,25 @@ const forgotPassword = asyncHandler(async (req, res) => {
         }
         const user = await User.findOne({ email: email });
         if (!user) {
-            return res.status(404).json({
+            return res.status(200).json({
+                success: false,
                 message: 'User not found',
             });
         }
-        const resetToken = user.createChangePasswordToken();
+        const resetToken = await user.createChangePasswordToken();
         console.log(resetToken);
         await user.save({ validateBeforeSave: false });
         const html = `Xin vui lòng click vào link dưới đây để đổi mật khẩu:
-         <a href=${process.env.URL_SERVER}/api/user/resetPassword/${resetToken}>Click Here</a>`;
+         <a href=${process.env.CLIENT_URL}/resetPassword/${resetToken}>Click Here</a>`;
         const data = {
             email,
             html,
             subject: 'Forgot Password',
         }
-        sendMail(data);
+        const a = await sendMail(data);
         return res.status(200).json({
-            message: 'Email sent successfully',
+            success: a?.response?.includes('OK') ? true : false,
+            message: a?.response?.includes('OK') ? 'Email sent successfully' : 'Error, Please try again'
         });
     } catch (error) {
         console.log(error);
@@ -220,8 +224,8 @@ const resetPassword = asyncHandler(async (req, res) => {
         }
         const resetPasswordToken = crypto.createHash('sha256').update(token).digest('hex');
         const user = await User.findOne({
-            resetPasswordToken,
-            passwordTokenExpiredIn: { $gt: Date.now() }
+            passwordResetToken: resetPasswordToken,
+            // passwordTokenExpiredIn: { $gt: Date.now() }
         });
         if (!user) {
             return res.status(400).json({
@@ -235,6 +239,7 @@ const resetPassword = asyncHandler(async (req, res) => {
         await user.save({ validateBeforeSave: false });
 
         return res.status(200).json({
+            success: true,
             message: 'Password changed successfully',
         });
     } catch (error) {
