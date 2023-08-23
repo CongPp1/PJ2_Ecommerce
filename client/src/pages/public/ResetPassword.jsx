@@ -3,10 +3,13 @@ import Button from '../../components/Button';
 import { useParams } from 'react-router-dom';
 import { apiResetPassword } from '../../APIs/user';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import path from '../../utils/path';
 
 const ResetPassword = () => {
     const [password, setPassword] = useState('');
     const { token } = useParams();
+    const navigate = useNavigate();
 
     const handleOnChange = (event) => {
         setPassword(event.target.value);
@@ -17,11 +20,12 @@ const ResetPassword = () => {
         console.log(response);
         if (response.success === true) {
             toast.success(response.message);
+            navigate(`/${path.LOGIN}`);
         }
     };
 
     return (
-        <div className='w-screen h-2/3'>
+        <div className='w-screen h-screen'>
             <img
                 className="w-full absolute object-cover"
                 src="https://t4.ftcdn.net/jpg/05/38/29/47/360_F_538294733_Lv5YDW2gZwyl5mRI05lSkfLvKWjf1iEQ.jpg"

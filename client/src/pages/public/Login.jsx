@@ -1,13 +1,14 @@
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
 import { apiRegister, apiLogin, apiForgotPassword } from "../../APIs/user";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import path from "../../utils/path.js";
-import { register } from "../../store/userSlice";
+import { login } from "../../store/userSlice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { validate } from "../../utils/helper";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -20,8 +21,9 @@ const Login = () => {
         mobile: ''
     });
     const [isRegister, setIsRegister] = useState(false);
-    const [isForgotPassword, setIsForgotPassword] = useState(true);
+    const [isForgotPassword, setIsForgotPassword] = useState(false);
     const [email, setEmail] = useState('');
+    const [invalidFields, setInvalidFields] = useState([]);
 
     const resetPayload = () => {
         setPayload({
@@ -54,28 +56,53 @@ const Login = () => {
 
     const handleSubmit = useCallback(async () => {
         const { firstName, lastName, mobile, ...data } = payload;
-        if (isRegister) {
-            try {
-                const response = await apiRegister(payload)
-                if (response.success === true) {
-                    loginSuccess(response.message);
+        const invalids = isRegister ? validate(payload, setInvalidFields) : validate(data, setInvalidFields);
+        console.log(invalids);
+        if (invalids === 0) {
+            if (isRegister) {
+                try {
+                    const response = await apiRegister(payload)
+                    if (response.success === true) {
+                        loginSuccess(response.message);
+                    }
+                } catch (error) {
+                    loginFail(error);
                 }
-            } catch (error) {
-                loginFail(error);
-            }
-        } else {
-            try {
-                const response = await apiLogin(data);
-                if (response.message === 'User logged in successfully') {
-                    loginSuccess(response.message);
-                    dispatch(register({ isLogin: true, token: response.accessToken, userData: response.result }));
-                    navigate(`/${path.HOME}`);
+            } else {
+                try {
+                    const response = await apiLogin(data);
+                    if (response.message === 'User logged in successfully') {
+                        loginSuccess(response.message);
+                        dispatch(login({ isLogin: true, token: response.accessToken, userData: response.result }));
+                        navigate(`/${path.HOME}`);
+                    }
+                } catch (error) {
+                    loginFail(error);
                 }
-            } catch (error) {
-                loginFail(error);
             }
         }
-    }, [payload]);
+        // if (isRegister) {
+        //     try {
+        //         const response = await apiRegister(payload)
+        //         if (response.success === true) {
+        //             loginSuccess(response.message);
+        //         }
+        //     } catch (error) {
+        //         loginFail(error);
+        //     }
+        // } else {
+        //     try {
+        //         const response = await apiLogin(data);
+        //         if (response.message === 'User logged in successfully') {
+        //             loginSuccess(response.message);
+        //             dispatch(login({ isLogin: true, token: response.accessToken, userData: response.result }));
+        //             navigate(`/${path.HOME}`);
+        //         }
+        //     } catch (error) {
+        //         loginFail(error);
+        //     }
+        // }
+    }, [payload, isRegister]);
 
     const handleChangeStatus = () => {
         setIsRegister(true);
@@ -102,6 +129,10 @@ const Login = () => {
     const handleClickBack = () => {
         setIsForgotPassword(false);
     };
+
+    useEffect(() => {
+        resetPayload();
+    }, [isRegister]);
 
     return (
         <div className="w-screen h-screen relative">
@@ -138,16 +169,22 @@ const Login = () => {
                                 value={payload.firstName}
                                 setValue={setPayload}
                                 nameKey='firstName'
+                                invalidFields={invalidFields}
+                                setInvalidFields={setInvalidFields}
                             />
                             <InputField
                                 value={payload.lastName}
                                 setValue={setPayload}
                                 nameKey='lastName'
+                                invalidFields={invalidFields}
+                                setInvalidFields={setInvalidFields}
                             />
                             <InputField
                                 value={payload.mobile}
                                 setValue={setPayload}
                                 nameKey='mobile'
+                                invalidFields={invalidFields}
+                                setInvalidFields={setInvalidFields}
                             />
                         </div>
                     )}
@@ -155,12 +192,16 @@ const Login = () => {
                         value={payload.email}
                         setValue={setPayload}
                         nameKey='email'
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
                     />
                     <InputField
                         value={payload.password}
                         setValue={setPayload}
                         nameKey='password'
                         type='password'
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
                     />
                     <Button
                         name={isRegister ? 'Create account' : 'Login'}

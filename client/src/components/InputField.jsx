@@ -7,8 +7,12 @@ const InputField = ({ value, setValue, nameKey, type, invalidFields, setInvalidF
         setValue((prev) => ({ ...prev, [nameKey]: event.target.value }))
     };
 
+    const handleOnFocus = () => {
+        setInvalidFields([]);
+    }
+
     return (
-        <div className='w-full relative'>
+        <div className='w-full flex flex-col relative'>
             {value?.trim() !== '' && (
                 <label
                     className='text-[10px] absolute top-0 left-[12px] block bg-white px-1 animate-slide-top-sm'
@@ -23,7 +27,10 @@ const InputField = ({ value, setValue, nameKey, type, invalidFields, setInvalidF
                 placeholder={nameKey.slice(0, 1).toUpperCase() + nameKey.slice(1)}
                 value={value}
                 onChange={handleOnChange}
+                onFocus={handleOnFocus}
             />
+            {invalidFields?.some((element) => element.name === nameKey) &&
+                <small className='text-main text-[10px] italic'>{invalidFields.find((element) => element.name === nameKey)?.message}</small>}
         </div>
     );
 };

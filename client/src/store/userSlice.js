@@ -9,7 +9,7 @@ export const userSlice = createSlice({
         token: null
     },
     reducers: {
-        register: (state, action) => {
+        login: (state, action) => {
             console.log('action', action)
             state.isLogin = action.payload.isLogin;
             state.current = action.payload.userData;
@@ -33,5 +33,5 @@ export const userSlice = createSlice({
     // },
 })
 
-export const { register } = userSlice.actions;
+export const { login } = userSlice.actions;
 export default userSlice.reducer;
