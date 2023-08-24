@@ -60,3 +60,17 @@ apiResetPassword()
     .catch(error => {
         console.error("API Reset Password Error:", error);
     });
+
+export const apiFinalRegister = (token) => {
+    return axios({
+        url: '/user/register/finalRegister/' + token,
+        method: 'PUT',
+    })
+};
+apiFinalRegister()
+    .then(response => {
+        console.log("API Final register Response:", response.data);
+    })
+    .catch(error => {
+        console.error("API Final register Error:", error);
+    });

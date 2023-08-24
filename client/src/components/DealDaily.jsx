@@ -1,6 +1,6 @@
 import icons from "../utils/icons";
 import { apiGetProducts } from "../APIs/product";
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { formatPrice, renderStars } from "../utils/helper";
 import CountdownTimer from "./CountdownTimer";
 import Swal from 'sweetalert2';
@@ -32,11 +32,12 @@ const DealDaily = () => {
             const productArr = response.data.products;
             const randomDealDailyIndex = Math.floor(Math.random() * +productArr.length);
             const randomProduct = productArr[randomDealDailyIndex];
+            console.log(randomProduct);
             setDealDaily(randomProduct);
         } else {
             return;
         }
-    }
+    };
 
     useEffect(() => {
         fetchedDealDaily();
@@ -74,6 +75,8 @@ const DealDaily = () => {
             clearInterval(idInterval);
         }
     }, [hour, minutes, seconds, expiredTime]);
+
+
 
     return (
         <div className="w-full border flex-auto">

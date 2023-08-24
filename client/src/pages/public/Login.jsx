@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
-import { apiRegister, apiLogin, apiForgotPassword } from "../../APIs/user";
+import { apiRegister, apiLogin, apiForgotPassword, apiFinalRegister } from "../../APIs/user";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import path from "../../utils/path.js";
@@ -13,6 +13,12 @@ import { validate } from "../../utils/helper";
 const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [isRegister, setIsRegister] = useState(false);
+    const [isForgotPassword, setIsForgotPassword] = useState(false);
+    const [email, setEmail] = useState('');
+    const [invalidFields, setInvalidFields] = useState([]);
+    const [code, setCode] = useState('');
+    const [isVerifiedEmail, setIsVerifiedEmail] = useState(false);
     const [payload, setPayload] = useState({
         email: '',
         password: '',
@@ -20,10 +26,6 @@ const Login = () => {
         lastName: '',
         mobile: ''
     });
-    const [isRegister, setIsRegister] = useState(false);
-    const [isForgotPassword, setIsForgotPassword] = useState(false);
-    const [email, setEmail] = useState('');
-    const [invalidFields, setInvalidFields] = useState([]);
 
     const resetPayload = () => {
         setPayload({
@@ -42,6 +44,7 @@ const Login = () => {
             text: result
         }).then(() => {
             setIsRegister(false)
+            setIsVerifiedEmail(false)
             resetPayload()
         });
     };
@@ -62,8 +65,9 @@ const Login = () => {
             if (isRegister) {
                 try {
                     const response = await apiRegister(payload)
+                    console.log(response)
                     if (response.success === true) {
-                        loginSuccess(response.message);
+                        setIsVerifiedEmail(true);
                     }
                 } catch (error) {
                     loginFail(error);
@@ -81,27 +85,6 @@ const Login = () => {
                 }
             }
         }
-        // if (isRegister) {
-        //     try {
-        //         const response = await apiRegister(payload)
-        //         if (response.success === true) {
-        //             loginSuccess(response.message);
-        //         }
-        //     } catch (error) {
-        //         loginFail(error);
-        //     }
-        // } else {
-        //     try {
-        //         const response = await apiLogin(data);
-        //         if (response.message === 'User logged in successfully') {
-        //             loginSuccess(response.message);
-        //             dispatch(login({ isLogin: true, token: response.accessToken, userData: response.result }));
-        //             navigate(`/${path.HOME}`);
-        //         }
-        //     } catch (error) {
-        //         loginFail(error);
-        //     }
-        // }
     }, [payload, isRegister]);
 
     const handleChangeStatus = () => {
@@ -130,12 +113,44 @@ const Login = () => {
         setIsForgotPassword(false);
     };
 
+    const handleSetCode = (event) => {
+        setCode(event.target.value);
+    };
+
+    const finalRegister = async () => {
+        const response = await apiFinalRegister(code);
+        console.log(response);
+        if (response.success === true) {
+            loginSuccess(response.message);
+        } else {
+            loginFail(response.message);
+        }
+    };
+
     useEffect(() => {
         resetPayload();
     }, [isRegister]);
 
     return (
         <div className="w-screen h-screen relative">
+            {isVerifiedEmail && (
+                <div className="absolute top-0 bottom-0 left-0 right-0 bg-overlay z-50 flex flex-col items-center justify-center">
+                    <div className="bg-white w-[500px] rounded-md p-8">
+                        <h4 className="">We have sent a confirmation code to your email. Please check your email and enter your code:</h4>
+                        <div className="mt-5">
+                            <input
+                                type="text"
+                                value={code}
+                                onChange={handleSetCode}
+                                className="p-2 border rounded-md outline-none"
+                            />
+                            <button type="button" className="px-4 py-2 bg-main font-semibold text-white rounded-md ml-4" onClick={finalRegister}>
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
             {isForgotPassword && (
                 <div className="absolute animate-slide-right top-0 bottom-0 right-0 left-0 bg-overlay flex flex-col items-center py-8 z-50">
                     <div className="flex flex-col gap-4">

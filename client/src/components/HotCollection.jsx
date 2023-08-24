@@ -39,9 +39,9 @@ const HotCollection = () => {
                             />
                             <ul className='text-sm'>
                                 {element?.brands?.map((item, index) => (
-                                    <span className='flex gap-1 items-center text-gray-500'>
+                                    <span key={index} className='flex gap-1 items-center text-gray-500'>
                                         <IoIosArrowForward size={14}/>
-                                        <li key={index}>{item.title}</li>
+                                        <li>{item.title}</li>
                                     </span>
                                 ))}
                             </ul>
