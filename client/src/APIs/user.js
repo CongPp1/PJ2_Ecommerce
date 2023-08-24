@@ -74,3 +74,17 @@ apiFinalRegister()
     .catch(error => {
         console.error("API Final register Error:", error);
     });
+
+export const apiGetUser = () => {
+    return axios({
+        url: '/user/user',
+        method: 'GET',
+    });
+};
+apiGetUser()
+    .then(response => {
+        console.log("API get user Response:", response.data);
+    })
+    .catch(error => {
+        console.error("API get user Error:", error);
+    });

@@ -1,37 +1,41 @@
 import { createSlice, current } from "@reduxjs/toolkit";
-import { getCategories } from "../store/asyncAction.js"
+import { getUser } from "./asyncUserAction.js";
 
 export const userSlice = createSlice({
     name: 'user',
     initialState: {
         isLogin: false,
         current: null,
-        token: null
+        token: null,
+        isLoading: false
     },
     reducers: {
         login: (state, action) => {
-            console.log('action', action)
             state.isLogin = action.payload.isLogin;
-            state.current = action.payload.userData;
             state.token = action.payload.token;
+        },
+        logout: (state, action) => {
+            state.isLogin = false;
+            state.token = null;
         }
     },
-    // extraReducers: (builder) => {
-    //     builder.addCase(getCategories.pending, (state) => {
-    //         state.isLoading = true;
-    //     });
+    extraReducers: (builder) => {
+        builder.addCase(getUser.pending, (state) => {
+            state.isLoading = true;
+        });
 
-    //     builder.addCase(getCategories.fulfilled, (state, action) => {
-    //         state.isLoading = false;
-    //         state.categories = action.payload;
-    //     });
+        builder.addCase(getUser.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.current = action.payload;
+        });
 
-    //     builder.addCase(getCategories, (state, action) => {
-    //         state.isLoading = false;
-    //         state.errorMessage = action.payload.message;
-    //     });
-    // },
+        builder.addCase(getUser, (state, action) => {
+            console.log('aaa')
+            state.isLoading = false;
+            state.current = null;
+        });
+    },
 })
 
-export const { login } = userSlice.actions;
+export const { login, logout } = userSlice.actions;
 export default userSlice.reducer;

@@ -3,7 +3,7 @@ import InputField from "../../components/InputField";
 import Button from "../../components/Button";
 import { apiRegister, apiLogin, apiForgotPassword, apiFinalRegister } from "../../APIs/user";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import path from "../../utils/path.js";
 import { login } from "../../store/userSlice";
 import { useDispatch } from "react-redux";
@@ -251,6 +251,12 @@ const Login = () => {
                             )
                         }
                     </div>
+                    <Link
+                        to={`/${path.HOME}`}
+                        className="text-blue-500 hover:underline cursor-pointer w-full flex flex-col items-center justify-center"
+                    >
+                        Go Home
+                    </Link>
                 </div>
             </div>
         </div>
