@@ -35,7 +35,7 @@ const Product = ({ productData, isNew }) => {
                             <SelectOption icon={<BsFillSuitHeartFill color="red" />} />
                             <SelectOption icon={<IoIosMenu color="red" />} />
                         </div>}
-                        <Link to={ `/${path.DETAIL_PRODUCT}/${productData?._id}/${productData?.title}`}>
+                        <Link to={ `/${productData?.category?.title?.toLowerCase()}/${productData?._id}/${productData?.title}`}>
                             <img src={productData?.images[0] || ''} alt="image" className="w-full object-cover" />
                         </Link>
                         {isNew === true ?

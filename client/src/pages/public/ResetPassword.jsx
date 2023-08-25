@@ -17,7 +17,6 @@ const ResetPassword = () => {
 
     const handleResetPassword = async () => {
         const response = await apiResetPassword({ token, password });
-        console.log(response);
         if (response.success === true) {
             toast.success(response.message);
             navigate(`/${path.LOGIN}`);

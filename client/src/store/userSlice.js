@@ -30,7 +30,6 @@ export const userSlice = createSlice({
         });
 
         builder.addCase(getUser, (state, action) => {
-            console.log('aaa')
             state.isLoading = false;
             state.current = null;
         });

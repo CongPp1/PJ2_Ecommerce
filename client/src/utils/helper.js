@@ -36,29 +36,29 @@ export const validate = (payload, setInvalidFields) => {
             ]);
         }
     }
-    // for (let arr of formatPayload) {
-    //     switch (arr[0]) {
-    //         case 'email':
-    //             const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    //             if (!arr[1].match(validRegex)) {
-    //                 invalidCount++;
-    //                 setInvalidFields((prev) => [
-    //                     ...prev,
-    //                     { name: arr[0], message: 'Email is not valid' }
-    //                 ]);
-    //             }
-    //             break;
-    //         case 'password':
-    //             if(!arr[1].length < 6) {
-    //                 invalidCount++;
-    //                 setInvalidFields((prev) => [
-    //                     ...prev,
-    //                     { name: arr[0], message: 'The minimum password length required is 6 characters.' }
-    //                 ]);
-    //             }
-    //         default:
-    //             break;
-    //     }
-    // }
+    for (let arr of formatPayload) {
+        switch (arr[0]) {
+            case 'email':
+                const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+                if (!arr[1].match(validRegex)) {
+                    invalidCount++;
+                    setInvalidFields((prev) => [
+                        ...prev,
+                        { name: arr[0], message: 'Email is not valid' }
+                    ]);
+                }
+                break;
+            case 'password':
+                if(arr[1].length < 6) {
+                    invalidCount++;
+                    setInvalidFields((prev) => [
+                        ...prev,
+                        { name: arr[0], message: 'The minimum password length required is 6 characters.' }
+                    ]);
+                }
+            default:
+                break;
+        }
+    }
     return invalidCount;
 }

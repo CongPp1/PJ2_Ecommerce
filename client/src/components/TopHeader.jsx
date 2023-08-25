@@ -13,8 +13,7 @@ const TopHeader = () => {
 
     useEffect(() => {
         if (isLogin) {
-            dispatch(getUser);
-            console.log('current user', current, isLogin);
+            dispatch(getUser());
         }
     }, [dispatch, isLogin]);
 
@@ -33,7 +32,7 @@ const TopHeader = () => {
                             size={18}
                             onClick={handleLogout}
                         />
-                        <span>{`Welcome, ${current.userData.firstName} ${current.userData.lastName}`}</span>
+                        <span>{`Welcome, ${current?.firstName} ${current?.lastName}`}</span>
                     </span>
                 ) : (
                     <Link

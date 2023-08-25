@@ -32,7 +32,6 @@ const DealDaily = () => {
             const productArr = response.data.products;
             const randomDealDailyIndex = Math.floor(Math.random() * +productArr.length);
             const randomProduct = productArr[randomDealDailyIndex];
-            console.log(randomProduct);
             setDealDaily(randomProduct);
         } else {
             return;

@@ -34,12 +34,12 @@ const NewArrivals = () => {
         const loadCategories = async () => {
             const categories = await apiGetCategories();
             const filteredCategories = categories.ProductCategories.filter(category =>
-                category.title === 'Smart Phone' || category.title === 'Laptop' || category.title === 'Tablet'
+                category.title === 'SmartPhone' || category.title === 'Laptop' || category.title === 'Tablet'
             );
             setTabs(filteredCategories);
             
             // Khi tải lần đầu, chọn danh mục Smart Phone và gọi fetchCategoryById
-            const smartPhoneCategory = filteredCategories.find(category => category.title === 'Smart Phone');
+            const smartPhoneCategory = filteredCategories.find(category => category.title === 'SmartPhone');
             if (smartPhoneCategory) {
                 handleTabClick(smartPhoneCategory._id);
             }

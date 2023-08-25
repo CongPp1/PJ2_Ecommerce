@@ -67,7 +67,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
 
 
         // Find and Count documents
-        let products = await Product.find(formatedStringQuery);
+        let products = await Product.find(formatedStringQuery).populate('category');
         let quantity = await Product.countDocuments(formatedStringQuery);
 
         //Sort
@@ -113,20 +113,20 @@ const getAllProducts = asyncHandler(async (req, res) => {
 const getProductById = asyncHandler(async (req, res) => {
     try {
         const { _id } = req.params;
-        const product = await Product.findById(_id);
+        const product = await Product.findById(_id).populate('category');
         if (!product) {
             return res.status(404).json({
                 messagage: 'Product not found'
             })
         }
         return res.status(200).json({
-            messagage: 'Get product successfully',
+            message: 'Get product successfully',
             data: product
         });
     } catch (error) {
         console.error(error);
         return res.status(500).json({
-            messagage: 'Error getting product',
+            message: 'Error getting product',
             error: error.message
         });
     }

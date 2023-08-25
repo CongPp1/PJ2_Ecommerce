@@ -11,7 +11,7 @@ const HotCollection = () => {
         const categories = await apiGetCategories();
         if (categories.message === 'Success') {
             const filteredCategories = categories.ProductCategories.filter(category =>
-                category.title === 'Smart Phone' || category.title === 'Laptop' || category.title === 'Tablet' ||
+                category.title === 'SmartPhone' || category.title === 'Laptop' || category.title === 'Tablet' ||
                 category.title === 'Printer' || category.title === 'Television' || category.title === 'Acessories'
             );
             setHotCollection(filteredCategories);

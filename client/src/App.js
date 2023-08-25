@@ -27,7 +27,7 @@ function App() {
       <Routes>
         <Route path={path.PUBLIC} element={<Public />}>
           <Route path={path.HOME} element={<Home />} />
-          <Route path={path.DETAIL_PRODUCT__PID__TITLE} element={<DetailProduct />} />
+          <Route path={path.DETAIL_PRODUCT__CATEGORY__PID__TITLE} element={<DetailProduct />} />
           <Route path={path.FAQs} element={<FAQs />} />
           <Route path={path.BLOGS} element={<Blogs />} />
           <Route path={path.OUR_SERVICES} element={<Sevices />} />

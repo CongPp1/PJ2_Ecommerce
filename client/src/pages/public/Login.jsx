@@ -60,12 +60,10 @@ const Login = () => {
     const handleSubmit = useCallback(async () => {
         const { firstName, lastName, mobile, ...data } = payload;
         const invalids = isRegister ? validate(payload, setInvalidFields) : validate(data, setInvalidFields);
-        console.log(invalids);
         if (invalids === 0) {
             if (isRegister) {
                 try {
                     const response = await apiRegister(payload)
-                    console.log(response)
                     if (response.success === true) {
                         setIsVerifiedEmail(true);
                     }
@@ -93,7 +91,6 @@ const Login = () => {
 
     const handleForgotPassword = async () => {
         const response = await apiForgotPassword({ email });
-        console.log(response);
         if (response.success === true) {
             toast.success(response.message);
         } else {
@@ -119,7 +116,6 @@ const Login = () => {
 
     const finalRegister = async () => {
         const response = await apiFinalRegister(code);
-        console.log(response);
         if (response.success === true) {
             loginSuccess(response.message);
         } else {
