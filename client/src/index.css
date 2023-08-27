@@ -10,3 +10,7 @@ button.slick-next::before {
 button.slick-prev::before {
     color: red;
 }
+
+input {
+    appearance: none    ;
+}

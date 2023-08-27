@@ -5,7 +5,7 @@ export const format = (string) => {
 }
 
 export const formatPrice = (price) => {
-    return Number(price.toFixed(1)).toLocaleString();
+    return Number(price?.toFixed(1)).toLocaleString();
 }
 
 const { AiOutlineStar, AiFillStar } = icons;
@@ -56,9 +56,14 @@ export const validate = (payload, setInvalidFields) => {
                         { name: arr[0], message: 'The minimum password length required is 6 characters.' }
                     ]);
                 }
+                break;
             default:
                 break;
         }
     }
     return invalidCount;
+}
+
+export const formatMoney = (price) => {
+    return Math.round(price / 1000) * 1000;
 }
