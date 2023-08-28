@@ -4,26 +4,97 @@ const { generateAccessToken, generateRefreshToken } = require('../../middlewares
 const { sendMail } = require('../../utils/sendmail.js')
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto');
+const makeToken = require('uniqid');
+
+// const register = asyncHandler(async (req, res) => {
+//     const { firstName, lastName, email, password, mobile } = req.body;
+
+//     if (!firstName || !lastName || !email || !password || !mobile) {
+//         return res.status(400).json({
+//             message: 'Please provide all fields',
+//         });
+//     }
+//     const isRegister = await User.findOne({ email: email });
+//     if (isRegister) {
+//         return res.status(200).json({
+//             message: 'User already exists',
+//         });
+//     }
+//     const result = await User.create(req.body);
+//     res.status(201).json({
+//         message: 'User created successfully',
+//         result
+//     });
+// });
 
 const register = asyncHandler(async (req, res) => {
-    const { firstName, lastName, email, password, mobile } = req.body;
+    try {
+        const { email, password, firstName, lastName, mobile } = req.body;
+        if (!email || !password || !firstName || !lastName || !mobile) {
+            return res.status(400).json({
+                message: 'Please provide all fields'
+            });
+        }
+        const isRegister = await User.findOne({ email: email });
+        if (isRegister) {
+            return res.status(200).json({
+                message: 'User already exists',
+            });
+        }
+        const token = makeToken();
+        const emailDecoded = btoa(email) + '@' + token;
+        const newUser = await User.create({
+            email: emailDecoded,
+            password: password,
+            firstName,
+            lastName,
+            mobile
+        });
+        if (newUser) {
+            const html = `<h2>Register Code</h2><br/><blockquote>${token}</blockquote>`;
+            sendMail({ email, html, subject: 'Hoàn tất đăng kí Digital World' })
+        }
+        setTimeout(async() => {
+            await User.deleteOne({ email: emailDecoded})
+        }, 200000);
 
-    if (!firstName || !lastName || !email || !password || !mobile) {
-        return res.status(400).json({
-            message: 'Please provide all fields',
+        return res.json({
+            success: newUser ? true : false,
+            message: newUser ? 'Please check your email to activate your account' : 'Something went wrong, please try again',
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Internal Server Error',
+            error: error
         });
     }
-    const isRegister = await User.findOne({ email: email });
-    if (isRegister) {
-        return res.status(200).json({
-            message: 'User already exists',
+});
+
+const finalRegister = asyncHandler(async (req, res) => {
+    try {
+        const { token } = req.params;
+
+        const notActivedEmail = await User.findOne({
+            email: new RegExp(`${token}`)
+        });
+        console.log(notActivedEmail);
+        if(notActivedEmail){
+            
+            notActivedEmail.email = atob(notActivedEmail?.email?.split('@')[0]);
+            notActivedEmail.save();
+        }
+        return res.json({
+            success: notActivedEmail ? true : false,
+            message: notActivedEmail ? 'Register is successfully, Please login.' : 'Something went wrong, please try again',
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Internal Server Error',
+            error: error
         });
     }
-    const result = await User.create(req.body);
-    res.status(201).json({
-        message: 'User created successfully',
-        result
-    });
 });
 
 const login = asyncHandler(async (req, res) => {
@@ -34,6 +105,7 @@ const login = asyncHandler(async (req, res) => {
             message: 'Please provide all fields',
         });
     }
+    console.log(req.body);
     const result = await User.findOne({ email: email });
     if ((result && await result.isCorrectEmail(email) && await result.isCorrectPassword(password))) {
         const accessToken = generateAccessToken(result._id, result.role);
@@ -112,7 +184,7 @@ const logout = async (req, res) => {
 };
 
 const forgotPassword = asyncHandler(async (req, res) => {
-    const { email } = req.query;
+    const { email } = req.body;
     try {
         if (!email) {
             return res.status(400).json({
@@ -121,22 +193,25 @@ const forgotPassword = asyncHandler(async (req, res) => {
         }
         const user = await User.findOne({ email: email });
         if (!user) {
-            return res.status(404).json({
+            return res.status(200).json({
+                success: false,
                 message: 'User not found',
             });
         }
-        const resetToken = user.createChangePasswordToken();
+        const resetToken = await user.createChangePasswordToken();
         console.log(resetToken);
         await user.save({ validateBeforeSave: false });
         const html = `Xin vui lòng click vào link dưới đây để đổi mật khẩu:
-         <a href=${process.env.URL_SERVER}/api/user/resetPassword/${resetToken}>Click Here</a>`;
+         <a href=${process.env.CLIENT_URL}/resetPassword/${resetToken}>Click Here</a>`;
         const data = {
             email,
-            html
+            html,
+            subject: 'Forgot Password',
         }
-        sendMail(data);
+        const a = await sendMail(data);
         return res.status(200).json({
-            message: 'Email sent successfully',
+            success: a?.response?.includes('OK') ? true : false,
+            message: a?.response?.includes('OK') ? 'Email sent successfully' : 'Error, Please try again'
         });
     } catch (error) {
         console.log(error);
@@ -157,8 +232,8 @@ const resetPassword = asyncHandler(async (req, res) => {
         }
         const resetPasswordToken = crypto.createHash('sha256').update(token).digest('hex');
         const user = await User.findOne({
-            resetPasswordToken,
-            passwordTokenExpiredIn: { $gt: Date.now() }
+            passwordResetToken: resetPasswordToken,
+            // passwordTokenExpiredIn: { $gt: Date.now() }
         });
         if (!user) {
             return res.status(400).json({
@@ -172,6 +247,7 @@ const resetPassword = asyncHandler(async (req, res) => {
         await user.save({ validateBeforeSave: false });
 
         return res.status(200).json({
+            success: true,
             message: 'Password changed successfully',
         });
     } catch (error) {
@@ -362,6 +438,7 @@ const updateUserCart = asyncHandler(async (req, res) => {
 
 module.exports = {
     register,
+    finalRegister,
     login,
     getUSer,
     newAccessToken,

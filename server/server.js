@@ -11,6 +11,7 @@ const app = express();
 app.use(cors({
     origin: 'http://localhost:3000',
     methods: ['GET', 'PUT', 'POST', 'DELETE'],
+    credentials: true
 }))
 app.use(cookieParser());
 const port = process.env.PORT || 4000;
@@ -25,5 +26,5 @@ app.use("/", (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}!`);
+    console.log(`Example app listening on port: ${port}!`);
 });

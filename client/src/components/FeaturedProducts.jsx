@@ -23,7 +23,6 @@ const FeaturedProducts = () => {
     useEffect(() => {
         fetchProducts();
     }, []);
-    console.log('features: ', featuredProducts);
 
     return (
         <div className='w-full'>

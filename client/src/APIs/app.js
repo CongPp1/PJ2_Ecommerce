@@ -1,10 +1,10 @@
 import axios from "../axios";
 
-export const apiGetCategories = () => {
-    console.log("API getCategories");
+export const apiGetCategories = (params) => {
     return axios({
         url: '/productCategory/productCategories',
         method: 'GET',
+        params
     });
 }
 
@@ -17,7 +17,6 @@ apiGetCategories()
     });
 
 export const apiGetCategoryById = (id) => {
-    console.log("API getCategoryById");
     return axios({
         url: `productCategory/productCategory/${id}`,
         method: 'GET'

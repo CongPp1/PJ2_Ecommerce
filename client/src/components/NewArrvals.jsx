@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { apiGetCategoryById, apiGetCategories } from '../APIs/app';
 import Slider from "react-slick";
 import Product from './Product';
@@ -10,7 +10,7 @@ const NewArrivals = () => {
 
     const settings = {
         dots: false,
-        infinite: true,
+        infinite: false,
         speed: 250,
         slidesToShow: 3,
         slidesToScroll: 1
@@ -19,7 +19,6 @@ const NewArrivals = () => {
     const fetchCategoryById = async (id) => {
         const category = await apiGetCategoryById(id);
         if (category.message === 'Success') {
-            console.log('Category', category.ProductCategory.products)
             setProductOfCategory(category.ProductCategory.products);
         } else {
             return;
@@ -29,19 +28,18 @@ const NewArrivals = () => {
     const handleTabClick = async (categoryId) => {
         setActiveTab(categoryId);
         await fetchCategoryById(categoryId);
-        console.log(categoryId);
     };
 
     useEffect(() => {
         const loadCategories = async () => {
             const categories = await apiGetCategories();
             const filteredCategories = categories.ProductCategories.filter(category =>
-                category.title === 'Smart Phone' || category.title === 'Laptop' || category.title === 'Tablet'
+                category.title === 'SmartPhone' || category.title === 'Laptop' || category.title === 'Tablet'
             );
             setTabs(filteredCategories);
             
             // Khi tải lần đầu, chọn danh mục Smart Phone và gọi fetchCategoryById
-            const smartPhoneCategory = filteredCategories.find(category => category.title === 'Smart Phone');
+            const smartPhoneCategory = filteredCategories.find(category => category.title === 'SmartPhone');
             if (smartPhoneCategory) {
                 handleTabClick(smartPhoneCategory._id);
             }
@@ -77,4 +75,4 @@ const NewArrivals = () => {
     );
 };
 
-export default NewArrivals;
+export default memo(NewArrivals);

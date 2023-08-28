@@ -11,7 +11,7 @@ const HotCollection = () => {
         const categories = await apiGetCategories();
         if (categories.message === 'Success') {
             const filteredCategories = categories.ProductCategories.filter(category =>
-                category.title === 'Smart Phone' || category.title === 'Laptop' || category.title === 'Tablet' ||
+                category.title === 'SmartPhone' || category.title === 'Laptop' || category.title === 'Tablet' ||
                 category.title === 'Printer' || category.title === 'Television' || category.title === 'Acessories'
             );
             setHotCollection(filteredCategories);
@@ -39,9 +39,9 @@ const HotCollection = () => {
                             />
                             <ul className='text-sm'>
                                 {element?.brands?.map((item, index) => (
-                                    <span className='flex gap-1 items-center text-gray-500'>
+                                    <span key={index} className='flex gap-1 items-center text-gray-500'>
                                         <IoIosArrowForward size={14}/>
-                                        <li key={index}>{item.title}</li>
+                                        <li>{item.title}</li>
                                     </span>
                                 ))}
                             </ul>

@@ -11,7 +11,7 @@ import { memo } from "react";
 const Home = () => {
 
     return (
-        <div className="">
+        <div className="mt-6">
             <div className="w-main flex">
                 <div className="flex flex-col gap-5 w-[20%] flex-auto">
                     <Sidebar />
