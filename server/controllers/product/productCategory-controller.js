@@ -20,7 +20,24 @@ const createProductCategory = asyncHandler(async (req, res) => {
 
 const getProductCategories = asyncHandler(async (req, res) => {
     try {
-        const response = await productCategory.find().populate('brands');
+        const queries = { ...req.query };
+        const excludesFields = ['limit', 'sort', 'page', 'fields'];
+
+        for (const field in queries) {
+            if (excludesFields.includes(field)) {
+                delete queries[field];
+            }
+        }
+
+        let queryString = JSON.stringify(queries);
+        queryString = queryString.replace(/\b(gt|lt|gte|lte)\b/g, (matchedElement) => `$${matchedElement}`);
+        const formatedStringQuery = JSON.parse(queryString);
+
+        if (queries?.title) {
+            formatedStringQuery.title = { $regex: queries.title, $options: 'i' }; //'i': không phân biệt chữ hoa chữ thường
+        }
+
+        const response = await productCategory.find(formatedStringQuery).populate('brands products');
         if (response.length <= 0) {
             return res.status(200).json({
                 message: 'Product Category is empty',

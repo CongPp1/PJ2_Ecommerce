@@ -2,6 +2,7 @@ const Product = require('../../models/product.js');
 const asyncHandler = require('express-async-handler');
 const slugify = require('slugify');
 const product = require('../../models/product.js');
+const { query } = require('express');
 
 const createProduct = asyncHandler(async (req, res) => {
     try {
@@ -47,6 +48,9 @@ const getAllProducts = asyncHandler(async (req, res) => {
         // search
         if (queries?.title) {
             formatedStringQuery.title = { $regex: queries.title, $options: 'i' }; //'i': không phân biệt chữ hoa chữ thường
+        }
+        if (queries?.category) {
+            formatedStringQuery.category = { $regex: queries.category, $options: 'i' }; //'i': không phân biệt chữ hoa chữ thường
         }
 
         //Fields limittings

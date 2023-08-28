@@ -1,20 +1,23 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { apiGetProductById } from '../../APIs/product';
+import { apiGetCategories } from '../../APIs/app.js';
 import BreadCrumb from '../../components/BreadCrumb';
 import Slider from 'react-slick';
 import ReactImageMagnify from 'react-image-magnify';
-import { formatMoney, formatPrice, renderStars } from '../../utils/helper';
+import { formatPrice, renderStars } from '../../utils/helper';
 import Button from '../../components/Button.jsx';
 import SelectQuantity from '../../components/SelectQuantity';
 import ProductExtraInfo from '../../components/ProductExtraInfo';
 import { productExtraInfos } from '../../utils/constants.js';
 import ProductInfomation from '../../components/ProductInfomation';
+import Product from '../../components/Product';
 
 const DetailProduct = () => {
     const { pid, title, category } = useParams();
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
+    const [relatedProducts, setRelatedProducts] = useState(null);
 
     const settings = {
         dots: false,
@@ -26,17 +29,29 @@ const DetailProduct = () => {
 
     const fetchedProductById = async () => {
         const response = await apiGetProductById(pid);
-        console.log('DetailProduct', response.data)
         if (response.message === 'Get product successfully') {
             setProduct(response.data);
         }
     };
+
+    const fetchedProducts = async () => {
+        const response = await apiGetCategories({title: category});
+        if(response.message === 'Success') {
+            setRelatedProducts(response?.ProductCategories?.map(category => category.products));
+        }
+    };
+
+    console.log('related products: ', relatedProducts)
 
     useEffect(() => {
         if (pid) {
             fetchedProductById();
         }
     }, [pid]);
+
+    useEffect(() => {
+        fetchedProducts();
+    }, []);
 
     const handleQuantity = useCallback((number) => {
         if (!Number(number) || Number(number) < 1) {
@@ -139,9 +154,14 @@ const DetailProduct = () => {
             <div className='w-full'>
                 <div className='flex justify-between border-b-2 mt-4 border-main'>
                     <h3 className='text-[20px] font-semibold py-[15px]'>OTHER CUSTOMERS ALSO BUY:</h3>
+                    {/* <Slider {...settings}>
+                        {relatedProducts[0]?.map((element, index) => (
+                            <Product key={index} productData={element}/>
+                        ))}
+                    </Slider> */}
                 </div>
             </div>
-            <div className='h-[500px]'></div>
+            <div className='h-[100px]'></div>
         </div>
     );
 };

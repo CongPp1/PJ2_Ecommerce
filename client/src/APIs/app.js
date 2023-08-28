@@ -1,9 +1,10 @@
 import axios from "../axios";
 
-export const apiGetCategories = () => {
+export const apiGetCategories = (params) => {
     return axios({
         url: '/productCategory/productCategories',
         method: 'GET',
+        params
     });
 }
 
