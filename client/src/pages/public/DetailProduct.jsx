@@ -35,8 +35,9 @@ const DetailProduct = () => {
     };
 
     const fetchedProducts = async () => {
-        const response = await apiGetCategories({title: category});
-        if(response.message === 'Success') {
+        const response = await apiGetCategories({ title: category });
+        console.log('res', response);
+        if (response.message === 'Success') {
             setRelatedProducts(response?.ProductCategories?.map(category => category.products));
         }
     };
@@ -51,7 +52,7 @@ const DetailProduct = () => {
 
     useEffect(() => {
         fetchedProducts();
-    }, []);
+    }, [category]);
 
     const handleQuantity = useCallback((number) => {
         if (!Number(number) || Number(number) < 1) {
@@ -131,9 +132,7 @@ const DetailProduct = () => {
                                     handleChangeQuantity={handleChangeQuantity}
                                 />
                             </div>
-                            <Button fw>
-                                Add to cart
-                            </Button>
+                            <Button fw name='Add to cart' />
                         </div>
                     </div>
                 </div>
@@ -154,12 +153,16 @@ const DetailProduct = () => {
             <div className='w-full'>
                 <div className='flex justify-between border-b-2 mt-4 border-main'>
                     <h3 className='text-[20px] font-semibold py-[15px]'>OTHER CUSTOMERS ALSO BUY:</h3>
-                    {/* <Slider {...settings}>
-                        {relatedProducts[0]?.map((element, index) => (
-                            <Product key={index} productData={element}/>
-                        ))}
-                    </Slider> */}
                 </div>
+                <Slider {...settings}>
+                    {relatedProducts?.map((element, index) => (
+                        <div key={index} className='mt-4'>
+                            {element?.map((element, index) => (
+                                <Product key={index} productData={element} />
+                            ))}
+                        </div>
+                    ))}
+                </Slider>
             </div>
             <div className='h-[100px]'></div>
         </div>

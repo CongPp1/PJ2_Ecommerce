@@ -73,6 +73,7 @@ const Login = () => {
             } else {
                 try {
                     const response = await apiLogin(data);
+                    console.log('data', data);
                     if (response.message === 'User logged in successfully') {
                         loginSuccess(response.message);
                         dispatch(login({ isLogin: true, token: response.accessToken, userData: response.result }));

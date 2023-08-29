@@ -45,7 +45,7 @@ const register = asyncHandler(async (req, res) => {
         const emailDecoded = btoa(email) + '@' + token;
         const newUser = await User.create({
             email: emailDecoded,
-            password: password,
+            password,
             firstName,
             lastName,
             mobile
@@ -107,6 +107,9 @@ const login = asyncHandler(async (req, res) => {
     }
     console.log(req.body);
     const result = await User.findOne({ email: email });
+    console.log(result);
+    console.log(await result.isCorrectEmail(email));
+    console.log(await result.isCorrectPassword(password))
     if ((result && await result.isCorrectEmail(email) && await result.isCorrectPassword(password))) {
         const accessToken = generateAccessToken(result._id, result.role);
         const refreshToken = generateRefreshToken(result._id);
