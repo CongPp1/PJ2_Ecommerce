@@ -35,7 +35,7 @@ const Product = ({ productData, isNew }) => {
                             <SelectOption icon={<BsFillSuitHeartFill color="red" />} />
                             <SelectOption icon={<IoIosMenu color="red" />} />
                         </div>}
-                        <Link to={ `/${productData?.category?.toLowerCase()}/${productData?._id}/${productData?.title}`}>
+                        <Link to={`/${productData?.category?.toLowerCase()}/${productData?._id}/${productData?.title}`}>
                             <img src={productData?.images[0] || ''} alt="image" className="w-full object-cover" />
                         </Link>
                         {isNew === true ?
@@ -46,7 +46,6 @@ const Product = ({ productData, isNew }) => {
                     </div>
                 </div>
                 <div className="flex flex-col gap-1 items-start w-full">
-                    {console.log('productData', productData.totalRatings)}
                     <span className="flex mt-4">{renderStars(productData?.totalRatings)}</span>
                     <span className="line-clamp-1">{productData?.title}</span>
                     <span>{formatPrice(productData?.price)} VND</span>

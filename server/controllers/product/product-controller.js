@@ -43,7 +43,8 @@ const getAllProducts = asyncHandler(async (req, res) => {
         // Format queries
         let queryString = JSON.stringify(queries);
         queryString = queryString.replace(/\b(gt|lt|gte|lte)\b/g, (matchedElement) => `$${matchedElement}`);
-        const formatedStringQuery = JSON.parse(queryString);
+        let formatedStringQuery = JSON.parse(queryString);
+        let colorQueryObject = {};
 
         // search
         if (queries?.title) {
@@ -51,6 +52,12 @@ const getAllProducts = asyncHandler(async (req, res) => {
         }
         if (queries?.category) {
             formatedStringQuery.category = { $regex: queries.category, $options: 'i' }; //'i': không phân biệt chữ hoa chữ thường
+        }
+        if (queries?.color) {
+            delete formatedStringQuery.color;
+            const colorArray = queries.color?.split(',');
+            const colorQuery = colorArray.map(element => ({ color: { $regex: element, $options: 'i' } }));
+            colorQueryObject = { $or: colorQuery }
         }
 
         //Fields limittings
@@ -71,8 +78,10 @@ const getAllProducts = asyncHandler(async (req, res) => {
 
 
         // Find and Count documents
-        let products = await Product.find(formatedStringQuery).populate('category');
-        let quantity = await Product.countDocuments(formatedStringQuery);
+        const q = { ...colorQueryObject, ...formatedStringQuery }
+        let products = await Product.find(q).populate('category');
+        // console.log(products)
+        let quantity = await Product.countDocuments(q);
 
         //Sort
         if (req.query.sort) {
@@ -84,15 +93,22 @@ const getAllProducts = asyncHandler(async (req, res) => {
                 if (sortBy === '-price') {
                     return b.price - a.price;
                 }
-                if(sortBy === 'createdAt') {
+                if (sortBy === 'createdAt') {
                     return new Date(b.createdAt) - new Date(a.createdAt);
                 }
-                if(sortBy === '-createdAt') {
+                if (sortBy === '-createdAt') {
                     return new Date(a.createdAt) - new Date(b.createdAt);
                 }
-                if(sortBy === '-sold'){
+                if (sortBy === '-sold') {
                     return b.sold - a.sold;
                 }
+                if (sortBy === 'title') {
+                    return a.title.localeCompare(b.title); // Sắp xếp theo tên từ A-Z
+                }
+                if (sortBy === '-title') {
+                    return b.title.localeCompare(a.title); // Sắp xếp theo tên từ Z-A
+                }
+                
                 return 0;
             })
         }

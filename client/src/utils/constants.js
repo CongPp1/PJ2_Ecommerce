@@ -66,3 +66,25 @@ export const tabs = [
         paragraph: ''
     }
 ];
+
+export const colors = [
+    'Xanh Botanic',
+    'Deep Purple',
+    'Xanh Xám',
+    'white',
+    'pink',
+    'yellow',
+    'orange',
+    'purple',
+    'green',
+    'blue',
+];
+
+export const sortDatas = [
+    {id: 1, value: '-sold', text: 'Best Selling'},
+    {id: 2, value: '-createdAt', text: 'New Arrivals'},
+    {id: 3, value: 'title', text: 'A - Z'},
+    {id: 4, value: '-title', text: 'Z - A'},
+    {id: 5, value: '-price', text: 'Price, high to low'},
+    {id: 6, value: 'price', text: 'Price, low to high'},
+]

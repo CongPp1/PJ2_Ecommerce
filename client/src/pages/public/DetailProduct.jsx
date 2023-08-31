@@ -42,8 +42,6 @@ const DetailProduct = () => {
         }
     };
 
-    console.log('related products: ', relatedProducts)
-
     useEffect(() => {
         if (pid) {
             fetchedProductById();

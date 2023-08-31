@@ -12,7 +12,6 @@ const BreadCrumb = ({ title, category }) => {
 
     ];
     const breadCrumbs = useBreadcrumbs(routes);
-    console.log(breadCrumbs);
 
     return (
         <div className='text-sm flex items-center gap-2'>

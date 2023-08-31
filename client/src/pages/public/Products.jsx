@@ -1,14 +1,20 @@
-import React, { memo, useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import React, { memo, useCallback, useEffect, useState } from 'react';
+import { useParams, useSearchParams, useNavigate, createSearchParams } from 'react-router-dom';
 import BreadCrumb from '../../components/BreadCrumb';
 import Product from '../../components/Product';
 import { apiGetProducts } from '../../APIs/product';
 import Masonry from 'react-masonry-css'
 import SearchItem from '../../components/SearchItem';
+import SelectionInputField from '../../components/SelectionInputField';
+import { sortDatas } from '../../utils/constants';
 
 const Products = () => {
     const { category } = useParams();
+    const navigate = useNavigate();
+    const [params] = useSearchParams();
     const [products, setProducts] = useState(null);
+    const [activeClick, setActiveClick] = useState(null);
+    const [sort, setSort] = useState('');
 
     const breakpointColumnsObj = {
         default: 4,
@@ -17,16 +23,71 @@ const Products = () => {
         500: 1
     };
 
-    const fetchedProducts = async (query) => {
+    const fetchedProductsByCatgory = async (query) => {
         const response = await apiGetProducts(query);
         if (response.message === 'Get all products successfully') {
             setProducts(response?.data?.products?.map(product => product));
         }
     };
 
+    const changeActiveFilter = useCallback((name) => {
+        if (name === activeClick) {
+            setActiveClick(null);
+        } else {
+            setActiveClick(name);
+        }
+    }, [activeClick]);
+
+    const changeValue = useCallback((value) => {
+        setSort(value);
+    }, [sort]);
+
+    const isEmpty = (obj) => {
+        for (let key in obj) {
+            if (obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
+    }
+
     useEffect(() => {
-        fetchedProducts();
-    }, []);
+        let paramArr = [];
+        for (let i of params.entries()) {
+            paramArr.push(i);
+        }
+        let queries = {};
+        for (let i of params) {
+            queries[i[0]] = i[1];
+        }
+        let priceQuery = {};
+        if (queries.from && queries.to) {
+            priceQuery = {
+                $and: [
+                    { price: { gte: queries.from } },
+                    { price: { lte: queries.to } },
+                ]
+            }
+            delete queries.price;
+        }
+        if (queries.from) {
+            queries.price = { gte: queries.from }
+        }
+        if (queries.to) {
+            queries.price = { lte: queries.to }
+        }
+        delete queries.from;
+        delete queries.to;
+        isEmpty(queries) ? fetchedProductsByCatgory({ category }) : fetchedProductsByCatgory({ ...priceQuery, ...queries, category });
+    }, [params]);
+
+    useEffect(() => {
+        navigate({
+            pathname: `/${category}`,
+            search: createSearchParams({
+                sort: sort
+            }).toString(),
+        });
+    }, [sort]);
 
     return (
         <div className='w-full'>
@@ -37,16 +98,24 @@ const Products = () => {
                 </div>
             </div>
             <div className='w-main border p-4 flex justify-between items-center mt-8'>
+                <span>Filter by</span>
                 <div className='w-4/5 flex-auto flex items-center gap-4'>
                     <SearchItem
                         name='Price'
+                        activeClick={activeClick}
+                        changeActiveFilter={changeActiveFilter}
+                        type='input'
                     />
                     <SearchItem
                         name='Color'
+                        activeClick={activeClick}
+                        changeActiveFilter={changeActiveFilter}
+                        type='checkbox'
                     />
                 </div>
-                <div className='w-1/5 '>
-                    Sort
+                <div className='w-1/5 flex flex-col items-center'>
+                    <span>Sort By</span>
+                    <SelectionInputField value={sort} options={sortDatas} changeValue={changeValue} />
                 </div>
             </div>
             <div className='w-main m-auto mt-8'>
@@ -60,7 +129,7 @@ const Products = () => {
                     ))}
                 </Masonry>
             </div>
-            <div className='h-[100px]'></div>
+            <div className='h-[300px]'></div>
         </div>
     );
 };
