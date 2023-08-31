@@ -1,9 +1,10 @@
 import React, { memo } from 'react';
+import NotFound from './NotFound';
 
 const Blogs = () => {
     return (
         <div>
-            Blogs
+            <NotFound/>
         </div>
     );
 };

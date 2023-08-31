@@ -1,9 +1,10 @@
 import React, { memo } from 'react';
+import NotFound from './NotFound';
 
 const Sevices = () => {
     return (
         <div>
-            Services
+            <NotFound/>
         </div>
     );
 };
