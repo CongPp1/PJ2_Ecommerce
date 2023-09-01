@@ -66,12 +66,11 @@ const SearchItem = ({ name, activeClick, changeActiveFilter, type = 'checkbox' }
     }, [type]);
 
     useEffect(() => {
-        console.log(price);
         const data = {};
-        if(Number(price.from) > 0) {
+        if (Number(price.from) > 0) {
             data.from = price.from;
         }
-        if(Number(price.to) > 0) {
+        if (Number(price.to) > 0) {
             data.to = price.to;
         }
         navigate({
