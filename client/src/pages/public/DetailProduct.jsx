@@ -18,6 +18,8 @@ const DetailProduct = () => {
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [relatedProducts, setRelatedProducts] = useState(null);
+    const [currentImg, setCurrentImg] = useState(null);
+    const [update, setUpdate] = useState(false);
 
     const settings = {
         dots: false,
@@ -31,22 +33,35 @@ const DetailProduct = () => {
         const response = await apiGetProductById(pid);
         if (response.message === 'Get product successfully') {
             setProduct(response.data);
+            setCurrentImg(response.data.images[0]);
         }
     };
 
-    const fetchedProducts = async () => {
-        const response = await apiGetCategories({ title: category });
-        console.log('res', response);
-        if (response.message === 'Success') {
-            setRelatedProducts(response?.ProductCategories?.map(category => category.products));
-        }
-    };
-
+    console.log(product)
+   
     useEffect(() => {
         if (pid) {
             fetchedProductById();
         }
+        window.scrollTo(0, 0);
     }, [pid]);
+
+    const rerender = useCallback(() => {
+        setUpdate(!update);
+    }, [update]);
+
+    useEffect(() => {
+        if(pid) {
+            fetchedProductById();
+        }
+    }, [update]);
+
+    const fetchedProducts = async () => {
+        const response = await apiGetCategories({ title: category });
+        if (response.message === 'Success') {
+            setRelatedProducts(response?.ProductCategories?.map(category => category.products));
+        }
+    };
 
     useEffect(() => {
         fetchedProducts();
@@ -72,8 +87,13 @@ const DetailProduct = () => {
         }
     }, [quantity]);
 
+    const handleImage = (event, element) => {
+        event.stopPropagation();
+        setCurrentImg(element);
+    };
+
     return (
-        <div className='w-full '>
+        <div className='w-full relative'>
             <div className='h-[81px] bg-gray-100 flex items-center justify-center'>
                 <div className='w-main'>
                     <h3 className='font-extrabold text-[20px]'>{title.toUpperCase()}</h3>
@@ -100,7 +120,7 @@ const DetailProduct = () => {
                         <Slider {...settings}>
                             {product?.images?.map((element, index) => (
                                 <div key={index} className='flex w-full gap-3'>
-                                    <img src={element} alt="abc" className='h-[143px] w-[143px] border object-cover' />
+                                    <img onClick={event => handleImage(event, element)} src={element} alt="abc" className='h-[143px] w-[143px] border object-cover' />
                                 </div>
                             ))}
                         </Slider>
@@ -146,7 +166,13 @@ const DetailProduct = () => {
                 </div>
             </div>
             <div className='w-main m-auto mt-6'>
-                <ProductInfomation />
+                <ProductInfomation
+                    totalRatings={product?.totalRatings}
+                    ratings={product?.ratings}
+                    productName={product?.title}
+                    pid={product?._id}
+                    rerender={rerender}
+                />
             </div>
             <div className='w-full'>
                 <div className='flex justify-between border-b-2 mt-4 border-main'>

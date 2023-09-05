@@ -6,8 +6,14 @@ export const apSlice = createSlice({
     initialState: {
         categories: null,
         isLoading: false,
+        isShowModal: false,
+        modalChildren: null
     },
     reducers: {
+        showModal: (state, action) => {
+            state.isShowModal = action.payload.isShowModal;
+            state.modalChildren = action.payload.modalChildren;
+        },
         logout: (state) => {
             state.isLoading = false;
         }
@@ -22,12 +28,12 @@ export const apSlice = createSlice({
             state.categories = action.payload;
         });
 
-        builder.addCase(getCategories, (state, action) => {
+        builder.addCase(getCategories.rejected, (state, action) => {
             state.isLoading = false;
             state.errorMessage = action.payload.message;
         });
     },
 })
 
-export const { } = apSlice.actions;
+export const { showModal } = apSlice.actions;
 export default apSlice.reducer;

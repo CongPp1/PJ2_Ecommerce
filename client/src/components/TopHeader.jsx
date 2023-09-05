@@ -12,8 +12,13 @@ const TopHeader = () => {
     const { isLogin, current } = useSelector(state => state.userReducer);
 
     useEffect(() => {
-        if (isLogin) {
-            dispatch(getUser());
+        const setTimeOutId = setTimeout(() => {
+            if (isLogin) {
+                dispatch(getUser());
+            }
+        }, 300);
+        return () => {
+            clearTimeout(setTimeOutId);
         }
     }, [dispatch, isLogin]);
 

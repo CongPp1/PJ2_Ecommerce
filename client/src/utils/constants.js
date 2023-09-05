@@ -59,12 +59,6 @@ export const tabs = [
         Customers are able to pick the next available delivery day that best fits their schedule. However, to route stops as efficiently as possible, Shopify Shop will provide the time frame. Customers will not be able to choose a time. You will be notified in advance of your scheduled time frame. Please make sure that a responsible adult (18 years or older) will be home at that time.
         In preparation for your delivery, please remove existing furniture, pictures, mirrors, accessories, etc. to prevent damages. Also insure that the area where you would like your furniture placed is clear of any old furniture and any other items that may obstruct the passageway of the delivery team. Shopify Shop will deliver, assemble, and set-up your new furniture purchase and remove all packing materials from your home. Our delivery crews are not permitted to move your existing furniture or other household items. Delivery personnel will attempt to deliver the purchased items in a safe and controlled manner but will not attempt to place furniture if they feel it will result in damage to the product or your home. Delivery personnel are unable to remove doors, hoist furniture or carry furniture up more than 3 flights of stairs. An elevator must be available for deliveries to the 4th floor and above.`
     },
-    {
-        id: 5,
-        title: 'CUSTMER REVIEWS',
-        content: 'Reviews',
-        paragraph: ''
-    }
 ];
 
 export const colors = [
@@ -81,10 +75,18 @@ export const colors = [
 ];
 
 export const sortDatas = [
-    {id: 1, value: '-sold', text: 'Best Selling'},
-    {id: 2, value: '-createdAt', text: 'New Arrivals'},
-    {id: 3, value: 'title', text: 'A - Z'},
-    {id: 4, value: '-title', text: 'Z - A'},
-    {id: 5, value: '-price', text: 'Price, high to low'},
-    {id: 6, value: 'price', text: 'Price, low to high'},
-]
+    { id: 1, value: '-sold', text: 'Best Selling' },
+    { id: 2, value: '-createdAt', text: 'New Arrivals' },
+    { id: 3, value: 'title', text: 'A - Z' },
+    { id: 4, value: '-title', text: 'Z - A' },
+    { id: 5, value: '-price', text: 'Price, high to low' },
+    { id: 6, value: 'price', text: 'Price, low to high' },
+];
+
+export const voteOptions = [
+    { id: 1, text: 'Terrible' },
+    { id: 2, text: 'Bad' },
+    { id: 3, text: 'Normal' },
+    { id: 4, text: 'Good' },
+    { id: 5, text: 'Perfect' },
+];

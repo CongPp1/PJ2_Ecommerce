@@ -133,7 +133,13 @@ const getAllProducts = asyncHandler(async (req, res) => {
 const getProductById = asyncHandler(async (req, res) => {
     try {
         const { _id } = req.params;
-        const product = await Product.findById(_id).populate('category');
+        const product = await Product.findById(_id).populate({
+            path: 'ratings',
+            populate: {
+                path: 'postedBy',
+                select: 'firstName lastName avatar',
+            }
+        });
         if (!product) {
             return res.status(404).json({
                 messagage: 'Product not found'
@@ -196,7 +202,7 @@ const deleteProductById = asyncHandler(async (req, res) => {
 const handleRatings = asyncHandler(async (req, res) => {
     try {
         const { _id: _id } = req.user;
-        const { star, comment, _id: p_id } = req.body;
+        const { star, comment, _id: p_id, updatedAt } = req.body;
         console.log(req.body);
         if (!star || !p_id) {
             return res.status(404).json({
@@ -211,12 +217,12 @@ const handleRatings = asyncHandler(async (req, res) => {
             await Product.updateOne({
                 ratings: { $elemMatch: isRated },
             }, {
-                $set: { "ratings.$.star": star, "ratings.$.comment": comment }
+                $set: { "ratings.$.star": star, "ratings.$.comment": comment, "ratings.$.updatedAt": updatedAt }
             }, { new: true });
         } else {
             await Product.findByIdAndUpdate(p_id, {
                 $push: {
-                    ratings: { star, comment, postedBy: _id }
+                    ratings: { star, comment, postedBy: _id, updatedAt }
                 }
             }, { new: true });
         }

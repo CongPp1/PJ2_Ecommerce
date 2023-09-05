@@ -28,3 +28,18 @@ apiGetProductById()
     .catch(error => {
         console.error("API getProductById Error:", error);
     });
+
+export const apiRating = (data) => {
+    return axios({
+        url: '/product/rating',
+        method: 'PUT',
+        data
+    });
+};
+apiRating()
+    .then(response => {
+        console.log("API Rating Response:", response.data);
+    })
+    .catch(error => {
+        console.error("API Rating Error:", error);
+    });

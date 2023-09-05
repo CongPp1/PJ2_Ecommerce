@@ -9,21 +9,24 @@ import Blogs from './pages/public/Blogs';
 import Sevices from './pages/public/Sevices';
 import Products from './pages/public/Products';
 import path from './utils/path';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCategories } from './store/asyncAction';
 import FinalRegister from './pages/public/FinalRegister';
 import ResetPassword from './pages/public/ResetPassword';
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify';
+import Modal from './components/Modal';
 
 function App() {
   const dispatch = useDispatch();
+  const { isShowModal, modalChildren } = useSelector(state => state.appReducer);
 
   useEffect(() => {
     dispatch(getCategories());
   }, []);
   return (
-    <div className="min-h-screen font-main flex justify-items-center">
+    <div className="min-h-screen font-main flex justify-items-center relative">
+      {isShowModal && <Modal>{modalChildren}</Modal>}
       <Routes>
         <Route path={path.PUBLIC} element={<Public />}>
           <Route path={path.HOME} element={<Home />} />

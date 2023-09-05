@@ -42,7 +42,7 @@ const SearchItem = ({ name, activeClick, changeActiveFilter, type = 'checkbox' }
         const response = await apiGetProducts({ sort: '-price', category });
         if (response.message === 'Get all products successfully') {
             const products = response.data.products;
-            setBestPrice(products[0].price);
+            setBestPrice(products[0]?.price);
         }
     };
 

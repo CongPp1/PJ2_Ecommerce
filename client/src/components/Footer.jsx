@@ -51,7 +51,7 @@ const Footer = () => {
                             <span className='opacity-50'>Today's Deals</span>
                             <span className='opacity-50'>Contact</span>
                         </div>
-                        <div className='flex-1'>
+                        <div className='flex-1 flex flex-col'>
                             <h3 className='mb-[20px] text-[15px] font-medium border-l-2 border-main pl-[15px]'>WHO WE ARE</h3>
                             <span className='opacity-50'>Help </span>
                             <span className='opacity-50'>Free Shipping</span>
