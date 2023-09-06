@@ -37,8 +37,6 @@ const DetailProduct = () => {
         }
     };
 
-    console.log(product)
-   
     useEffect(() => {
         if (pid) {
             fetchedProductById();
@@ -51,15 +49,17 @@ const DetailProduct = () => {
     }, [update]);
 
     useEffect(() => {
-        if(pid) {
+        if (pid) {
             fetchedProductById();
         }
     }, [update]);
 
     const fetchedProducts = async () => {
         const response = await apiGetCategories({ title: category });
+        console.log(response);
         if (response.message === 'Success') {
             setRelatedProducts(response?.ProductCategories?.map(category => category.products));
+            console.log(response?.ProductCategories?.map(category => category.products))
         }
     };
 
@@ -100,12 +100,12 @@ const DetailProduct = () => {
                     <BreadCrumb title={title} category={category} />
                 </div>
             </div>
-            <div className='w-main m-auto mt-4 flex'>
+            <div className='w-full m-auto mt-4 flex'>
                 <div className='border border-blue flex-4 flex flex-col gap-4'>
-                    <div>
+                    <div className='flex items-center justify-center'>
                         <ReactImageMagnify {...{
                             smallImage: {
-                                alt: 'Wristwatch by Ted Baker London',
+                                alt: '',
                                 isFluidWidth: true,
                                 src: product?.images[0]
                             },
@@ -116,7 +116,7 @@ const DetailProduct = () => {
                             }
                         }} />
                     </div>
-                    <div className='w-full'>
+                    {/* <div className='w-full'>
                         <Slider {...settings}>
                             {product?.images?.map((element, index) => (
                                 <div key={index} className='flex w-full gap-3'>
@@ -124,7 +124,7 @@ const DetailProduct = () => {
                                 </div>
                             ))}
                         </Slider>
-                    </div>
+                    </div> */}
                 </div>
                 <div className=' flex-4'>
                     <div className='ml-5 mr-5 flex flex-col'>
@@ -179,13 +179,15 @@ const DetailProduct = () => {
                     <h3 className='text-[20px] font-semibold py-[15px]'>OTHER CUSTOMERS ALSO BUY:</h3>
                 </div>
                 <Slider {...settings}>
-                    {relatedProducts?.map((element, index) => (
-                        <div key={index} className='mt-4'>
-                            {element?.map((element, index) => (
-                                <Product key={index} productData={element} />
-                            ))}
-                        </div>
-                    ))}
+                    <div className='flex justify-center'>
+                        {relatedProducts?.map((element, index) => (
+                            <div key={index} className='mt-6 flex w-[1000px] justify-start items-center'>
+                                {element?.map((element, index) => (
+                                    <Product key={index} productData={element} />
+                                ))}
+                            </div>
+                        ))}
+                    </div>
                 </Slider>
             </div>
             <div className='h-[100px]'></div>

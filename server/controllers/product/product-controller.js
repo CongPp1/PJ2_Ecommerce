@@ -45,6 +45,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
         queryString = queryString.replace(/\b(gt|lt|gte|lte)\b/g, (matchedElement) => `$${matchedElement}`);
         let formatedStringQuery = JSON.parse(queryString);
         let colorQueryObject = {};
+        let queryCommand = Product.find(formatedStringQuery);
 
         // search
         if (queries?.title) {
@@ -61,25 +62,19 @@ const getAllProducts = asyncHandler(async (req, res) => {
         }
 
         //Fields limittings
-        if (req.query.fields) {
-            console.log("req.query.fields", req.query.fields);
+        if (req.query.fields) { 
             const fields = req.query.fields.split(',').join(' ');
-            let queryCommand = Product.find(formatedStringQuery);
             queryCommand = queryCommand.select(fields);
         }
 
         //Pagniation
-        const page = +req.query.page || 1;
-        const limit = +req.query.limit || process.env.LIMIT_PRODUCTS;
+        const page = +req.query.page * 1 || 1;
+        const limit = +req.query.limit * 1;
         const skip = (page - 1) * limit;
-        let queryCommand = Product.find(formatedStringQuery);
-        // queryCommand.skip(skip.limit(limit));
-
-
 
         // Find and Count documents
         const q = { ...colorQueryObject, ...formatedStringQuery }
-        let products = await Product.find(q).populate('category');
+        let products = await Product.find(q).populate('category').skip(skip).limit(limit);
         // console.log(products)
         let quantity = await Product.countDocuments(q);
 

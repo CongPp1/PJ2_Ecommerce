@@ -26,7 +26,7 @@ export const renderStars = (stars) => {
 export const validate = (payload, setInvalidFields) => {
     let invalidCount = 0;
     const formatPayload = Object.entries(payload);
-    
+
     for (let arr of formatPayload) {
         if (arr[1].trim() === '') {
             invalidCount++;
@@ -49,7 +49,7 @@ export const validate = (payload, setInvalidFields) => {
                 }
                 break;
             case 'password':
-                if(arr[1].length < 6) {
+                if (arr[1].length < 6) {
                     invalidCount++;
                     setInvalidFields((prev) => [
                         ...prev,
@@ -67,3 +67,8 @@ export const validate = (payload, setInvalidFields) => {
 export const formatMoney = (price) => {
     return Math.round(price / 1000) * 1000;
 }
+
+export const generateRange = (start, end) => {
+    const length = end + 1 - start; // 10 = 10 + 1 - 1
+    return Array.from({ length }, (_, index) => start + index);
+};

@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 import icons from '../utils/icons';
 import { colors } from '../utils/constants.js';
-import { createSearchParams, useNavigate, useParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { apiGetProducts } from '../APIs/product';
 import useDebounce from '../custom-hooks/useDebounce.js';
 
@@ -14,6 +14,7 @@ const SearchItem = ({ name, activeClick, changeActiveFilter, type = 'checkbox' }
     const [price, setPrice] = useState({ from: '', to: '' });
     const debouncePriceFrom = useDebounce(price.from, 500);
     const debouncePriceTo = useDebounce(price.to, 500)
+    const [param] = useSearchParams();
 
     const handleSelectedField = (event) => {
         const alreadySelectedFields = selectedFields.find(element => element === event.target.value);
@@ -48,11 +49,18 @@ const SearchItem = ({ name, activeClick, changeActiveFilter, type = 'checkbox' }
 
     useEffect(() => {
         if (selectedFields.length > 0) {
+            let params = [];
+            for (let i of param) {
+                params.push(i);
+            }
+            const queries = {};
+            for (let i of params) {
+                queries[i[0]] = i[1];
+            }
+            queries.color = selectedFields.join(',');
             navigate({
                 pathname: `/${category}`,
-                search: createSearchParams({
-                    color: selectedFields.join(',')
-                }).toString(),
+                search: createSearchParams(queries).toString(),
             });
         } else {
             navigate(`/${category}`)

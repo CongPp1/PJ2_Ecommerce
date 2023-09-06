@@ -7,6 +7,7 @@ import Masonry from 'react-masonry-css'
 import SearchItem from '../../components/SearchItem';
 import SelectionInputField from '../../components/SelectionInputField';
 import { sortDatas } from '../../utils/constants';
+import Pagination from '../../components/Pagination';
 
 const Products = () => {
     const { category } = useParams();
@@ -15,6 +16,7 @@ const Products = () => {
     const [products, setProducts] = useState(null);
     const [activeClick, setActiveClick] = useState(null);
     const [sort, setSort] = useState('');
+    const [quantity, setQuantity] = useState(0);
 
     const breakpointColumnsObj = {
         default: 4,
@@ -27,8 +29,11 @@ const Products = () => {
         const response = await apiGetProducts(query);
         if (response.message === 'Get all products successfully') {
             setProducts(response?.data?.products?.map(product => product));
+            setQuantity(response?.data?.quantity);
         }
     };
+
+    console.log(quantity);
 
     const changeActiveFilter = useCallback((name) => {
         if (name === activeClick) {
@@ -78,15 +83,18 @@ const Products = () => {
         delete queries.from;
         delete queries.to;
         isEmpty(queries) ? fetchedProductsByCatgory({ category }) : fetchedProductsByCatgory({ ...priceQuery, ...queries, category });
+        window.scrollTo(0, 0);
     }, [params]);
 
     useEffect(() => {
-        navigate({
-            pathname: `/${category}`,
-            search: createSearchParams({
-                sort: sort
-            }).toString(),
-        });
+        if (sort) {
+            navigate({
+                pathname: `/${category}`,
+                search: createSearchParams({
+                    sort: sort
+                }).toString(),
+            });
+        }
     }, [sort]);
 
     return (
@@ -128,6 +136,9 @@ const Products = () => {
                         <Product key={index} productData={element} />
                     ))}
                 </Masonry>
+            </div>
+            <div className='w-main m-auto my-4 flex justify-end'>
+                <Pagination totalCount={quantity} />
             </div>
             <div className='h-[300px]'></div>
         </div>
