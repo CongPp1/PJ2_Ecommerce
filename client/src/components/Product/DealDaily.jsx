@@ -1,8 +1,8 @@
-import icons from "../utils/icons";
-import { apiGetProducts } from "../APIs/product";
+import icons from "../../utils/icons";
+import { apiGetProducts } from "../../APIs/product";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { formatPrice, renderStars } from "../utils/helper";
-import CountdownTimer from "./CountdownTimer";
+import { formatPrice, renderStars } from "../../utils/helper.js";
+import CountdownTimer from '../../components/Common/CountdownTimer';
 import Swal from 'sweetalert2';
 
 const DealDaily = () => {

@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
-import usePagination from '../custom-hooks/usePagination';
-import Items from './Items';
+import usePagination from '../../custom-hooks/usePagination';
+import Items from '../Pagination/Items';
 import { useSearchParams } from 'react-router-dom';
 
 const Pagination = ({ totalCount }) => {

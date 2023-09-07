@@ -15,7 +15,15 @@ import FinalRegister from './pages/public/FinalRegister';
 import ResetPassword from './pages/public/ResetPassword';
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify';
-import Modal from './components/Modal';
+import Modal from '../src/components/Common/Modal';
+import AdminLayout from './pages/admin/AdminLayout';
+import ManageOrder from './pages/admin/ManageOrder';
+import ManageProduct from './pages/admin/ManageProduct';
+import ManageUser from './pages/admin/ManageUser';
+import CreatProduct from './pages/admin/CreatProduct';
+import MemberLayout from './pages/members/MemberLayout';
+import PersonalLayout from './pages/members/PersonalLayout';
+import Dashboard from './pages/admin/Dashboard';
 
 function App() {
   const dispatch = useDispatch();
@@ -35,10 +43,22 @@ function App() {
           <Route path={path.BLOGS} element={<Blogs />} />
           <Route path={path.OUR_SERVICES} element={<Sevices />} />
           <Route path={path.PRODUCTS} element={<Products />} />
+          <Route path={path.ALL} element={<Login />} />
+        </Route>
+        <Route path={path.ADMIN} element={<AdminLayout />}>
+          <Route path={path.DASHBOARD} element={<Dashboard />} />
+          <Route path={path.MANAGE_ORDER} element={<ManageOrder />} />
+          <Route path={path.MANAGE_PRODUCTS} element={<ManageProduct />} />
+          <Route path={path.MANAGE_USER} element={<ManageUser />} />
+          <Route path={path.CREATE_PRODUCT} element={<CreatProduct />} />
+        </Route>
+        <Route path={path.MEMBER} element={<MemberLayout />}>
+          <Route path={path.PERSONAL} element={<PersonalLayout />} />
         </Route>
         <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
         <Route path={path.FINAL_REGISTER} element={<FinalRegister />} />
         <Route path={path.LOGIN} element={<Login />} />
+        
       </Routes>
       <ToastContainer
         position="top-right"

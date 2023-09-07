@@ -1,7 +1,7 @@
 import React from 'react';
 import { memo } from 'react';
 import { useDispatch } from 'react-redux';
-import { showModal } from '../store/appReducer';
+import { showModal } from '../../store/appReducer';
 
 const Modal = ({ children }) => {
     const dispatch = useDispatch();

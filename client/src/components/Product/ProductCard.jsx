@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { formatPrice, renderStars } from '../utils/helper';
+import { formatPrice, renderStars } from '../../utils/helper';
 
 const ProductCard = ({ images, title, totalRatings, price }) => {
     return (

@@ -2,16 +2,16 @@ import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { apiGetProductById } from '../../APIs/product';
 import { apiGetCategories } from '../../APIs/app.js';
-import BreadCrumb from '../../components/BreadCrumb';
+import BreadCrumb from '../../components/Common/BreadCrumb';
 import Slider from 'react-slick';
 import ReactImageMagnify from 'react-image-magnify';
 import { formatPrice, renderStars } from '../../utils/helper';
-import Button from '../../components/Button.jsx';
-import SelectQuantity from '../../components/SelectQuantity';
-import ProductExtraInfo from '../../components/ProductExtraInfo';
+import Button from '../../components/Button/Button';
+import SelectQuantity from '../../components/Common/SelectQuantity';
+import ProductExtraInfo from '../../components/Product/ProductExtraInfo';
 import { productExtraInfos } from '../../utils/constants.js';
-import ProductInfomation from '../../components/ProductInfomation';
-import Product from '../../components/Product';
+import ProductInfomation from '../../components/Product/ProductInfomation';
+import Product from '../../components/Product/Product';
 
 const DetailProduct = () => {
     const { pid, title, category } = useParams();

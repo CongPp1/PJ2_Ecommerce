@@ -7,7 +7,8 @@ export const userSlice = createSlice({
         isLogin: false,
         current: null,
         token: null,
-        isLoading: false
+        isLoading: false,
+        mes: ''
     },
     reducers: {
         login: (state, action) => {
@@ -17,6 +18,9 @@ export const userSlice = createSlice({
         logout: (state, action) => {
             state.isLogin = false;
             state.token = null;
+            state.current = null;
+            state.isLoading = false;
+            state.mes = '';
         }
     },
     extraReducers: (builder) => {

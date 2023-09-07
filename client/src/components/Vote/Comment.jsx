@@ -1,8 +1,8 @@
 import React from 'react';
 import { memo } from 'react';
-import avatar from '../assets/avt.png';
+import avatar from '../../assets/avt.png';
 import moment from 'moment';
-import { renderStars } from '../utils/helper';
+import { renderStars } from '../../utils/helper';
 
 const Comment = ({ avt = avatar, name = 'Anonymous', comment, updatedAt, star }) => {
     return (

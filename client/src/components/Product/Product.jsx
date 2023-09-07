@@ -1,11 +1,10 @@
-import { formatPrice, renderStars } from "../utils/helper";
-import label from "../../src/assets/label.png";
-import label_new from "../../src/assets/label-new.png";
-import SelectOption from "./SelectOption";
-import icons from '../utils/icons.js';
+import { formatPrice, renderStars } from "../../utils/helper.js";
+import label from "../../assets/label.png";
+import label_new from "../../assets/label-new.png";
+import SelectOption from "../SelectOption.jsx";
+import icons from "../../utils/icons.js";
 import { memo, useState } from "react";
 import { Link } from 'react-router-dom';
-import path from "../utils/path.js"
 
 const Product = ({ productData, isNew }) => {
     const { AiFillEye, BsFillSuitHeartFill, IoIosMenu } = icons;

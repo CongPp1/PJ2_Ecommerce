@@ -13,7 +13,7 @@ const commonConfig = {
 
 const userConfig = {
   ...commonConfig,
-  whiteList: ['isLogin', 'token'],
+  whiteList: ['isLogin', 'token', 'current'],
 };
 
 export const store = configureStore({

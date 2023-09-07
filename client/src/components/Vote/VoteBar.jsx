@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { memo } from 'react';
-import icons from '../utils/icons';
+import icons from '../../utils/icons';
 
 const VoteBar = ({ number, ratingCount, ratingTotal }) => {
     const { AiFillStar } = icons;

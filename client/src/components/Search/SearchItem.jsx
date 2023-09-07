@@ -1,9 +1,9 @@
 import React, { memo, useEffect, useState } from 'react';
-import icons from '../utils/icons';
-import { colors } from '../utils/constants.js';
+import icons from '../../utils/icons';
+import { colors } from '../../utils/constants.js';
 import { createSearchParams, useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { apiGetProducts } from '../APIs/product';
-import useDebounce from '../custom-hooks/useDebounce.js';
+import { apiGetProducts } from '../../APIs/product';
+import useDebounce from '../../custom-hooks/useDebounce.js';
 
 const SearchItem = ({ name, activeClick, changeActiveFilter, type = 'checkbox' }) => {
     const { AiOutlineDown } = icons;

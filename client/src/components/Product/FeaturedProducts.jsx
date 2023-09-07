@@ -1,5 +1,5 @@
 import React, { useEffect, useState, memo } from 'react';
-import { apiGetProducts } from '../APIs/product';
+import { apiGetProducts } from '../../APIs/product';
 import ProductCard from './ProductCard';
 
 const FeaturedProducts = () => {

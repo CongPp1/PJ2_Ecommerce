@@ -1,11 +1,13 @@
-import { memo } from "react";
-import logo from "../assets/logo_digital_new_250x.png";
-import icons from "../utils/icons.js";
-import path from "../utils/path";
+import { Fragment, memo } from "react";
+import logo from "../../assets/logo_digital_new_250x.png";
+import icons from "../../utils/icons";
+import path from "../../utils/path";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const { RiPhoneFill, MdEmail, BsHandbagFill, FaUserCircle } = icons;
+  const { current } = useSelector(state => state.userReducer);
 
   return (
     <div className="border-b w-main flex justify-between h-[110px] py-[35px]">
@@ -33,14 +35,21 @@ const Header = () => {
           </span>
           <span>Online Support 24/7</span>
         </div>
-        <div className="flex items-center justify-center gap-2 px-6 border-r cursor-pointer">
-          <BsHandbagFill color="red" />
-          <span>0 item(s)</span>
-        </div>
-        <div className="flex items-center justify-center gap-2 px-6 cursor-pointer">
-          <FaUserCircle color="red" size={24} />
-          <span>Profile</span>
-        </div>
+        {current && (
+          <Fragment>
+            <div className="flex items-center justify-center gap-2 px-6 border-r cursor-pointer">
+              <BsHandbagFill color="red" />
+              <span>0 item(s)</span>
+            </div>
+            <Link
+              className="flex items-center justify-center gap-2 px-6 cursor-pointer"
+              to={current?.role === 'admin' ? `/${path.ADMIN}/${path.DASHBOARD}` : `/${path.MEMBER}/${path.PERSONAL}`}
+            >
+              <FaUserCircle color="red" size={24} />
+              <span>Profile</span>
+            </Link>
+          </Fragment>
+        )}
       </div>
     </div>
   );

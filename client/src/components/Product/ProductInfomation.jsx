@@ -1,17 +1,17 @@
 import React, { memo, useState } from 'react';
-import { tabs } from '../utils/constants';
-import VoteBar from './VoteBar';
-import { renderStars } from '../utils/helper';
-import { apiRating } from '../APIs/product';
-import Button from './Button';
-import VoteOption from './VoteOption';
+import { tabs } from '../../utils/constants.js';
+import VoteBar from '../Vote/VoteBar.jsx';
+import { renderStars } from '../../utils/helper.js';
+import { apiRating } from '../../APIs/product.js';
+import Button from '../../components/Button/Button.jsx';
+import VoteOption from '../../components/Vote/VoteOption.jsx';
 import { useDispatch, useSelector } from 'react-redux';
-import { showModal } from '../store/appReducer';
+import { showModal } from '../../store/appReducer.js';
 import { toast } from "react-toastify";
-import path from '../utils/path';
+import path from '../../utils/path.js';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import Comment from './Comment';
+import Comment from '../Vote/Comment.jsx';
 
 const ProductInfomation = ({ totalRatings, ratings, productName, pid, rerender }) => {
     const [activeTab, setActiveTab] = useState(1);

@@ -1,4 +1,4 @@
-import { apiGetProducts } from "../APIs/product";
+import { apiGetProducts } from "../../APIs/product";
 import { memo, useEffect, useState } from "react";
 import Slider from "react-slick";
 import Product from "./Product";

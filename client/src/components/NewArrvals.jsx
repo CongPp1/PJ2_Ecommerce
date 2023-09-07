@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 import { apiGetCategoryById, apiGetCategories } from '../APIs/app';
 import Slider from "react-slick";
-import Product from './Product';
+import Product from '../components/Product/Product';
 
 const NewArrivals = () => {
     const [productOfCategory, setProductOfCategory] = useState(null);

@@ -1,13 +1,13 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useParams, useSearchParams, useNavigate, createSearchParams } from 'react-router-dom';
-import BreadCrumb from '../../components/BreadCrumb';
-import Product from '../../components/Product';
+import BreadCrumb from '../../components/Common/BreadCrumb';
+import Product from '../../components/Product/Product';
 import { apiGetProducts } from '../../APIs/product';
 import Masonry from 'react-masonry-css'
-import SearchItem from '../../components/SearchItem';
-import SelectionInputField from '../../components/SelectionInputField';
+import SearchItem from '../../components/Search/SearchItem';
+import SelectionInputField from '../../components/Input/SelectionInputField';
 import { sortDatas } from '../../utils/constants';
-import Pagination from '../../components/Pagination';
+import Pagination from '../../components/Pagination/Pagination';
 
 const Products = () => {
     const { category } = useParams();

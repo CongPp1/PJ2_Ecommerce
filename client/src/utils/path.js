@@ -10,7 +10,15 @@ const path = {
     DETAIL_PRODUCT: 'san-pham',
     BLOGS: 'blogs',
     FINAL_REGISTER: 'finalRegister/:status',
-    RESET_PASSWORD: 'resetPassword/:token'
+    RESET_PASSWORD: 'resetPassword/:token',
+    ADMIN: 'admin',
+    DASHBOARD: 'dashboard',
+    MANAGE_USER: 'manageUser',
+    MANAGE_PRODUCTS: 'manageProducts',
+    MANAGE_ORDER: 'manageOrder',
+    CREATE_PRODUCT: 'createProduct',
+    MEMBER: 'member',
+    PERSONAL: 'personal',
 }
 
 export default path;

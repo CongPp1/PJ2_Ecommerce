@@ -1,6 +1,6 @@
 import React, { useEffect, useState, memo } from 'react';
 import { apiGetCategories } from '../APIs/app';
-import ProductCategoryCard from './ProductCategoryCard';
+import ProductCategoryCard from '../components/Product/ProductCategoryCard';
 import icons from '../utils/icons';
 
 const HotCollection = () => {

@@ -1,5 +1,5 @@
 import { memo } from "react";
-import banner_girl from "../assets/bestSeller.jpg";
+import banner_girl from "../../assets/bestSeller.jpg";
 
 const Banner = () => {
   return (

@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import Button from '../../components/Button';
+import Button from '../../components/Button/Button';
 import { useParams } from 'react-router-dom';
 import { apiResetPassword } from '../../APIs/user';
 import { toast } from 'react-toastify';

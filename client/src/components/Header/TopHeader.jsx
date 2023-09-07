@@ -1,10 +1,10 @@
 import React, { memo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import path from '../utils/path';
-import { getUser } from '../store/asyncUserAction';
+import path from '../../utils/path';
+import { getUser } from '../../store/asyncUserAction';
 import { useDispatch, useSelector } from 'react-redux';
-import icons from '../utils/icons';
-import { logout } from '../store/userSlice';
+import icons from '../../utils/icons';
+import { logout } from '../../store/userSlice';
 
 const TopHeader = () => {
     const { AiOutlineLogout } = icons;
