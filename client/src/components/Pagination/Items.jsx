@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
-import { createSearchParams, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { createSearchParams, useNavigate, useSearchParams, useLocation } from 'react-router-dom'
 
 const Items = ({ children }) => {
     const [param] = useSearchParams();
-    const { category } = useParams();
     const navigation = useNavigate();
+    const location = useLocation();
 
     const handlePaginations = () => {
         let params = [];
@@ -19,7 +19,7 @@ const Items = ({ children }) => {
             queries.page = children;
         }
         navigation({
-            pathname: `/${category}`,
+            pathname: location.pathname,
             search: createSearchParams(queries).toString(),
         })
     }

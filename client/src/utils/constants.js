@@ -90,3 +90,13 @@ export const voteOptions = [
     { id: 4, text: 'Good' },
     { id: 5, text: 'Perfect' },
 ];
+
+const { BsFileBarGraph, MdGroups, PiArchiveBold, BiCartDownload } = icons;
+export const adminSidebars = [
+    { id: 1, text: 'Dashboard', type: 'single', path: `/${path.ADMIN}/${path.DASHBOARD}`, icon: <BsFileBarGraph /> },
+    { id: 2, text: 'Manage users', type: 'single', path: `/${path.ADMIN}/${path.MANAGE_USER}`, icon: <MdGroups /> },
+    { id: 3, text: 'Manage products', type: 'parent', path: `/${path.ADMIN}/${path.DASHBOARD}`, icon: <PiArchiveBold />, submenu: [{ text: 'Create product', path: `/${path.ADMIN}/${path.CREATE_PRODUCT}` }, { text: 'Manage product', path: `/${path.ADMIN}/${path.MANAGE_PRODUCTS}` }] },
+    { id: 4, text: 'Manage order', type: 'single', path: `/${path.ADMIN}/${path.DASHBOARD}`, icon: <BiCartDownload /> },
+    { id: 5, text: 'Dashboard', type: 'single', path: `/${path.ADMIN}/${path.DASHBOARD}`, icon: <BsFileBarGraph /> },
+
+]

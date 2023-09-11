@@ -4,8 +4,8 @@ import Items from '../Pagination/Items';
 import { useSearchParams } from 'react-router-dom';
 
 const Pagination = ({ totalCount }) => {
-    const pagination = usePagination(totalCount, 2);
     const [param] = useSearchParams();
+    const pagination = usePagination(totalCount, param.get('page') || 1);
 
     const range = () => {
         const currentPage = +param.get('page');
@@ -17,7 +17,7 @@ const Pagination = ({ totalCount }) => {
     }
 
     return (
-        <div className='flex w-main justify-between items-center'>
+        <div className='flex w-full justify-between items-center'>
             {!+param.get('page') && (
                 <span className='text-sm italic'>{`Show products 1 - ${+process.env.REACT_APP_PRODUCT_LIMIT || 10} of ${totalCount}`}</span>
             )}

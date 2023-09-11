@@ -1,19 +1,23 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
+import clsx from 'clsx';
 
-const InputField = ({ value, setValue, nameKey, type, invalidFields, setInvalidFields }) => {
-    const [isFocus, setIsFocus] = useState(false);
+const InputField = ({ value, setValue, nameKey, type, invalidFields, setInvalidFields, style, placeholder }) => {
 
     const handleOnChange = (event) => {
         setValue((prev) => ({ ...prev, [nameKey]: event.target.value }))
     };
 
     const handleOnFocus = () => {
-        setInvalidFields([]);
+        if(setInvalidFields){
+            setInvalidFields([]);
+        } else {
+            return;
+        }
     }
 
     return (
         <div className='w-full flex flex-col relative'>
-            {value?.trim() !== '' && (
+            {value && value?.trim() !== '' && (
                 <label
                     className='text-[10px] absolute top-0 left-[12px] block bg-white px-1 animate-slide-top-sm'
                     htmlFor={nameKey}
@@ -23,8 +27,8 @@ const InputField = ({ value, setValue, nameKey, type, invalidFields, setInvalidF
             )}
             <input
                 type={type || 'text'}
-                className='px-4 py-2 rounded-sm w-full border my-2 outline-none'
-                placeholder={nameKey.slice(0, 1).toUpperCase() + nameKey.slice(1)}
+                className={clsx('px-4 py-2 rounded-sm w-full border my-2 outline-none border-none placeholder:text-sm placeholder:italic', style)}
+                placeholder={placeholder || nameKey.slice(0, 1).toUpperCase() + nameKey.slice(1)}
                 value={value}
                 onChange={handleOnChange}
                 onFocus={handleOnFocus}

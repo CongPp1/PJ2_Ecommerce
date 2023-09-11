@@ -54,8 +54,8 @@ const register = asyncHandler(async (req, res) => {
             const html = `<h2>Register Code</h2><br/><blockquote>${token}</blockquote>`;
             sendMail({ email, html, subject: 'Hoàn tất đăng kí Digital World' })
         }
-        setTimeout(async() => {
-            await User.deleteOne({ email: emailDecoded})
+        setTimeout(async () => {
+            await User.deleteOne({ email: emailDecoded })
         }, 200000);
 
         return res.json({
@@ -79,8 +79,8 @@ const finalRegister = asyncHandler(async (req, res) => {
             email: new RegExp(`${token}`)
         });
         console.log(notActivedEmail);
-        if(notActivedEmail){
-            
+        if (notActivedEmail) {
+
             notActivedEmail.email = atob(notActivedEmail?.email?.split('@')[0]);
             notActivedEmail.save();
         }
@@ -105,11 +105,7 @@ const login = asyncHandler(async (req, res) => {
             message: 'Please provide all fields',
         });
     }
-    console.log(req.body);
     const result = await User.findOne({ email: email });
-    console.log(result);
-    console.log(await result.isCorrectEmail(email));
-    console.log(await result.isCorrectPassword(password))
     if ((result && await result.isCorrectEmail(email) && await result.isCorrectPassword(password))) {
         const accessToken = generateAccessToken(result._id, result.role);
         const refreshToken = generateRefreshToken(result._id);
@@ -287,16 +283,76 @@ const getUSer = asyncHandler(async (req, res) => {
 
 const getAllUsers = asyncHandler(async (req, res) => {
     try {
-        const users = await User.find();
-        if (users.length <= 0) {
-            return res.status(404).json({
-                message: 'Data is empty',
-            });
+        const queries = { ...req.query };
+        const excludesFields = ['limit', 'sort', 'page', 'fields'];
+
+        // Xóa các trường đặc biệt ra khỏi queries
+        for (const field in queries) {
+            if (excludesFields.includes(field)) {
+                delete queries[field];
+            }
         }
+        // Format queries
+        let queryString = JSON.stringify(queries);
+        queryString = queryString.replace(/\b(gt|lt|gte|lte)\b/g, (matchedElement) => `$${matchedElement}`);
+        let formatedStringQuery = JSON.parse(queryString);
+        let queryCommand = User.find(formatedStringQuery);
+
+        // search
+        if(req.query.q) {
+            delete formatedStringQuery.q;
+            formatedStringQuery['$or'] = [
+                { firstName: { $regex: req.query.q, $options: 'i' } },
+                { lastName: { $regex: req.query.q, $options: 'i' } },
+                { email: { $regex: req.query.q, $options: 'i' } }
+            ]
+        }
+
+        //Fields limittings
+        if (req.query.fields) {
+            const fields = req.query.fields.split(',').join(' ');
+            queryCommand = queryCommand.select(fields);
+        }
+
+        //Pagniation
+        const page = +req.query.page * 1 || 1;
+        const limit = +req.query.limit * 1;
+        const skip = (page - 1) * limit;
+
+        // Find and Count documents
+        let users = await User.find(formatedStringQuery).skip(skip).limit(limit);
+        // console.log(products)
+        let quantity = await User.countDocuments(formatedStringQuery);
+
+        //Sort
+        if (req.query.sort) {
+            const sortBy = req.query.sort.split(',').join(' ');//Nếu trong query string có tham số sort, phân tách các trường sắp xếp bằng dấu phẩy và thay thế bằng dấu cách
+            users = users.sort((a, b) => {
+                if (sortBy === 'createdAt') {
+                    return new Date(b.createdAt) - new Date(a.createdAt);
+                }
+                if (sortBy === '-createdAt') {
+                    return new Date(a.createdAt) - new Date(b.createdAt);
+                }
+                if (sortBy === 'firstName') {
+                    return a.firstName.localeCompare(b.firstName); // Sắp xếp theo tên từ A-Z
+                }
+                if (sortBy === '-firstName') {
+                    return b.firstName.localeCompare(a.firstName); // Sắp xếp theo tên từ Z-A
+                }
+
+                return 0;
+            })
+        }
+
         return res.status(200).json({
-            message: 'Users fetched successfully',
-            users
+            message: 'Get all users successfully',
+            data: {
+                users,
+                quantity,
+            },
         });
+
     } catch (error) {
         console.error(error);
         return res.status(500).json({
