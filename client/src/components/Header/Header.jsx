@@ -24,7 +24,7 @@ const Header = () => {
         <div className="flex flex-col items-center px-6 border-r">
           <span className="flex gap-1 items-center">
             <RiPhoneFill color="red" />
-            <span className="font-semibold">(+1800) 000 8808</span>
+            <span className="font-semibold">0772244726</span>
           </span>
           <span>Mon-Sat 9:00AM - 8:00PM</span>
         </div>

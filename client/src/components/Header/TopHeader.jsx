@@ -29,7 +29,7 @@ const TopHeader = () => {
     return (
         <div className='h-[50px] w-full bg-main flex items-center justify-center'>
             <div className='w-main flex items-center justify-between text-xs text-white'>
-                <span>ORDER ONLINE OR CALL US (+1800) 000 8808 </span>
+                <span>ORDER ONLINE OR CALL US 0772244726 </span>
                 {isLogin ? (
                     <span className='flex gap-3'>
                         <AiOutlineLogout

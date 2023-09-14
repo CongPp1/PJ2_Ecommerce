@@ -169,3 +169,26 @@ apiDeleteUser()
     .catch(error => {
         console.error("API delete user Error:", error);
     })
+
+
+/**
+ * Updates a user in the API.
+ *
+ * @param {object} data - The data to update the user with.
+ * @param {string} userId - The ID of the user to update.
+ * @return {Promise} A promise that resolves with the result of the update.
+ */
+export const apiUpdateUser = (data, userId) => {
+    return axios({
+        url: '/user/update/' + userId,
+        method: 'PUT',
+        data
+    });
+}
+apiUpdateUser()
+    .then(response => {
+        console.log("API update user Response:", response.data);
+    })
+    .catch(error => {
+        console.error("API update user Error:", error);
+    })
