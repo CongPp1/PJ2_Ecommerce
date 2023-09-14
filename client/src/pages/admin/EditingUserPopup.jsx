@@ -5,9 +5,10 @@ import { useForm } from 'react-hook-form';
 import Button from '../../components/Button/Button';
 
 
-const EditingUserPopup = ({ defautlValue, handleUpdate }) => {
+const EditingUserPopup = ({ handleUpdate, data }) => {
     const { handleSubmit, register, reset, formState: { errors } } = useForm();
     const modalRef = useRef();
+    console.log(data)
 
     const handleStopPropagation = (event) => {
         event.stopPropagation();
@@ -28,7 +29,7 @@ const EditingUserPopup = ({ defautlValue, handleUpdate }) => {
                                 <label htmlFor="">Email Address</label>
                                 <input
                                     type="text"
-                                    defaultValue={defautlValue}
+                                    defaultValue={data.email}
                                     {...register('email', { required: true, pattern: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, })}
                                 />
                                 {errors.email && (
@@ -39,8 +40,8 @@ const EditingUserPopup = ({ defautlValue, handleUpdate }) => {
                                 <label htmlFor="">First Name</label>
                                 <input
                                     type="text"
-                                    defaultValue={defautlValue}
-                                    {...register("name", { required: true })}
+                                    defaultValue={data.firstName}
+                                    {...register("first_name", { required: true })}
                                 />
                                 {errors.name && (
                                     <small className="error-container text-main">Name is required</small>
@@ -52,8 +53,8 @@ const EditingUserPopup = ({ defautlValue, handleUpdate }) => {
                                 <label htmlFor="">Last Name</label>
                                 <input
                                     type="text"
-                                    defaultValue={defautlValue}
-                                    {...register("name", { required: true })}
+                                    defaultValue={data.lastName}
+                                    {...register("last_name", { required: true })}
                                 />
                                 {errors.name && (
                                     <small className="error-container text-main">Name is required</small>
@@ -63,8 +64,8 @@ const EditingUserPopup = ({ defautlValue, handleUpdate }) => {
                                 <label htmlFor="">Mobile</label>
                                 <input
                                     type="text"
-                                    defaultValue={defautlValue}
-                                    {...register("name", { required: true, pattern: /^[0-9]+$/ })}
+                                    defaultValue={data.mobile}
+                                    {...register("mobile", { required: true, pattern: /^[0-9]+$/ })}
                                 />
                                 {errors.name && (
                                     <small className="error-container text-main">Number phone is not valid</small>

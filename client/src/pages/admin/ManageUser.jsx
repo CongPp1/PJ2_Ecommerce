@@ -25,7 +25,6 @@ const ManageUser = () => {
         q: ''
     });
     // const [element, setElement] = useState(null);
-    const [editElement, setEditElement] = useState(null);
     const queriesDebounce = useDebounce(queries.q, 800);
     const [params] = useSearchParams();
     const dispatch = useDispatch();
@@ -75,14 +74,11 @@ const ManageUser = () => {
     };
 
     const handlePopupEditingUser = (element) => {
-        setEditElement(element);
         dispatch(showModal({
             isShowModal: true,
-            modalChildren: <EditingUserPopup handleUpdate={handleUpdate} />
+            modalChildren: <EditingUserPopup data={element} handleUpdate={handleUpdate} />
         }))
     };
-
-    console.log('editElement', editElement)
 
     return (
         <div className='w-full pl-4 pr-4'>
@@ -119,7 +115,7 @@ const ManageUser = () => {
                                 <td className='py-2 px-4'>{<span>{element.isBlocked ? 'Blocked' : 'Active'}</span>}</td>
                                 <td className='py-2 px-4'>{moment(element.createdAt).format('DD/MM/YYYY')}</td>
                                 <td className='py-2 px-4'>
-                                    {console.log(element)}
+                                    {/* {console.log(element)} */}
                                     <span
                                         onClick={() => handlePopupEditingUser(element)}
                                         className='px-2 text-orange-600 cursor-pointer hover:underline'
