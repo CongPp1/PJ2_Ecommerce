@@ -7,7 +7,6 @@ import Pagination from '../../components/Pagination/Pagination';
 import { useSearchParams } from 'react-router-dom';
 import { apiDeleteUser, apiUpdateUser } from '../../APIs/user';
 import Swal from 'sweetalert2';
-import Select from '../../components/Input/Select';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../store/appReducer';
 import EditingUserPopup from './EditingUserPopup';
@@ -22,9 +21,7 @@ import { deleteUser } from '../../store/asyncUserAction';
 const ManageUser = () => {
     const [users, setUsers] = useState(null);
     const [quantity, setQuantity] = useState(0);
-    const [queries, setQueries] = useState({
-        q: ''
-    });
+    const [queries, setQueries] = useState({ q: '' });
     const [update, setUpdate] = useState(false);
     const queriesDebounce = useDebounce(queries.q, 800);
     const [params] = useSearchParams();

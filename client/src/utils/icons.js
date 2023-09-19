@@ -4,6 +4,7 @@ import { BsHandbagFill,BsFillSuitHeartFill, BsShieldShaded, BsReplyFill, BsFileB
 import { FaUserCircle, FaTty } from 'react-icons/fa';
 import { AiFillHome, AiFillStar, AiOutlineStar, AiFillEye, AiOutlineLogout, AiFillGift, AiOutlineDown, AiOutlinePhone } from 'react-icons/ai';
 import { IoIosMenu, IoIosArrowForward } from 'react-icons/io';
+import { IoTrashBinSharp } from 'react-icons/io5';
 import { CiLocationOn } from 'react-icons/ci';
 import { PiArchiveBold } from 'react-icons/pi';
 import { BiCartDownload } from 'react-icons/bi';
@@ -32,7 +33,8 @@ const icons = {
     BsFileBarGraph,
     MdGroups,
     PiArchiveBold,
-    BiCartDownload  
+    BiCartDownload,
+    IoTrashBinSharp  
 }
 
 export default icons;

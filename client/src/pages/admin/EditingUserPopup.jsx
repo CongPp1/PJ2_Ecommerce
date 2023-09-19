@@ -4,8 +4,15 @@ import { useForm } from 'react-hook-form';
 import Button from '../../components/Button/Button';
 
 
+/**
+ * Renders a popup for editing a user.
+ *
+ * @param {Object} data - The user data to be edited.
+ * @param {function} handleUpdate - The function to handle the update of the user data.
+ * @return {JSX.Element} The JSX element representing the editing user popup.
+ */
 const EditingUserPopup = ({ data, handleUpdate }) => {
-    const { handleSubmit, register, reset, formState: { errors } } = useForm();
+    const { handleSubmit, register, formState: { errors } } = useForm();
     const modalRef = useRef();
 
     const handleStopPropagation = (event) => {

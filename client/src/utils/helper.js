@@ -72,3 +72,29 @@ export const generateRange = (start, end) => {
     const length = end + 1 - start; // 10 = 10 + 1 - 1
     return Array.from({ length }, (_, index) => start + index);
 };
+
+export function getBase64(file) {
+    if (!(file instanceof Blob)) {
+        console.log('ccc')
+        return Promise.reject(new Error('Đầu vào không phải là đối tượng Blob hợp lệ'));
+    }
+
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        
+        reader.onload = () => {
+            // Khi thành công, resolve với dữ liệu base64
+            resolve(reader.result);
+        };
+        
+        reader.onerror = (error) => {
+            // Khi xảy ra lỗi, reject với thông báo lỗi
+            reject(error);
+        };
+        
+        // Đọc dữ liệu thành dạng base64
+        reader.readAsDataURL(file);
+    });
+}
+
+

@@ -1,5 +1,11 @@
 import axios from "../axios.js";
 
+/**
+ * Retrieves a list of products from the API.
+ *
+ * @param {Object} params - The parameters for the API request.
+ * @return {Promise} A promise that resolves with the response data.
+ */
 export const apiGetProducts = async (params) => {
     return axios({
         url: '/product/products',
@@ -15,6 +21,12 @@ apiGetProducts()
         console.error("API getProducts Error:", error);
     });
 
+/**
+ * Retrieves product data from the API based on the provided ID.
+ *
+ * @param {number} id - The ID of the product to retrieve.
+ * @return {Promise} A Promise that resolves to the product data.
+ */
 export const apiGetProductById = (id) => {
     return axios({
         url: '/product/products/' + id,
@@ -29,6 +41,12 @@ apiGetProductById()
         console.error("API getProductById Error:", error);
     });
 
+/**
+ * Sends a PUT request to the '/product/rating' endpoint with the provided data.
+ *
+ * @param {object} data - The data to be sent with the request.
+ * @return {Promise} A promise that resolves with the response from the server.
+ */
 export const apiRating = (data) => {
     return axios({
         url: '/product/rating',
@@ -43,3 +61,25 @@ apiRating()
     .catch(error => {
         console.error("API Rating Error:", error);
     });
+
+
+/**
+ * Creates a new product using the API.
+ *
+ * @param {Object} data - The data object containing the product information.
+ * @return {Promise} A Promise that resolves to the response from the API.
+ */
+export const apiCreateProduct = (data) => {
+    return axios({
+        url: '/product/createProduct',
+        method: 'POST',
+        data
+    });
+}
+apiCreateProduct()
+    .then(response => {
+        console.log("API Create Product Response:", response.data);
+    })
+    .catch(error => {
+        console.error("API Create Product Error:", error);
+    })
