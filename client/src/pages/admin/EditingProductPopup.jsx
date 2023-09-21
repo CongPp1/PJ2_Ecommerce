@@ -76,15 +76,14 @@ const EditingProductPopup = ({ data, handleUpdate }) => {
                             <div className='flex flex-col'>
                                 <label htmlFor="">Category</label>
                                 <select
-                                    name="category"
-                                    value={selectedCategoryOption}
-                                    onChange={handleSelectCategoryChange}
-                                    id="category"
+                                    // onChange={handleSelectCategoryChange}
                                     className='form-select'
+                                    defaultValue={data.category}
+                                    {...register('category', { required: true })}
                                 >
-                                    <option value="" disabled>--- Choose the category ---</option>
+                                    <option value="">--- Choose the category ---</option>
                                     {categories?.map((element, index) => (
-                                        <option value={element._id} key={index}>{element.title}</option>
+                                        <option value={element.title} key={index}>{element.title}</option>
                                     ))}
                                 </select>
                             </div>
@@ -115,14 +114,13 @@ const EditingProductPopup = ({ data, handleUpdate }) => {
                             <div className='flex flex-col'>
                                 <label htmlFor="">Brand</label>
                                 <select
-                                    name="brand"
-                                    value={selectedBrandOption}
-                                    onChange={handleSelectedBrandChange}
-                                    id="brand"
+                                    defaultValue={data.brand}
+                                    // onChange={handleSelectedBrandChange}
+                                    {...register("brand", { required: true })}
                                 >
                                     <option value="" disabled>--- Choose the brand ---</option>
-                                    {categories?.find(element => element._id === selectedCategoryOption)?.brands?.map((element, index) => (
-                                        <option value={element._id} key={index}>{element.title}</option>
+                                    {categories?.find(element => element._id === selectedCategoryOption ? selectedCategoryOption : data.category)?.brands?.map((element, index) => (
+                                        <option value={element.title} key={index}>{element.title}</option>
                                     ))}
                                 </select>
                             </div>
