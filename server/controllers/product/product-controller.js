@@ -6,7 +6,6 @@ const product = require('../../models/product.js');
 const createProduct = asyncHandler(async (req, res) => {
     try {
         const { title, price, description, brand, category, color } = req.body;
-        console.log(req.files)
         const images = req.files?.images?.map(element => element.path);
         if (!title && !price && !description && !brand && !category && !color) {
             return res.status(400).json({
@@ -38,6 +37,7 @@ const createProduct = asyncHandler(async (req, res) => {
 const getAllProducts = asyncHandler(async (req, res) => {
     try {
         const queries = { ...req.query };
+        console.log('queries', queries)
         const excludesFields = ['limit', 'sort', 'page', 'fields'];
 
         // Xóa các trường đặc biệt ra khỏi queries
@@ -51,6 +51,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
         queryString = queryString.replace(/\b(gt|lt|gte|lte)\b/g, (matchedElement) => `$${matchedElement}`);
         let formatedStringQuery = JSON.parse(queryString);
         let colorQueryObject = {};
+        let queryObject = {}
         let queryCommand = Product.find(formatedStringQuery);
 
         // search
@@ -65,6 +66,14 @@ const getAllProducts = asyncHandler(async (req, res) => {
             const colorArray = queries.color?.split(',');
             const colorQuery = colorArray.map(element => ({ color: { $regex: element, $options: 'i' } }));
             colorQueryObject = { $or: colorQuery }
+        }
+        if(req.query.q) {
+            delete formatedStringQuery.q;
+            formatedStringQuery['$or'] = [
+                { title: { $regex: req.query.q, $options: 'i' } },
+                { category: { $regex: req.query.q, $options: 'i' } },
+                { color: { $regex: req.query.q, $options: 'i' } }
+            ]
         }
 
         //Fields limittings
@@ -172,7 +181,7 @@ const updateProductById = asyncHandler(async (req, res) => {
             runValidators: true
         });
         return res.status(200).json({
-            messagage: 'Update product successfully',
+            message: 'Update product successfully',
             data: product
         });
     } catch (error) {

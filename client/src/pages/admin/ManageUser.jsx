@@ -123,7 +123,7 @@ const ManageUser = () => {
                     <tbody>
                         {users && users?.map((element, index) => (
                             <tr key={index} className='border border-gray-500'>
-                                <td className='py-2 px-4'>{index + 1}</td>
+                                <td className='py-2 px-4'>{(params.get('page') === 1 || params.get('page') === null) ? index + 1 : (params.get('page') - 1) * 10 + (index + 1)}</td>
                                 <td className='py-2 px-4 flex items-center'><span>{element.email}</span></td>
                                 <td className='py-2 px-4'><span>{element.firstName}</span></td>
                                 <td className='py-2 px-4'><span>{element.lastName}</span></td>

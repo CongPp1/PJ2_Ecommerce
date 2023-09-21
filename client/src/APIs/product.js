@@ -83,3 +83,19 @@ apiCreateProduct()
     .catch(error => {
         console.error("API Create Product Error:", error);
     })
+
+
+export const apiUpdateProduct = (data, productId) => {
+    return axios({
+        url:'/product/updateProduct' + productId,
+        method: 'PUT',
+        data
+    });
+}
+apiUpdateProduct()
+    .then(response => {
+        console.log("API Update Product Response:", response.data);
+    })
+    .catch(error => {
+        console.log("API Delete Product Response:", error);
+    })

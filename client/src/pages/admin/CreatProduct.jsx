@@ -1,28 +1,32 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Button from '../../components/Button/Button';
 import MarkdownEditor from '../../components/Input/Markdown';
 import { validate, getBase64 } from '../../utils/helper';
 import { toast } from 'react-toastify';
 import icons from '../../utils/icons';
 import { apiCreateProduct } from '../../APIs/product';
+import { showModal } from '../../store/appReducer';
+import Loading from '../../components/Common/Loading';
 
 
 /**
  * Creates a new product.
  *
- * @param {object} data - The data for the new product.
- * @return {undefined}
+ * @param {object} data - The data object containing the product details.
+ * @return {void}
  */
 const CreatProduct = () => {
     const { IoTrashBinSharp } = icons;
     const { handleSubmit, register, reset, watch, formState: { errors } } = useForm();
     const { categories } = useSelector(state => state.appReducer);
+    const dispatch = useDispatch();
     const [payload, setPayload] = useState({ description: '' });
     const [invalidFields, setInvalidFields] = useState([]);
     const [prev, setPrev] = useState({ images: [] });
     const [hoverElement, setHoverElement] = useState(null);
+    console.log(watch('category'))
 
     const handleChangeValue = useCallback((event) => {
         setPayload(event);
@@ -43,10 +47,13 @@ const CreatProduct = () => {
                         formData.append('images', image);
                     }
                 }
+                dispatch(showModal({ isShowModal: true, modalChild: <Loading /> }));
                 const response = await apiCreateProduct(formData);
+                dispatch(showModal({ isShowModal: false, modalChild: null }));
                 if (response.message === 'Create Product successfully') {
                     toast.success('Tạo sản phẩm thành công');
                     reset();
+                    setPrev({ images: [] });
                 } else {
                     toast.error('Tạo sản phẩm thất bại');
                 }
@@ -144,15 +151,12 @@ const CreatProduct = () => {
                     <div className='flex w-full gap-4'>
                         <div className='flex flex-col w-full gap-2'>
                             <label htmlFor="" className='mt-2'>Category</label>
-                            <select name="category" id="category" className='flex-1 w-full' {...register('category', { required: true })}>
+                            <select name="category" id="category" className='flex-1 w-full'>
                                 <option value="">--- Choose the category ---</option>
                                 {categories?.map((element, index) => (
                                     <option key={index} value={element._id}>{element.title}</option>
                                 ))}
                             </select>
-                            {errors.category && (
-                                <small className="error-container text-main">Please choose the one of this list</small>
-                            )}
                         </div>
                         <div className='flex flex-col w-full gap-2'>
                             <label htmlFor="" className='mt-2'>Brand</label>

@@ -46,11 +46,11 @@ const ProductInfomation = ({ totalRatings, ratings, productName, pid, rerender }
         if (response.messagage === 'success') {
             toast.success('Digital World đã nhận được phản hồi của bạn!', {
                 position: "top-center",
-                autoClose: 5000,
+                autoClose: 2000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
-                draggable: true,
+                draggable: true,    
                 progress: undefined,
                 theme: "colored",
             });

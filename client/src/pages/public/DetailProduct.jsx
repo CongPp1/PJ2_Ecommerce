@@ -141,9 +141,9 @@ const DetailProduct = () => {
                             {product?.description.length > 1 && product?.description?.map((element, index) => (
                                 <li key={index} className='leading-8'>{element}</li>
                             ))}
-                            {/* {product?.description.length === 1 && (
+                            {product?.description.length === 1 && (
                                 <div className='text-sm' dengerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product?.description[0]) }}></div>
-                            )} */}
+                            )}
                         </ul>
                         <div className='text-sm flex flex-col gap-8 mt-4'>
                             <div className='flex items-center gap-4'>

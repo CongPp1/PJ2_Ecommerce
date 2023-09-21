@@ -75,7 +75,6 @@ export const generateRange = (start, end) => {
 
 export function getBase64(file) {
     if (!(file instanceof Blob)) {
-        console.log('ccc')
         return Promise.reject(new Error('Đầu vào không phải là đối tượng Blob hợp lệ'));
     }
 
