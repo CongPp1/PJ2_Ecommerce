@@ -77,8 +77,8 @@ const EditingProductPopup = ({ data, handleUpdate }) => {
                                 <label htmlFor="">Category</label>
                                 <select
                                     name="category"
-                                    // value={selectedCategoryOption}
-                                    // onChange={handleSelectCategoryChange}
+                                    value={selectedCategoryOption}
+                                    onChange={handleSelectCategoryChange}
                                     id="category"
                                     className='form-select'
                                 >
@@ -116,8 +116,8 @@ const EditingProductPopup = ({ data, handleUpdate }) => {
                                 <label htmlFor="">Brand</label>
                                 <select
                                     name="brand"
-                                    // value={selectedBrandOption}
-                                    // onChange={handleSelectedBrandChange}
+                                    value={selectedBrandOption}
+                                    onChange={handleSelectedBrandChange}
                                     id="brand"
                                 >
                                     <option value="" disabled>--- Choose the brand ---</option>
