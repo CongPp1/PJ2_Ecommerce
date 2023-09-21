@@ -12,6 +12,7 @@ import ProductExtraInfo from '../../components/Product/ProductExtraInfo';
 import { productExtraInfos } from '../../utils/constants.js';
 import ProductInfomation from '../../components/Product/ProductInfomation';
 import Product from '../../components/Product/Product';
+import DOMPurify from 'dompurify';
 
 const DetailProduct = () => {
     const { pid, title, category } = useParams();
@@ -137,9 +138,12 @@ const DetailProduct = () => {
                             <span className='text-sm text-main italic'>{`(Da ban: ${product?.sold})`}</span>
                         </div>
                         <ul className='list-item list-square mt-4 text-gray-500'>
-                            {product?.description?.map((element, index) => (
+                            {product?.description.length > 1 && product?.description?.map((element, index) => (
                                 <li key={index} className='leading-8'>{element}</li>
                             ))}
+                            {product?.description.length === 1 && (
+                                <div className='text-sm' dengerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product?.description[0]) }}></div>
+                            )}
                         </ul>
                         <div className='text-sm flex flex-col gap-8 mt-4'>
                             <div className='flex items-center gap-4'>

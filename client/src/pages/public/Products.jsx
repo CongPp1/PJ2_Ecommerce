@@ -26,7 +26,9 @@ const Products = () => {
     };
 
     const fetchedProductsByCatgory = async (query) => {
+        console.log(query)
         const response = await apiGetProducts(query);
+        console.log(response)
         if (response.message === 'Get all products successfully') {
             setProducts(response?.data?.products?.map(product => product));
             setQuantity(response?.data?.quantity);

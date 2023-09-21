@@ -1,5 +1,5 @@
 import { createSlice, current } from "@reduxjs/toolkit";
-import { getUser } from "./asyncUserAction.js";
+import { getUser, updateUser, deleteUser } from "./asyncUserAction.js";
 
 export const userSlice = createSlice({
     name: 'user',
@@ -36,6 +36,31 @@ export const userSlice = createSlice({
         builder.addCase(getUser, (state, action) => {
             state.isLoading = false;
             state.current = null;
+        });
+        builder.addCase(updateUser.pending, (state) => {
+            state.isLoading = true;
+        });
+
+        builder.addCase(updateUser.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.current = action.payload;
+        });
+
+        builder.addCase(updateUser.rejected, (state, action) => {
+            state.isLoading = false;
+            state.mes = action.error.message;
+        });
+        builder.addCase(deleteUser.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(deleteUser.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.current = null;
+        });
+
+        builder.addCase(deleteUser.rejected, (state, action) => {
+            state.isLoading = false;
+            state.mes = action.error.message;
         });
     },
 })

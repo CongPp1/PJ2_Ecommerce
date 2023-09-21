@@ -2,11 +2,12 @@ const Product = require('../../models/product.js');
 const asyncHandler = require('express-async-handler');
 const slugify = require('slugify');
 const product = require('../../models/product.js');
-const { query } = require('express');
 
 const createProduct = asyncHandler(async (req, res) => {
     try {
-        if (Object.entries(req.body).length === 0) {
+        const { title, price, description, brand, category, color } = req.body;
+        const images = req.files?.images?.map(element => element.path);
+        if (!title && !price && !description && !brand && !category && !color) {
             return res.status(400).json({
                 message: 'Please fill in all fields'
             });
@@ -16,12 +17,16 @@ const createProduct = asyncHandler(async (req, res) => {
                 lower: true
             });
         }
+        if (images) {
+            req.body.images = images;
+        }
         const product = await Product.create(req.body);
         return res.status(201).json({
-            messagage: 'Create Product successfully',
+            message: 'Create Product successfully',
             data: product
         });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             messagage: 'Error creating product',
             error: error.message
@@ -32,6 +37,7 @@ const createProduct = asyncHandler(async (req, res) => {
 const getAllProducts = asyncHandler(async (req, res) => {
     try {
         const queries = { ...req.query };
+        console.log('queries', queries)
         const excludesFields = ['limit', 'sort', 'page', 'fields'];
 
         // Xóa các trường đặc biệt ra khỏi queries
@@ -45,6 +51,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
         queryString = queryString.replace(/\b(gt|lt|gte|lte)\b/g, (matchedElement) => `$${matchedElement}`);
         let formatedStringQuery = JSON.parse(queryString);
         let colorQueryObject = {};
+        let queryObject = {}
         let queryCommand = Product.find(formatedStringQuery);
 
         // search
@@ -60,9 +67,17 @@ const getAllProducts = asyncHandler(async (req, res) => {
             const colorQuery = colorArray.map(element => ({ color: { $regex: element, $options: 'i' } }));
             colorQueryObject = { $or: colorQuery }
         }
+        if(req.query.q) {
+            delete formatedStringQuery.q;
+            formatedStringQuery['$or'] = [
+                { title: { $regex: req.query.q, $options: 'i' } },
+                { category: { $regex: req.query.q, $options: 'i' } },
+                { color: { $regex: req.query.q, $options: 'i' } }
+            ]
+        }
 
         //Fields limittings
-        if (req.query.fields) { 
+        if (req.query.fields) {
             const fields = req.query.fields.split(',').join(' ');
             queryCommand = queryCommand.select(fields);
         }
@@ -103,7 +118,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
                 if (sortBy === '-title') {
                     return b.title.localeCompare(a.title); // Sắp xếp theo tên từ Z-A
                 }
-                
+
                 return 0;
             })
         }
@@ -166,7 +181,7 @@ const updateProductById = asyncHandler(async (req, res) => {
             runValidators: true
         });
         return res.status(200).json({
-            messagage: 'Update product successfully',
+            message: 'Update product successfully',
             data: product
         });
     } catch (error) {
@@ -198,7 +213,6 @@ const handleRatings = asyncHandler(async (req, res) => {
     try {
         const { _id: _id } = req.user;
         const { star, comment, _id: p_id, updatedAt } = req.body;
-        console.log(req.body);
         if (!star || !p_id) {
             return res.status(404).json({
                 messagage: 'Missing input'
@@ -206,7 +220,6 @@ const handleRatings = asyncHandler(async (req, res) => {
         };
         const product = await Product.findById(p_id);
         const isRated = product?.ratings?.find((element) => element.postedBy.toString() === _id);
-        console.log('isRated: ', isRated);
         if (isRated) {
             //cap nhap so sao va binh luan:
             await Product.updateOne({

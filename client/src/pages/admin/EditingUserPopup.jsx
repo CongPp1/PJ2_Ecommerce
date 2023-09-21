@@ -1,17 +1,27 @@
 import React, { memo, useEffect } from 'react';
-import { useRef } from 'react';
-import InputForm from '../../components/Input/InputForm';
+import { useRef } from 'react'; 
 import { useForm } from 'react-hook-form';
 import Button from '../../components/Button/Button';
 
 
-const EditingUserPopup = ({ handleUpdate, data }) => {
-    const { handleSubmit, register, reset, formState: { errors } } = useForm();
+/**
+ * Renders a popup for editing a user.
+ *
+ * @param {Object} data - The user data to be edited.
+ * @param {function} handleUpdate - The function to handle the update of the user data.
+ * @return {JSX.Element} The JSX element representing the editing user popup.
+ */
+const EditingUserPopup = ({ data, handleUpdate }) => {
+    const { handleSubmit, register, formState: { errors } } = useForm();
     const modalRef = useRef();
     console.log(data)
 
     const handleStopPropagation = (event) => {
         event.stopPropagation();
+    }
+
+    const onSubmit = (formData) => {
+        handleUpdate(data._id, formData);
     }
 
     useEffect(() => {
@@ -22,7 +32,7 @@ const EditingUserPopup = ({ handleUpdate, data }) => {
         <div onClick={handleStopPropagation} ref={modalRef} className='w-[700px] h-[400px] rounded-2xl bg-white p-4 flex flex-col gap-4 items-center justify-center'>
             <h2 className='text-center text-medium text-lg font-semibold'>Editing User</h2>
             <div className='flex gap-4'>
-                <form onSubmit={handleSubmit(handleUpdate)}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className='flex gap-4 items-center justify-between'>
                         <div className='flex flex-col gap-8'>
                             <div>
@@ -41,7 +51,7 @@ const EditingUserPopup = ({ handleUpdate, data }) => {
                                 <input
                                     type="text"
                                     defaultValue={data.firstName}
-                                    {...register("first_name", { required: true })}
+                                    {...register("firstName", { required: true })}
                                 />
                                 {errors.name && (
                                     <small className="error-container text-main">Name is required</small>
@@ -54,7 +64,7 @@ const EditingUserPopup = ({ handleUpdate, data }) => {
                                 <input
                                     type="text"
                                     defaultValue={data.lastName}
-                                    {...register("last_name", { required: true })}
+                                    {...register("lastName", { required: true })}
                                 />
                                 {errors.name && (
                                     <small className="error-container text-main">Name is required</small>

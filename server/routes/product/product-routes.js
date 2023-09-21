@@ -3,7 +3,7 @@ const router = require('express').Router();
 const { verifyAccessToken } = require('../../middlewares/verifyToken.js');
 const uploader = require('../../config/cloundinary-config.js');
 
-router.post('/createProduct', verifyAccessToken, productController.createProduct);
+router.post('/createProduct', verifyAccessToken, uploader.fields([{ name: 'images', maxCount: 10 }]), productController.createProduct);
 router.get('/products', productController.getAllProducts);
 router.get('/products/:_id', verifyAccessToken, productController.getProductById);
 router.put('/updateProduct/:_id', verifyAccessToken, productController.updateProductById);
