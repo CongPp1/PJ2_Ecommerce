@@ -11,6 +11,9 @@ import Products from './pages/public/Products';
 import path from './utils/path';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategories } from './store/asyncAction';
+import { getBrands } from './store/asyncBrandAction';
+import { getNewProducts } from './store/asyncProductAction';
+import { updateProduct } from './store/asyncProductAction';
 import FinalRegister from './pages/public/FinalRegister';
 import ResetPassword from './pages/public/ResetPassword';
 import 'react-toastify/dist/ReactToastify.css'
@@ -31,6 +34,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getCategories());
+    dispatch(getBrands());
   }, []);
   return (
     <div className="min-h-screen font-main flex justify-items-center relative">

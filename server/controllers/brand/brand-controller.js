@@ -27,7 +27,7 @@ const getBrands = asyncHandler(async (req, res) => {
         }
         return res.status(200).json({
             message: 'Success',
-            Brands: response
+            data: response
         });
     } catch (error) {
         console.error(error);

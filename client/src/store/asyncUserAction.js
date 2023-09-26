@@ -12,7 +12,9 @@ export const getUser = createAsyncThunk('user/user', async (data, { rejectWithVa
 });
 
 export const updateUser = createAsyncThunk('user/update', async ({ userId, data }, { rejectWithValue }) => {
+    console.log('update user')
     const payload = await apiUpdateUser(data, userId);
+    console.log('>>> payload: ', payload)
 
     if (payload.message === 'User updated successfully') {
         return payload.result;

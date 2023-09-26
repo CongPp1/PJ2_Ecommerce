@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getNewProducts } from "../store/asyncProductAction.js"
+import { getNewProducts, updateProduct } from "../store/asyncProductAction.js"
 
 
 export const productSlice = createSlice({
     name: 'product',
     initialState: {
         newProducts: null,
+        current: null,
         errorMessage: ''
     },
     reducers: {
@@ -20,15 +21,30 @@ export const productSlice = createSlice({
 
         builder.addCase(getNewProducts.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.newProducts = action.payload;
+            state.newProducts = action.payload; 
         });
 
         builder.addCase(getNewProducts, (state, action) => {
             state.isLoading = false;
             state.errorMessage = action.payload.message;
         });
+        builder.addCase(updateProduct.pending, (state) => {
+            console.log('pending')
+            state.isLoading = true;
+        });
+
+        builder.addCase(updateProduct.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.current = action.payload;
+        });
+
+        builder.addCase(updateProduct.rejected, (state, action) => {
+            console.log('rejected')
+            state.isLoading = false;
+            state.errorMessage = action.error.message;
+        });
     },
 })
 
-export const { } = productSlice.actions;
+export const { logout } = productSlice.actions;
 export default productSlice.reducer;

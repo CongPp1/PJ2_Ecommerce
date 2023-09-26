@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 import userSlice from './userSlice';
 import appReducer from './appReducer';
+import brandSlice from './brandSlice';
 
 const commonConfig = {
   key: 'shop/user',
@@ -20,7 +21,8 @@ export const store = configureStore({
   reducer: {
     userReducer: persistReducer(userConfig, userSlice),
     productReducer: productSlice,
-    appReducer: appReducer
+    appReducer: appReducer,
+    brandReducer: brandSlice
   },
 });
 

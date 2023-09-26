@@ -5,12 +5,19 @@ import Pagination from '../../components/Pagination/Pagination';
 import useDebounce from '../../custom-hooks/useDebounce';
 import { useSearchParams } from 'react-router-dom';
 import InputField from '../../components/Input/InputField';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '../../store/appReducer';
 import EditingProductPopup from './EditingProductPopup';
-import { apiUpdateProduct } from '../../APIs/product';
+import { apiUpdateProduct, apiDeleteProduct } from '../../APIs/product';
+import { updateProduct, getNewProducts } from '../../store/asyncProductAction';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
-
+/**
+ * Renders a component that manages the product data.
+ *
+ * @return {JSX.Element} The rendered component.
+ */
 const ManageProduct = () => {
     const [products, setProducts] = useState(null);
     const [productQuantity, setProductQuantity] = useState(0);
@@ -19,6 +26,9 @@ const ManageProduct = () => {
     const queriesDebounce = useDebounce(queries.q, 800);
     const dispatch = useDispatch();
 
+    // const { newProducts } = useSelector(state => state.productReducer); 
+
+dispatch(getNewProducts());
     const fetchedProducts = async (params) => {
         const response = await apiGetProducts({ ...params, limit: 10 });
         if (response.message === 'Get all products successfully') {
@@ -28,31 +38,49 @@ const ManageProduct = () => {
     };
 
     const handleUpdate = async (productId, updatedData) => {
-        console.log('alsalsk')
-        // try {
-        //     const response = await apiUpdateProduct(updatedData, productId);
-        //     if (response.message === 'Update product successfully') {
-        //         toast.success('Cập nhật người dùng thành công');
-        //         render();
-        //     } else {
-        //         toast.error(response.message);
-        //     }
-        // } catch (error) {
-        //     console.log(error)
-        //     toast.error('Có lỗi xảy ra khi cập nhật người dùng');
-        // }
-        console.log('updateData',updatedData)
-        // if( updatedData.category) {
-        //     updatedData.category = products?.find(item => item._id === updatedData.category)?.title;
-        //     console.log('updatedData category',updatedData.category)
-        // }
+        try {
+            dispatch(updateProduct({ productId, updatedData }));
+            toast.success('Cập nhật sản phẩm thành công');
+            dispatch(
+                showModal({
+                    isShowModal: false,
+                    modalChildren: null,
+                })
+            );
+        } catch (error) {
+            console.error(error);
+            toast.error('Có lỗi xảy ra khi cập nhật sản phẩm');
+        }
+    };
+
+    const handleDeleteProduct = async (productId) => {
+        const result = await Swal.fire({
+            title: 'Bạn có đồng ý xóa sản phẩm này không?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Đồng ý',
+            denyButtonText: `Không`,
+        });
+
+        if (result.isConfirmed) {
+            try {
+                await apiDeleteProduct(productId);
+                await Swal.fire('Xóa thành công!', '', 'success');
+            } catch (error) {
+                Swal.fire('Xóa thất bại!', `${error}`, 'error');
+            }
+        } else if (result.isDenied) {
+            Swal.fire('Changes are not saved', '', 'info');
+        }
     };
 
     const handleEditingProductPopup = useCallback((element) => {
-        dispatch(showModal({
-            isShowModal: true,
-            modalChildren: <EditingProductPopup handleUpdate={handleUpdate} data={element}/>
-        }))
+        dispatch(
+            showModal({
+                isShowModal: true,
+                modalChildren: <EditingProductPopup handleUpdate={handleUpdate} data={element} />,
+            })
+        );
     }, []);
 
     useEffect(() => {
@@ -87,30 +115,40 @@ const ManageProduct = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {products && products.map((element, index) => (
-                        <tr key={index} className='border border-gray-500'>
-                            <td className='text-center'>{(params.get('page') === 1 || params.get('page') === null) ? index + 1 : (params.get('page') - 1) * 10 + (index + 1)}</td>
-                            <td>
-                                <img src={element.images[0]} alt="images" className='w-12 h-12 object-cover' />
-                            </td>
-                            <td>{element.title}</td>
-                            <td>{element.brand}</td>
-                            <td>{element.category}</td>
-                            <td>{element.quantity}</td>
-                            <td className='text-center py-2'>{element.sold}</td>
-                            <td>{element.color}</td>
-                            <td className='flex text-center'>{renderStars(element.totalRatings)}</td>
-                            <td className='flex gap-2'>
-                                <span
-                                    className='px-2 text-orange-600 cursor-pointer hover:underline'
-                                    onClick={() => handleEditingProductPopup(element)}
-                                >
-                                    Edit
-                                </span>
-                                <span className='px-2 text-orange-600 cursor-pointer hover:underline'>Delete</span>
-                            </td>
-                        </tr>
-                    ))}
+                    {products &&
+                        products.map((element, index) => (
+                            <tr key={index} className='border border-gray-500'>
+                                <td className='text-center'>
+                                    {params.get('page') === 1 || params.get('page') === null
+                                        ? index + 1
+                                        : (params.get('page') - 1) * 10 + (index + 1)}
+                                </td>
+                                <td>
+                                    <img src={element.images[0]} alt='images' className='w-12 h-12 object-cover' />
+                                </td>
+                                <td>{element.title}</td>
+                                <td>{element.brand}</td>
+                                <td>{element.category}</td>
+                                <td>{element.quantity}</td>
+                                <td className='text-center py-2'>{element.sold}</td>
+                                <td>{element.color}</td>
+                                <td className='flex text-center'>{renderStars(element.totalRatings)}</td>
+                                <td className='flex gap-2'>
+                                    <span
+                                        className='px-2 text-orange-600 cursor-pointer hover:underline'
+                                        onClick={() => handleEditingProductPopup(element)}
+                                    >
+                                        Edit
+                                    </span>
+                                    <span
+                                        className='px-2 text-orange-600 cursor-pointer hover:underline'
+                                        onClick={() => handleDeleteProduct(element._id)}
+                                    >
+                                        Delete
+                                    </span>
+                                </td>
+                            </tr>
+                        ))}
                 </tbody>
             </table>
             <div className='w-full text-right flex justify-center'>

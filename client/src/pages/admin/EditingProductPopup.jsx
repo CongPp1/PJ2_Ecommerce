@@ -12,8 +12,9 @@ import { useSelector } from 'react-redux';
  * @return {JSX.Element} the rendered editing product popup
  */
 const EditingProductPopup = ({ data, handleUpdate }) => {
-    const { handleSubmit, register, watch, reset, formState: { errors } } = useForm();
+    const { handleSubmit, register, formState: { errors } } = useForm();
     const modalRef = useRef();
+    const { brands } = useSelector(state => state.brandReducer);
     const { categories } = useSelector(state => state.appReducer);
     const [selectedCategoryOption, setSelectedCategoryOption] = useState(null);
     const [selectedBrandOption, setSelectedBrandOption] = useState(null);
@@ -23,12 +24,13 @@ const EditingProductPopup = ({ data, handleUpdate }) => {
     }
 
     const onSubmit = (formData) => {
+        const categoryToSend = categories?.find(item => item._id === selectedCategoryOption)?.title || data.category;
+        const brandToSend = brands?.find(item => item._id === selectedBrandOption)?.title || data.brand;
         handleUpdate(data._id, {
             ...formData,
-            category: selectedCategoryOption,
-            brand: selectedBrandOption
+            category: categoryToSend,
+            brand: brandToSend
         });
-        console.log(data._id, { ...formData, category: selectedCategoryOption, brand: selectedBrandOption });
     }
 
     const handleSelectCategoryChange = (event) => {
@@ -82,7 +84,7 @@ const EditingProductPopup = ({ data, handleUpdate }) => {
                                     id="category"
                                     className='form-select'
                                 >
-                                    <option value="" disabled>--- Choose the category ---</option>
+                                    <option value="">{selectedCategoryOption === null ? data.category : selectedCategoryOption}</option>
                                     {categories?.map((element, index) => (
                                         <option value={element._id} key={index}>{element.title}</option>
                                     ))}
@@ -120,7 +122,7 @@ const EditingProductPopup = ({ data, handleUpdate }) => {
                                     onChange={handleSelectedBrandChange}
                                     id="brand"
                                 >
-                                    <option value="" disabled>--- Choose the brand ---</option>
+                                    <option value="">{selectedBrandOption === null ? data.brand : selectedBrandOption}</option>
                                     {categories?.find(element => element._id === selectedCategoryOption)?.brands?.map((element, index) => (
                                         <option value={element._id} key={index}>{element.title}</option>
                                     ))}

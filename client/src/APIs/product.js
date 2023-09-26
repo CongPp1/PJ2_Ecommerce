@@ -85,9 +85,16 @@ apiCreateProduct()
     })
 
 
-export const apiUpdateProduct = (data, productId) => {
+/**
+ * Updates a product in the API.
+ *
+ * @param {string} productId - The ID of the product to update.
+ * @param {object} data - The data to update the product with.
+ * @return {Promise} A promise that resolves to the updated product.
+ */
+export const apiUpdateProduct = (productId, data) => {
     return axios({
-        url:'/product/updateProduct' + productId,
+        url:'/product/updateProduct/' + productId,
         method: 'PUT',
         data
     });
@@ -95,6 +102,26 @@ export const apiUpdateProduct = (data, productId) => {
 apiUpdateProduct()
     .then(response => {
         console.log("API Update Product Response:", response.data);
+    })
+    .catch(error => {
+        console.log("API Delete Product Response:", error);
+    })
+
+/**
+ * Deletes a product from the server.
+ *
+ * @param {number} productId - The ID of the product to be deleted.
+ * @return {Promise} A promise that resolves with the result of the deletion.
+ */
+export const apiDeleteProduct = (productId) => {
+    return axios({
+        url: '/product/deleteProduct/' + productId,
+        method: 'DELETE',
+    });
+}
+apiDeleteProduct()
+    .then(response => {
+        console.log("API Delete Product Response:", response.data);
     })
     .catch(error => {
         console.log("API Delete Product Response:", error);

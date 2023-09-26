@@ -9,7 +9,7 @@ import icons from '../../utils/icons';
 import { apiCreateProduct } from '../../APIs/product';
 import { showModal } from '../../store/appReducer';
 import Loading from '../../components/Common/Loading';
-
+import { apiGetBrands } from '../../APIs/brand';
 
 /**
  * Creates a new product.
@@ -19,14 +19,14 @@ import Loading from '../../components/Common/Loading';
  */
 const CreatProduct = () => {
     const { IoTrashBinSharp } = icons;
-    const { handleSubmit, register, reset, watch, formState: { errors } } = useForm();
+    const { handleSubmit, register, watch, reset, formState: { errors } } = useForm();
     const { categories } = useSelector(state => state.appReducer);
+    const { brands } = useSelector(state => state.brandReducer);
     const dispatch = useDispatch();
     const [payload, setPayload] = useState({ description: '' });
     const [invalidFields, setInvalidFields] = useState([]);
     const [prev, setPrev] = useState({ images: [] });
     const [hoverElement, setHoverElement] = useState(null);
-    console.log(watch('category'))
 
     const handleChangeValue = useCallback((event) => {
         setPayload(event);
@@ -37,6 +37,7 @@ const CreatProduct = () => {
         if (invalids === 0) {
             if (data.category) {
                 data.category = categories.find(item => item._id === data.category)?.title;
+                data.brand = brands.find(item => item._id === data.brand)?.title;
                 const finalPayload = { ...data, ...payload };
                 const formData = new FormData();
                 for (let i of Object.entries(finalPayload)) {
@@ -151,7 +152,7 @@ const CreatProduct = () => {
                     <div className='flex w-full gap-4'>
                         <div className='flex flex-col w-full gap-2'>
                             <label htmlFor="" className='mt-2'>Category</label>
-                            <select name="category" id="category" className='flex-1 w-full'>
+                            <select name="category" id="category" className='flex-1 w-full' {...register('category', { required: true })}>
                                 <option value="">--- Choose the category ---</option>
                                 {categories?.map((element, index) => (
                                     <option key={index} value={element._id}>{element.title}</option>
