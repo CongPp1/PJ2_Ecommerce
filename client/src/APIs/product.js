@@ -126,3 +126,26 @@ apiDeleteProduct()
     .catch(error => {
         console.log("API Delete Product Response:", error);
     })
+
+
+/**
+ * Adds a variant to the product using the API.
+ *
+ * @param {object} data - The data for the variant.
+ * @param {string} id - The ID of the product.
+ * @return {Promise} A promise that resolves with the result of the API call.
+ */
+export const apiAddVariant = (data ,id) => {
+    return axios({
+        url: '/product/variant/' + id,
+        method: 'PUT',
+        data
+    });
+}
+apiAddVariant()
+    .then(response => {
+        console.log("API Add Variant Response:", response.data);
+    })
+    .catch(error => {
+        console.log("API Add Variant Response:", error);
+    })

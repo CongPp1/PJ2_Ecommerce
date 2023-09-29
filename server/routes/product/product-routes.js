@@ -10,5 +10,6 @@ router.put('/updateProduct/:_id', verifyAccessToken, productController.updatePro
 router.delete('/deleteProduct/:_id', verifyAccessToken, productController.deleteProductById);
 router.put('/rating', verifyAccessToken, productController.handleRatings);
 router.put('/uploadImage/:_id', verifyAccessToken, uploader.array('images', 10), productController.uploadImage);
+router.put('/variant/:_id', verifyAccessToken, uploader.fields([{ name: 'images', maxCount: 10 }]), productController.addVariant);
 
 module.exports = router;

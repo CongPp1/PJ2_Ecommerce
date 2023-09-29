@@ -19,10 +19,21 @@ const EditingProductPopup = ({ data, handleUpdate }) => {
     const [selectedCategoryOption, setSelectedCategoryOption] = useState(null);
     const [selectedBrandOption, setSelectedBrandOption] = useState(null);
 
+    /**
+     * Handles the stop propagation of the event.
+     *
+     * @param {Event} event - The event object.
+     */
     const handleStopPropagation = (event) => {
         event.stopPropagation();
     }
 
+    /**
+     * Submits the form data to update the category and brand.
+     *
+     * @param {object} formData - The form data to be submitted.
+     * @return {undefined} This function does not return a value.
+     */
     const onSubmit = (formData) => {
         const categoryToSend = categories?.find(item => item._id === selectedCategoryOption)?.title || data.category;
         const brandToSend = brands?.find(item => item._id === selectedBrandOption)?.title || data.brand;
@@ -33,6 +44,12 @@ const EditingProductPopup = ({ data, handleUpdate }) => {
         });
     }
 
+    /**
+     * Handles the change event when the select category changes.
+     *
+     * @param {Event} event - The change event.
+     * @return {void} No return value.
+     */
     const handleSelectCategoryChange = (event) => {
         setSelectedCategoryOption(event.target.value);
     };

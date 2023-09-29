@@ -2,6 +2,7 @@ const Product = require('../../models/product.js');
 const asyncHandler = require('express-async-handler');
 const slugify = require('slugify');
 const product = require('../../models/product.js');
+const makeSKU = require('uniqid');
 
 const createProduct = asyncHandler(async (req, res) => {
     try {
@@ -261,7 +262,7 @@ const uploadImage = asyncHandler(async (req, res) => {
                 messagage: 'Please select files first'
             });
         }
-        const response = await Product.findByIdAndUpdate(_id, {
+        await Product.findByIdAndUpdate(_id, {
             $push: { images: { $each: req.files.map((element) => element.path) } }
         }, { new: true });
         return res.status(200).json({
@@ -276,6 +277,26 @@ const uploadImage = asyncHandler(async (req, res) => {
     }
 });
 
+const addVariant = asyncHandler(async (req, res) => {
+    const { _id } = req.params;
+    const { title, price, color } = req.body;
+    const images = req.files?.images?.map(element => element.path);
+    if (!title || !price || !color) {
+        return res.status(400).json({
+            message: 'Please fill in all fields'
+        });
+    }
+    const product = await Product.findByIdAndUpdate(_id, {
+        $push: {
+            variants: { title, price, color, images, sku: makeSKU().toUpperCase() }
+        }
+    }, { new: true });
+    return res.status(200).json({
+        message: 'Add variant oke',
+        data: product
+    });
+});
+
 module.exports = {
     createProduct,
     getAllProducts,
@@ -283,5 +304,6 @@ module.exports = {
     updateProductById,
     deleteProductById,
     handleRatings,
-    uploadImage
+    uploadImage,
+    addVariant
 }

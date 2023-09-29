@@ -13,6 +13,7 @@ import { productExtraInfos } from '../../utils/constants.js';
 import ProductInfomation from '../../components/Product/ProductInfomation';
 import Product from '../../components/Product/Product';
 import DOMPurify from 'dompurify';
+import clsx from 'clsx';
 
 const DetailProduct = () => {
     const { pid, title, category } = useParams();
@@ -21,6 +22,8 @@ const DetailProduct = () => {
     const [relatedProducts, setRelatedProducts] = useState(null);
     const [currentImg, setCurrentImg] = useState(null);
     const [update, setUpdate] = useState(false);
+    const [variant, setVariant] = useState(null);
+    console.log(product?.variants)
 
     const settings = {
         dots: false,
@@ -57,10 +60,8 @@ const DetailProduct = () => {
 
     const fetchedProducts = async () => {
         const response = await apiGetCategories({ title: category });
-        console.log(response);
         if (response.message === 'Success') {
             setRelatedProducts(response?.ProductCategories?.map(category => category.products));
-            console.log(response?.ProductCategories?.map(category => category.products))
         }
     };
 
@@ -97,8 +98,8 @@ const DetailProduct = () => {
         <div className='w-full relative'>
             <div className='h-[81px] bg-gray-100 flex items-center justify-center'>
                 <div className='w-main'>
-                    <h3 className='font-extrabold text-[20px]'>{title.toUpperCase()}</h3>
-                    <BreadCrumb title={title} category={category} />
+                    <h3 className='font-extrabold text-[20px]'>{product?.variants?.find(element => element.sku === variant)?.title || product?.title}</h3>
+                    <BreadCrumb title={product?.variants?.find(element => element.sku === variant)?.title || product?.title} category={category} />
                 </div>
             </div>
             <div className='w-full m-auto mt-4 flex'>
@@ -145,6 +146,34 @@ const DetailProduct = () => {
                                 <div className='text-sm' dengerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product?.description[0]) }}></div>
                             )}
                         </ul>
+                        <div className='my-4 flex gap-4'>
+                            <span className='font-bold'>Color:</span>
+                            <div className='flex flex-wrap gap-4 w-full items-center'>
+                                <div
+                                    className={clsx('flex gap-2 items-center p-2 border cursor-pointer', variant ? 'border-main' : '')}
+                                    onClick={() => setVariant(null)}
+                                >
+                                    <img src={product?.images[0]} alt="images" className='w-12 h-12 object-cover' />
+                                    <span className='flex flex-col gap-2'>
+                                        <span>{product?.color}</span>
+                                        <span className='text-sm'>{product?.price}</span>
+                                    </span>
+                                </div>
+                                {product?.variants?.map((element, index) => (
+                                    <div
+                                        key={index}
+                                        className={clsx('flex gap-2 items-center p-2 border cursor-pointer', variant === element.sku ? 'border-main' : '')}
+                                        onClick={() => setVariant(element.sku)}
+                                    >
+                                        <img src={element?.images[0]} alt="images" className='w-12 h-12 object-cover' />
+                                        <span className='flex flex-col gap-2'>
+                                            <span>{element?.color}</span>
+                                            <span className='text-sm'>{formatPrice(element?.price)}</span>
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                         <div className='text-sm flex flex-col gap-8 mt-4'>
                             <div className='flex items-center gap-4'>
                                 <span className='font-semibold'>Quantity</span>
