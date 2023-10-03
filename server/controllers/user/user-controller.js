@@ -241,7 +241,7 @@ const resetPassword = asyncHandler(async (req, res) => {
         }
         user.password = password;
         user.resetPasswordToken = undefined;
-        user.passwordChangedAt = Date.now();
+        user.passwordChangedAt = Date.now();firstName, lastName, email, mobile, avatar
         user.passwordResetTokenExpiredIn = undefined;
         await user.save({ validateBeforeSave: false });
 
@@ -299,7 +299,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
         let queryCommand = User.find(formatedStringQuery);
 
         // search
-        if(req.query.q) {
+        if (req.query.q) {
             delete formatedStringQuery.q;
             formatedStringQuery['$or'] = [
                 { firstName: { $regex: req.query.q, $options: 'i' } },
@@ -411,6 +411,40 @@ const updateUserById = asyncHandler(async (req, res) => {
     }
 });
 
+const updateCurrentUser = asyncHandler(async (req, res) => {
+    try {
+        const { _id } = req.user;
+        const { firstName, lastName, email, mobile, avatar } = req.body;
+        const data = { firstName, lastName, email, mobile };
+        console.log(req.file)
+        if(req.file) {
+            console.log(req.file)
+            data.avatar = req.file.path
+        }
+        if (Object.entries(req.body).length === 0) {
+            return res.status(400).json({
+                message: 'Please provide all fields',
+            });
+        }
+        const user = await User.findByIdAndUpdate(_id, data, { new: true });
+        if (!user) {
+            return res.status(404).json({
+                message: 'User not found',
+            });
+        }
+        return res.status(200).json({
+            message: 'User updated successfully',
+            user
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: 'Internal server error',
+            error: error
+        });
+    }
+});
+
 const deleteUserById = asyncHandler(async (req, res) => {
     try {
         const { _id } = req.params;
@@ -477,7 +511,6 @@ const updateUserCart = asyncHandler(async (req, res) => {
                 });
             }
         } else {
-            console.log('aaaaaaa')
             const user = await User.findByIdAndUpdate(_id, {
                 $push: { carts: { product: p_id, color, quantity } }
             }, { new: true });
@@ -509,5 +542,6 @@ module.exports = {
     updateUserById,
     deleteUserById,
     updateUserAddress,
-    updateUserCart
+    updateUserCart,
+    updateCurrentUser
 }

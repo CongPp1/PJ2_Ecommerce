@@ -1,6 +1,7 @@
 const userController = require('../../controllers/user/user-controller');
 const router = require('express').Router();
 const { verifyAccessToken } = require('../../middlewares/verifyToken.js');
+const uploader = require('../../config/cloundinary-config.js');
 
 //Authentication
 router.post('/register', userController.register);
@@ -16,6 +17,7 @@ router.put('/resetPassword', userController.resetPassword);
 router.get('/user',verifyAccessToken, userController.getUSer);
 router.get('/users',verifyAccessToken, userController.getAllUsers);
 router.put('/update/:_id',verifyAccessToken, userController.updateUserById);
+router.put('/updateCurrentUser', verifyAccessToken, uploader.single('avatar'), userController.updateCurrentUser);
 router.delete('/delete/:_id',verifyAccessToken, userController.deleteUserById);
 router.put('/updateAddress/',verifyAccessToken, userController.updateUserAddress);
 router.put('/updateCart', verifyAccessToken, userController.updateUserCart);

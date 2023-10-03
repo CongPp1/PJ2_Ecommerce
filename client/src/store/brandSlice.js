@@ -6,7 +6,7 @@ export const brandSlice = createSlice({
     initialState: {
         brands: null,
         isLoading: false,
-        errorMessage:''
+        message:''
     },
     reducers: {
         logout: (state) => {
@@ -25,7 +25,7 @@ export const brandSlice = createSlice({
 
         builder.addCase(getBrands.rejected, (state, action) => {
             state.isLoading = false;
-            state.errorMessage = action.payload.message;
+            // state.message = action.payload.message;
         });
     },
 })

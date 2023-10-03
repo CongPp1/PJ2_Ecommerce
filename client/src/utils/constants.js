@@ -100,3 +100,11 @@ export const adminSidebars = [
     { id: 5, text: 'Dashboard', type: 'single', path: `/${path.ADMIN}/${path.DASHBOARD}`, icon: <BsFileBarGraph /> },
 
 ]
+
+export const memberSidebars = [
+    { id: 1, text: 'Personal', type: 'single', path: `/${path.MEMBER}/${path.PERSONAL}`, icon: <BsFileBarGraph /> },
+    { id: 2, text: 'My cart', type: 'single', path: `/${path.MEMBER}/${path.MY_CART}`, icon: <MdGroups /> },
+    { id: 3, text: 'Shopping history', type: 'single', path: `/${path.MEMBER}/${path.SHOPPING_HISTORY}`, icon: <BiCartDownload /> },
+    { id: 4, text: 'Wish list', type: 'single', path: `/${path.MEMBER}/${path.WISHLIST}`, icon: <BsFileBarGraph /> },
+
+]

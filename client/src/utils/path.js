@@ -11,14 +11,21 @@ const path = {
     BLOGS: 'blogs',
     FINAL_REGISTER: 'finalRegister/:status',
     RESET_PASSWORD: 'resetPassword/:token',
+
+    //Admin
     ADMIN: 'admin',
     DASHBOARD: 'dashboard',
     MANAGE_USER: 'manageUser',
     MANAGE_PRODUCTS: 'manageProducts',
     MANAGE_ORDER: 'manageOrder',
     CREATE_PRODUCT: 'createProduct',
+
+    //Member
     MEMBER: 'member',
     PERSONAL: 'personal',
+    MY_CART: 'my-cart',
+    SHOPPING_HISTORY: 'shopping-history',
+    WISHLIST: 'wishlist'
 }
 
 export default path;

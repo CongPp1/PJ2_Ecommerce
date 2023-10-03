@@ -192,3 +192,24 @@ apiUpdateUser()
     .catch(error => {
         console.error("API update user Error:", error);
     })
+
+/**
+ * Updates the current user's information.
+ *
+ * @param {Object} data - The data containing the updated user information.
+ * @return {Promise} A Promise that resolves to the updated user information.
+ */
+export const apiUpdateCurrentUser = (data) => {
+    return axios({
+        url: '/user/updateCurrentUser',
+        method: 'PUT',
+        data
+    });
+}
+apiUpdateCurrentUser()
+    .then(response => {
+        console.log("API update user Response:", response.data);
+    })
+    .catch(error => {
+        console.error("API update user Error:", error);
+    })

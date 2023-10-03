@@ -12,8 +12,6 @@ import path from './utils/path';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategories } from './store/asyncAction';
 import { getBrands } from './store/asyncBrandAction';
-import { getNewProducts } from './store/asyncProductAction';
-import { updateProduct } from './store/asyncProductAction';
 import FinalRegister from './pages/public/FinalRegister';
 import ResetPassword from './pages/public/ResetPassword';
 import 'react-toastify/dist/ReactToastify.css'
@@ -26,6 +24,9 @@ import ManageUser from './pages/admin/ManageUser';
 import CreatProduct from './pages/admin/CreatProduct';
 import MemberLayout from './pages/members/MemberLayout';
 import PersonalLayout from './pages/members/PersonalLayout';
+import MyCart from './pages/members/MyCart';
+import WishList from './pages/members/WishList';
+import ShoppingHistory from './pages/members/ShoppingHistory';
 import Dashboard from './pages/admin/Dashboard';
 
 function App() {
@@ -58,6 +59,9 @@ function App() {
         </Route>
         <Route path={path.MEMBER} element={<MemberLayout />}>
           <Route path={path.PERSONAL} element={<PersonalLayout />} />
+          <Route path={path.MY_CART} element={<MyCart />} />
+          <Route path={path.WISHLIST} element={<WishList />} />
+          <Route path={path.SHOPPING_HISTORY} element={<ShoppingHistory />} />
         </Route>
         <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
         <Route path={path.FINAL_REGISTER} element={<FinalRegister />} />
@@ -66,7 +70,7 @@ function App() {
       </Routes>
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={2000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
