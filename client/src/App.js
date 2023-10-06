@@ -28,10 +28,11 @@ import MyCart from './pages/members/MyCart';
 import WishList from './pages/members/WishList';
 import ShoppingHistory from './pages/members/ShoppingHistory';
 import Dashboard from './pages/admin/Dashboard';
+import Cart from './components/Product/Cart';
 
 function App() {
   const dispatch = useDispatch();
-  const { isShowModal, modalChildren } = useSelector(state => state.appReducer);
+  const { isShowModal, modalChildren, isShowCart } = useSelector(state => state.appReducer);
 
   useEffect(() => {
     dispatch(getCategories());
@@ -39,6 +40,11 @@ function App() {
   }, []);
   return (
     <div className="min-h-screen font-main flex justify-items-center relative">
+      {isShowCart && (
+        <div className='absolute inset-0 bg-overlay z-50 flex justify-end'>
+          <Cart />
+        </div>
+      )}
       {isShowModal && <Modal>{modalChildren}</Modal>}
       <Routes>
         <Route path={path.PUBLIC} element={<Public />}>
@@ -66,7 +72,7 @@ function App() {
         <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
         <Route path={path.FINAL_REGISTER} element={<FinalRegister />} />
         <Route path={path.LOGIN} element={<Login />} />
-        
+
       </Routes>
       <ToastContainer
         position="top-right"

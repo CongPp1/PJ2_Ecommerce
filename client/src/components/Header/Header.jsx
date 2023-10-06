@@ -3,12 +3,13 @@ import logo from "../../assets/logo_digital_new_250x.png";
 import icons from "../../utils/icons";
 import path from "../../utils/path";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { logout } from "../../store/userSlice";
+import withBase from "../../HOCS/withBase";
+import { showCart } from "../../store/appReducer";
 
-const Header = () => {
+const Header = ({ dispatch }) => {
   const { RiPhoneFill, MdEmail, BsHandbagFill, FaUserCircle } = icons;
-  const dispatch = useDispatch();
   const { current } = useSelector(state => state.userReducer);
   const [isShowOption, setIsShowOption] = useState(false);
 
@@ -26,9 +27,13 @@ const Header = () => {
 
   const handleClickOutside = (event) => {
     const profile = document.getElementById("profile");
-    if( profile && !profile.contains(event.target)) {
+    if (profile && !profile.contains(event.target)) {
       setIsShowOption(false);
     }
+  };
+
+  const handleShowCart = () => {
+    dispatch(showCart({ signal: true }));
   };
 
   useEffect(() => {
@@ -66,9 +71,9 @@ const Header = () => {
         </div>
         {current && (
           <Fragment>
-            <div className="flex items-center justify-center gap-2 px-6 border-r cursor-pointer">
+            <div onClick={handleShowCart} className="flex items-center justify-center gap-2 px-6 border-r cursor-pointer">
               <BsHandbagFill color="red" />
-              <span>0 item(s)</span>
+              <span>{`${current?.carts?.length} item(s)` || '0 item(s)'}</span>
             </div>
             <div
               className="flex items-center justify-center gap-2 px-6 cursor-pointer relative"
@@ -94,4 +99,4 @@ const Header = () => {
   );
 };
 
-export default memo(Header);
+export default withBase(memo(Header));

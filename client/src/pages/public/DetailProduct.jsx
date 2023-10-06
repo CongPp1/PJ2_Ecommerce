@@ -15,7 +15,7 @@ import Product from '../../components/Product/Product';
 import DOMPurify from 'dompurify';
 import clsx from 'clsx';
 
-const DetailProduct = () => {
+const DetailProduct = ({ isQuickView }) => {
     const { pid, title, category } = useParams();
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
@@ -96,12 +96,14 @@ const DetailProduct = () => {
 
     return (
         <div className='w-full relative'>
-            <div className='h-[81px] bg-gray-100 flex items-center justify-center'>
-                <div className='w-main'>
-                    <h3 className='font-extrabold text-[20px]'>{product?.variants?.find(element => element.sku === variant)?.title || product?.title}</h3>
-                    <BreadCrumb title={product?.variants?.find(element => element.sku === variant)?.title || product?.title} category={category} />
+            {!isQuickView && (
+                <div className='h-[81px] bg-gray-100 flex items-center justify-center'>
+                    <div className='w-main'>
+                        <h3 className='font-extrabold text-[20px]'>{product?.variants?.find(element => element.sku === variant)?.title || product?.title}</h3>
+                        <BreadCrumb title={product?.variants?.find(element => element.sku === variant)?.title || product?.title} category={category} />
+                    </div>
                 </div>
-            </div>
+            )}
             <div className='w-full m-auto mt-4 flex'>
                 <div className='border border-blue flex-4 flex flex-col gap-4'>
                     <div className='flex items-center justify-center'>
@@ -187,42 +189,48 @@ const DetailProduct = () => {
                         </div>
                     </div>
                 </div>
-                <div className='ml-5 flex-2'>
-                    {productExtraInfos?.map((element, index) => (
-                        <ProductExtraInfo
-                            key={index}
-                            title={element.title}
-                            icon={element.icon}
-                            sub={element.sub}
-                        />
-                    ))}
-                </div>
-            </div>
-            <div className='w-main m-auto mt-6'>
-                <ProductInfomation
-                    totalRatings={product?.totalRatings}
-                    ratings={product?.ratings}
-                    productName={product?.title}
-                    pid={product?._id}
-                    rerender={rerender}
-                />
-            </div>
-            <div className='w-full'>
-                <div className='flex justify-between border-b-2 mt-4 border-main'>
-                    <h3 className='text-[20px] font-semibold py-[15px]'>OTHER CUSTOMERS ALSO BUY:</h3>
-                </div>
-                <Slider {...settings}>
-                    <div className='flex justify-center'>
-                        {relatedProducts?.map((element, index) => (
-                            <div key={index} className='mt-6 flex w-[1000px] justify-start items-center'>
-                                {element?.map((element, index) => (
-                                    <Product key={index} productData={element} />
-                                ))}
-                            </div>
+                {!isQuickView && (
+                    <div className='ml-5 flex-2'>
+                        {productExtraInfos?.map((element, index) => (
+                            <ProductExtraInfo
+                                key={index}
+                                title={element.title}
+                                icon={element.icon}
+                                sub={element.sub}
+                            />
                         ))}
                     </div>
-                </Slider>
+                )}
             </div>
+            {!isQuickView && (
+                <div className='w-main m-auto mt-6'>
+                    <ProductInfomation
+                        totalRatings={product?.totalRatings}
+                        ratings={product?.ratings}
+                        productName={product?.title}
+                        pid={product?._id}
+                        rerender={rerender}
+                    />
+                </div>
+            )}
+            {!isQuickView && (
+                <div className='w-full'>
+                    <div className='flex justify-between border-b-2 mt-4 border-main'>
+                        <h3 className='text-[20px] font-semibold py-[15px]'>OTHER CUSTOMERS ALSO BUY:</h3>
+                    </div>
+                    <Slider {...settings}>
+                        <div className='flex justify-center'>
+                            {relatedProducts?.map((element, index) => (
+                                <div key={index} className='mt-6 flex w-[1000px] justify-start items-center'>
+                                    {element?.map((element, index) => (
+                                        <Product key={index} productData={element} />
+                                    ))}
+                                </div>
+                            ))}
+                        </div>
+                    </Slider>
+                </div>
+            )}
             <div className='h-[100px]'></div>
         </div>
     );

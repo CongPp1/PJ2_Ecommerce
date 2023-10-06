@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -14,4 +14,4 @@ const withBase = (Component) => (props) => {
     );
 };
 
-export default memo(withBase);
+export default withBase;

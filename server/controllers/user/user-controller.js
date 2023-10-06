@@ -241,7 +241,7 @@ const resetPassword = asyncHandler(async (req, res) => {
         }
         user.password = password;
         user.resetPasswordToken = undefined;
-        user.passwordChangedAt = Date.now();firstName, lastName, email, mobile, avatar
+        user.passwordChangedAt = Date.now();
         user.passwordResetTokenExpiredIn = undefined;
         await user.save({ validateBeforeSave: false });
 
@@ -262,7 +262,13 @@ const getUSer = asyncHandler(async (req, res) => {
     try {
         const { _id } = req.user;
 
-        const result = await User.findById(_id).select('-password -refreshToken');
+        const result = await User.findById(_id).select('-password -refreshToken').populate({
+            path: 'carts',
+            populate: {
+                path: 'Product',
+                select: 'title, images[0], price',
+            }
+        });
         if (!result) {
             return res.status(404).json({
                 message: 'User not found',
@@ -494,8 +500,8 @@ const updateUserAddress = asyncHandler(async (req, res) => {
 const updateUserCart = asyncHandler(async (req, res) => {
     try {
         const { _id } = req.user;
-        const { _id: p_id, quantity, color } = req.body;
-        if (!p_id || !quantity || !color) {
+        const { p_id, quantity, color } = req.body;
+        if (!_id || !quantity || !color) {
             return res.status(400).json({
                 message: 'Please enter a quantity, a color and p_id'
             });
@@ -528,6 +534,24 @@ const updateUserCart = asyncHandler(async (req, res) => {
     }
 });
 
+const removeUserCart = asyncHandler(async (req, res) => {
+    const { _id } = req.user;
+    const { _id: p_id } = req.params;
+    const user = await User.findById(_id).select('cart');
+    const alreadyCart = user?.carts?.find((element) => element.product.toString() === p_id);
+    if(!alreadyCart) {
+        return res.status(200).json({
+            message: 'Updated your cart'
+        });
+    }
+    const response = await User.findByIdAndUpdate(_id, {
+        $pull: { carts: { product: p_id } } }, { new: true });
+    return res.status(200).json({
+        message: 'Updated cart successfully',
+        cart: response
+    })
+});
+
 module.exports = {
     register,
     finalRegister,
@@ -543,5 +567,6 @@ module.exports = {
     deleteUserById,
     updateUserAddress,
     updateUserCart,
-    updateCurrentUser
+    updateCurrentUser,
+    removeUserCart
 }

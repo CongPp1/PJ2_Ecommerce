@@ -21,6 +21,7 @@ router.put('/updateCurrentUser', verifyAccessToken, uploader.single('avatar'), u
 router.delete('/delete/:_id',verifyAccessToken, userController.deleteUserById);
 router.put('/updateAddress/',verifyAccessToken, userController.updateUserAddress);
 router.put('/updateCart', verifyAccessToken, userController.updateUserCart);
+router.delete('/removeCart/:_id', verifyAccessToken, userController.removeUserCart);
 
 module.exports = router;
 

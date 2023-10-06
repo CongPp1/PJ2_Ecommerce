@@ -213,3 +213,45 @@ apiUpdateCurrentUser()
     .catch(error => {
         console.error("API update user Error:", error);
     })
+
+/**
+ * Updates the user's cart with the provided data.
+ *
+ * @param {object} data - The data to be sent in the request.
+ * @return {Promise} A promise that resolves to the response data.
+ */
+export const apiUpdateUserCart = (data) => {
+    return axios({
+        url: '/user/updateCart',
+        method: 'PUT',
+        data
+    });
+}
+apiUpdateUserCart()
+    .then(response => {
+        console.log("API update user cart Response:", response.data);
+    })
+    .catch(error => {
+        console.error("API update user cart Error:", error);
+    })
+
+/**
+ * Removes a user's cart.
+ *
+ * @param {object} data - The data object containing the user's information.
+ * @return {Promise} A promise that resolves with the response from the server.
+ */
+export const apiRemoveUserCart = (data, p_id) => {
+    return axios({
+        url: '/user/removeCart/' + p_id,
+        method: 'DELETE',
+        data
+    });
+}
+apiRemoveUserCart()
+    .then(response => {
+        console.log("API remove user cart Response:", response.data);
+    })
+    .catch(error => {
+        console.error("API remove user cart Error:", error);
+    })
