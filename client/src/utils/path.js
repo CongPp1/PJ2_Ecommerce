@@ -8,6 +8,7 @@ const path = {
     FAQs: 'faqs',
     DETAIL_PRODUCT__CATEGORY__PID__TITLE: ':category/:pid/:title',
     DETAIL_PRODUCT: 'san-pham',
+    DETAIL_CART: 'my-cart',
     BLOGS: 'blogs',
     FINAL_REGISTER: 'finalRegister/:status',
     RESET_PASSWORD: 'resetPassword/:token',

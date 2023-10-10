@@ -62,7 +62,8 @@ var productSchema = new mongoose.Schema({
             color: String,
             price: Number,
             images: Array,
-            title: String
+            title: String,
+            sku: String
         }
     ]
 }, {

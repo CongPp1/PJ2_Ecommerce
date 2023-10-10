@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { createSearchParams, useParams } from 'react-router-dom';
 import { apiGetProductById } from '../../APIs/product';
 import { apiGetCategories } from '../../APIs/app.js';
 import BreadCrumb from '../../components/Common/BreadCrumb';
@@ -14,16 +14,29 @@ import ProductInfomation from '../../components/Product/ProductInfomation';
 import Product from '../../components/Product/Product';
 import DOMPurify from 'dompurify';
 import clsx from 'clsx';
+import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import { apiUpdateUserCart } from '../../APIs/user';
+import { toast } from 'react-toastify';
+import withBase from '../../HOCS/withBase';
+import { getUser } from '../../store/asyncUserAction';
+import path from '../../utils/path';
 
-const DetailProduct = ({ isQuickView }) => {
-    const { pid, title, category } = useParams();
+const DetailProduct = ({ isQuickView, dispatch, navigate, location }) => {
+    const { pid, category } = useParams();
+    const { current } = useSelector(state => state.userReducer);
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [relatedProducts, setRelatedProducts] = useState(null);
     const [currentImg, setCurrentImg] = useState(null);
     const [update, setUpdate] = useState(false);
     const [variant, setVariant] = useState(null);
-    console.log(product?.variants)
+    const [currentProduct, setCurrentProduct] = useState({
+        title: '',
+        price: '',
+        images: [],
+        color: ''
+    });
 
     const settings = {
         dots: false,
@@ -40,6 +53,17 @@ const DetailProduct = ({ isQuickView }) => {
             setCurrentImg(response.data.images[0]);
         }
     };
+
+    useEffect(() => {
+        if (variant) {
+            setCurrentProduct({
+                title: product?.variants?.find(element => element.sku === variant)?.title,
+                price: product?.variants?.find(element => element.sku === variant)?.price,
+                images: product?.variants?.find(element => element.sku === variant)?.images,
+                color: product?.variants?.find(element => element.sku === variant)?.color
+            });
+        }
+    }, [variant])
 
     useEffect(() => {
         if (pid) {
@@ -89,9 +113,32 @@ const DetailProduct = ({ isQuickView }) => {
         }
     }, [quantity]);
 
-    const handleImage = (event, element) => {
-        event.stopPropagation();
-        setCurrentImg(element);
+    const handleAddToCart = async () => {
+        if (!current) {
+            Swal.fire({
+                icon: 'info',
+                confirmButtonText: 'Đi tới trang đăng nhập',
+                cancelButtonText: 'Không phải bây giờ',
+                text: 'Vui lòng đăng nhập để sử dụng các chức năng này',
+                showCancelButton: true,
+                allowOutsideClick: false,
+            }).then(result => {
+                if (result.isConfirmed) {
+                    navigate({
+                        pathname: `/${path.LOGIN}`,
+                        search: createSearchParams({ redirect: location.pathname }).toString()
+                    });
+                }
+            })
+            return;
+        }
+        const response = await apiUpdateUserCart({ p_id: pid, color: currentProduct.color, quantity });
+        if (response.message === 'Updated cart successfully') {
+            toast.success('Thêm giỏ hàng thành công');
+            dispatch(getUser());
+        } else {
+            toast.error('Thêm giỏ hàng thất bại');
+        }
     };
 
     return (
@@ -99,8 +146,8 @@ const DetailProduct = ({ isQuickView }) => {
             {!isQuickView && (
                 <div className='h-[81px] bg-gray-100 flex items-center justify-center'>
                     <div className='w-main'>
-                        <h3 className='font-extrabold text-[20px]'>{product?.variants?.find(element => element.sku === variant)?.title || product?.title}</h3>
-                        <BreadCrumb title={product?.variants?.find(element => element.sku === variant)?.title || product?.title} category={category} />
+                        <h3 className='font-extrabold text-[20px]'>{`${currentProduct?.title} ${currentProduct?.color}` || product?.title}</h3>
+                        <BreadCrumb title={currentProduct?.title || product?.title} category={category} />
                     </div>
                 </div>
             )}
@@ -111,10 +158,10 @@ const DetailProduct = ({ isQuickView }) => {
                             smallImage: {
                                 alt: '',
                                 isFluidWidth: true,
-                                src: product?.images[0]
+                                src: currentProduct.images[0] || product?.images[0]
                             },
                             largeImage: {
-                                src: product?.images[0],
+                                src: currentProduct.images[0] || product?.images[0],
                                 width: 1200,
                                 height: 1800
                             }
@@ -133,7 +180,7 @@ const DetailProduct = ({ isQuickView }) => {
                 <div className=' flex-4'>
                     <div className='ml-5 mr-5 flex flex-col'>
                         <div className='flex justify-between'>
-                            <h2 className='text-[30px] font-semibold'>{`${formatPrice(product?.price)} VND`}</h2>
+                            <h2 className='text-[30px] font-semibold'>{`${formatPrice(currentProduct.price || product?.price)} VND`}</h2>
                             <span className='text-sm text-main mt-3 mr-3'>{`Kho: ${product?.quantity}`}</span>
                         </div>
                         <div className='flex mt-4 gap-2'>
@@ -152,7 +199,7 @@ const DetailProduct = ({ isQuickView }) => {
                             <span className='font-bold'>Color:</span>
                             <div className='flex flex-wrap gap-4 w-full items-center'>
                                 <div
-                                    className={clsx('flex gap-2 items-center p-2 border cursor-pointer', variant ? 'border-main' : '')}
+                                    className={clsx('flex gap-2 items-center p-2 border cursor-pointer')}
                                     onClick={() => setVariant(null)}
                                 >
                                     <img src={product?.images[0]} alt="images" className='w-12 h-12 object-cover' />
@@ -185,7 +232,7 @@ const DetailProduct = ({ isQuickView }) => {
                                     handleChangeQuantity={handleChangeQuantity}
                                 />
                             </div>
-                            <Button fw name='Add to cart' />
+                            <Button handleOnClick={handleAddToCart} fw name='Add to cart' />
                         </div>
                     </div>
                 </div>
@@ -236,4 +283,4 @@ const DetailProduct = ({ isQuickView }) => {
     );
 };
 
-export default memo(DetailProduct);
+export default withBase(memo(DetailProduct));

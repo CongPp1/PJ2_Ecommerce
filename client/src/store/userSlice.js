@@ -21,6 +21,9 @@ export const userSlice = createSlice({
             state.current = null;
             state.isLoading = false;
             state.mes = '';
+        },
+        updateCart: (state, action) => {
+            
         }
     },
     extraReducers: (builder) => {

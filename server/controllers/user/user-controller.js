@@ -263,11 +263,8 @@ const getUSer = asyncHandler(async (req, res) => {
         const { _id } = req.user;
 
         const result = await User.findById(_id).select('-password -refreshToken').populate({
-            path: 'carts',
-            populate: {
-                path: 'Product',
-                select: 'title, images[0], price',
-            }
+            path: 'carts.product',
+            select: 'title images price',
         });
         if (!result) {
             return res.status(404).json({
@@ -420,11 +417,9 @@ const updateUserById = asyncHandler(async (req, res) => {
 const updateCurrentUser = asyncHandler(async (req, res) => {
     try {
         const { _id } = req.user;
-        const { firstName, lastName, email, mobile, avatar } = req.body;
+        const { firstName, lastName, email, mobile } = req.body;
         const data = { firstName, lastName, email, mobile };
-        console.log(req.file)
-        if(req.file) {
-            console.log(req.file)
+        if (req.file) {
             data.avatar = req.file.path
         }
         if (Object.entries(req.body).length === 0) {
@@ -535,21 +530,30 @@ const updateUserCart = asyncHandler(async (req, res) => {
 });
 
 const removeUserCart = asyncHandler(async (req, res) => {
-    const { _id } = req.user;
-    const { _id: p_id } = req.params;
-    const user = await User.findById(_id).select('cart');
-    const alreadyCart = user?.carts?.find((element) => element.product.toString() === p_id);
-    if(!alreadyCart) {
+    try {
+        const { _id } = req.user;
+        const { _id: p_id } = req.params;
+        const user = await User.findById(_id);
+        const alreadyCart = user?.carts?.find((element) => element.product.toString() === p_id);
+        if (!alreadyCart) {
+            return res.status(200).json({
+                message: 'Updated your cart'
+            });
+        }
+        const response = await User.findByIdAndUpdate(_id, {
+            $pull: { carts: { product: p_id } }
+        }, { new: true });
         return res.status(200).json({
-            message: 'Updated your cart'
+            message: 'Remove cart successfully',
+            cart: response
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Internal server error',
+            error: error
         });
     }
-    const response = await User.findByIdAndUpdate(_id, {
-        $pull: { carts: { product: p_id } } }, { new: true });
-    return res.status(200).json({
-        message: 'Updated cart successfully',
-        cart: response
-    })
 });
 
 module.exports = {

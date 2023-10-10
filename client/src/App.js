@@ -29,6 +29,7 @@ import WishList from './pages/members/WishList';
 import ShoppingHistory from './pages/members/ShoppingHistory';
 import Dashboard from './pages/admin/Dashboard';
 import Cart from './components/Product/Cart';
+import DetailCart from './pages/public/DetailCart';
 
 function App() {
   const dispatch = useDispatch();
@@ -54,6 +55,7 @@ function App() {
           <Route path={path.BLOGS} element={<Blogs />} />
           <Route path={path.OUR_SERVICES} element={<Sevices />} />
           <Route path={path.PRODUCTS} element={<Products />} />
+          <Route path={path.DETAIL_CART} element={<DetailCart />} />
           <Route path={path.ALL} element={<Login />} />
         </Route>
         <Route path={path.ADMIN} element={<AdminLayout />}>

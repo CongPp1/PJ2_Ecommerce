@@ -5,7 +5,7 @@ const uploader = require('../../config/cloundinary-config.js');
 
 router.post('/createProduct', verifyAccessToken, uploader.fields([{ name: 'images', maxCount: 10 }]), productController.createProduct);
 router.get('/products', productController.getAllProducts);
-router.get('/products/:_id', verifyAccessToken, productController.getProductById);
+router.get('/products/:_id', productController.getProductById);
 router.put('/updateProduct/:_id', verifyAccessToken, productController.updateProductById);
 router.delete('/deleteProduct/:_id', verifyAccessToken, productController.deleteProductById);
 router.put('/rating', verifyAccessToken, productController.handleRatings);

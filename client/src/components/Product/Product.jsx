@@ -35,8 +35,8 @@ const Product = ({ productData, navigate, isNew, dispatch }) => {
         if (!current) {
             Swal.fire({
                 icon: 'info',
-                confirmButtonText: 'Di toi trang dang nhap',
-                cancelButtonText: 'Khong phai bay gio',
+                confirmButtonText: 'Đi tới trang đăng nhập',
+                cancelButtonText: 'Không phải bây giờ',
                 text: 'Vui lòng đăng nhập để sử dụng các chức năng này',
                 showCancelButton: true,
                 allowOutsideClick: false,
@@ -50,10 +50,10 @@ const Product = ({ productData, navigate, isNew, dispatch }) => {
         if (flag === 'CART') {
             const response = await apiUpdateUserCart({ p_id: productData?._id, color: productData?.color, quantity: 1 });
             if (response.message === 'Updated cart successfully') {
-                toast.success('Them gio hang thanh cong');
+                toast.success('Thêm giỏ hàng thành công');
                 dispatch(getUser());
             } else {
-                toast.error('Them gio hang that bai');
+                toast.error('Thêm giỏ hàng thất bại');
             }
         }
         if (flag === 'QUICK_VIEW') {
@@ -78,7 +78,7 @@ const Product = ({ productData, navigate, isNew, dispatch }) => {
                     <div className="relative">
                         {isShowOption && <div className="absolute flex left-0 right-0 justify-center bottom-0 gap-2 animate-slide-top">
                             <span title="Quick view" onClick={(event) => handleClickOptions(event, 'QUICK_VIEW')}><SelectOption icon={<AiFillEye color="red" />} /></span>
-                            {current?.carts?.some(element => element.product === productData?._id) ?
+                            {current?.carts?.some(element => element.product._id === productData?._id) ?
                                 <span title="Added cart"><SelectOption icon={<BsFillCartCheckFill color="green" />} /></span>
                                 :
                                 <span title="Add to cart" onClick={(event) => handleClickOptions(event, 'CART')}><SelectOption icon={<BiCartAdd color="red" />} /></span>

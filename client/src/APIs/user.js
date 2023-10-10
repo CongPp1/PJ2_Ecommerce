@@ -241,11 +241,11 @@ apiUpdateUserCart()
  * @param {object} data - The data object containing the user's information.
  * @return {Promise} A promise that resolves with the response from the server.
  */
-export const apiRemoveUserCart = (data, p_id) => {
+export const apiRemoveUserCart = (p_id) => {
+    console.log(p_id)
     return axios({
         url: '/user/removeCart/' + p_id,
         method: 'DELETE',
-        data
     });
 }
 apiRemoveUserCart()

@@ -7,9 +7,7 @@ const Button = ({ name, handleOnClick, style, iconBefore, iconAfter, fw, type = 
             type={type}
             onClick={() => { handleOnClick && handleOnClick() }}
         >
-            {iconBefore}
-            <span className='mt-2'>{name}</span>
-            {iconAfter}
+            <span className='mt-2'>{iconBefore}{name}{iconAfter}</span>
         </button>
     );
 };

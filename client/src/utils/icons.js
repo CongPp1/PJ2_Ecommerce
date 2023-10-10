@@ -8,7 +8,8 @@ import { IoTrashBinSharp } from 'react-icons/io5';
 import { CiLocationOn } from 'react-icons/ci';
 import { PiArchiveBold, PiSquaresFour } from 'react-icons/pi';
 import { BiCartDownload, BiEdit, BiCartAdd } from 'react-icons/bi';
-import { BsFillCartCheckFill } from 'react-icons/bs';
+import { BsFillCartCheckFill, BsArrowRight } from 'react-icons/bs';
+import { RiDeleteBin5Line } from 'react-icons/ri';
 
 const icons = {
     RiPhoneFill,
@@ -41,7 +42,9 @@ const icons = {
     MdDeleteOutline,
     BiCartAdd,
     BsFillCartCheckFill,
-    AiFillCloseCircle
+    AiFillCloseCircle,
+    BsArrowRight,
+    RiDeleteBin5Line
 }
 
 export default icons;

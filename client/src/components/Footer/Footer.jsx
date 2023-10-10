@@ -17,8 +17,8 @@ const Footer = () => {
                         type='text'
                         name=''
                         id=''
-                        className='p-2 w-[500px] rounded-l-main rounded-xl bg-[#F04646] outline-none placeholder:text-sm placeholder: text-gray-200'
-                        placeholder='Email address'
+                        className='p-2 w-[500px] rounded-l-main rounded-xl bg-[#F04646] outline-none placeholder:text-sm placeholder: text-white placeholder:italic'
+                        placeholder='Email address...'
                     />
                 </div>
             </div>

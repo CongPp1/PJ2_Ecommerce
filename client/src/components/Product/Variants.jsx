@@ -2,7 +2,7 @@ import React, { memo, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '../Button/Button';
 import { toast } from 'react-toastify';
-import { validate, getBase64 } from '../../utils/helper';
+import { getBase64 } from '../../utils/helper';
 import icons from '../../utils/icons';
 import { showModal } from '../../store/appReducer';
 import Loading from '../Common/Loading';

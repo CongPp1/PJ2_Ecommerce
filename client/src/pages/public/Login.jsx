@@ -3,7 +3,7 @@ import InputField from "../../components/Input/InputField";
 import Button from "../../components/Button/Button";
 import { apiRegister, apiLogin, apiForgotPassword, apiFinalRegister } from "../../APIs/user";
 import Swal from "sweetalert2";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import path from "../../utils/path.js";
 import { login } from "../../store/userSlice";
 import { useDispatch } from "react-redux";
@@ -21,6 +21,7 @@ const Login = () => {
     const [invalidFields, setInvalidFields] = useState([]);
     const [code, setCode] = useState('');
     const [isVerifiedEmail, setIsVerifiedEmail] = useState(false);
+    const [searchParams] = useSearchParams();
     const [payload, setPayload] = useState({
         email: '',
         password: '',
@@ -81,7 +82,7 @@ const Login = () => {
                     if (response.message === 'User logged in successfully') {
                         loginSuccess(response.message);
                         dispatch(login({ isLogin: true, token: response.accessToken, userData: response.result }));
-                        navigate(`/${path.HOME}`);
+                        searchParams.get('redirect') ? navigate(searchParams.get('redirect')) : navigate(`/${path.HOME}`);
                     }
                 } catch (error) {
                     loginFail(error);
