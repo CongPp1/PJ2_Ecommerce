@@ -1,4 +1,4 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { getUser, updateUser, deleteUser } from "./asyncUserAction.js";
 
 export const userSlice = createSlice({
@@ -6,6 +6,7 @@ export const userSlice = createSlice({
     initialState: {
         isLogin: false,
         current: null,
+        currentCart: [],
         token: null,
         isLoading: false,
         mes: ''
@@ -23,7 +24,20 @@ export const userSlice = createSlice({
             state.mes = '';
         },
         updateCart: (state, action) => {
-            
+            const { p_id, quantity, color } = action.payload;
+            //tạo một bản sao sâu (deep copy) của giỏ hàng hiện tại. Bản sao sâu được tạo để đảm bảo rằng chúng ta không thay đổi trạng thái hiện tại trực tiếp.
+            const updatingCart = JSON.parse(JSON.stringify(state.currentCart));
+            const updatedItem = updatingCart.map((item) => {
+                if (item.color === color && item.product._id === p_id) {
+                    return {
+                        ...item,
+                        quantity
+                    };
+                } else {
+                    return item;
+                }
+            });
+            state.currentCart = updatedItem;
         }
     },
     extraReducers: (builder) => {
@@ -34,6 +48,8 @@ export const userSlice = createSlice({
         builder.addCase(getUser.fulfilled, (state, action) => {
             state.isLoading = false;
             state.current = action.payload;
+            state.isLogin = true;
+            state.currentCart = action.payload.carts;
         });
 
         builder.addCase(getUser, (state, action) => {
@@ -68,5 +84,5 @@ export const userSlice = createSlice({
     },
 })
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, updateCart } = userSlice.actions;
 export default userSlice.reducer;

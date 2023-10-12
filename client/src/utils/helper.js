@@ -1,15 +1,35 @@
 import icons from "./icons";
 
+/**
+ * Formats a string by converting it to lowercase, normalizing it, and replacing diacritics with their base characters.
+ *
+ * @param {string} string - The string to be formatted.
+ * @return {string} The formatted string with diacritics replaced and spaces replaced with hyphens.
+ */
 export const format = (string) => {
     return string.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(' ').join('-');
 }
 
+/**
+ * Formats the given price into a string representation with a single decimal place
+ * and localized thousands separators.
+ *
+ * @param {number} price - The price to be formatted.
+ * @return {string} The formatted price as a string.
+ */
 export const formatPrice = (price) => {
     return Number(price?.toFixed(1)).toLocaleString();
 }
 
-const { AiOutlineStar, AiFillStar } = icons;
+
+/**
+ * Renders stars based on the number of stars given.
+ *
+ * @param {number} stars - The number of stars to render.
+ * @return {Array} - An array of React components representing the stars.
+ */
 export const renderStars = (stars) => {
+    const { AiOutlineStar, AiFillStar } = icons;
     const starArr = [];
     if (!Number(stars)) {
         return;
@@ -23,6 +43,13 @@ export const renderStars = (stars) => {
     return starArr;
 };
 
+/**
+ * Validates the payload and sets invalid fields.
+ *
+ * @param {Object} payload - The payload to be validated.
+ * @param {function} setInvalidFields - The function to set invalid fields.
+ * @return {number} The count of invalid fields.
+ */
 export const validate = (payload, setInvalidFields) => {
     let invalidCount = 0;
     const formatPayload = Object.entries(payload);
@@ -64,15 +91,35 @@ export const validate = (payload, setInvalidFields) => {
     return invalidCount;
 }
 
+/**
+ * Formats the given price by rounding it to the nearest thousand.
+ *
+ * @param {number} price - The price to be formatted.
+ * @return {number} The formatted price.
+ */
 export const formatMoney = (price) => {
     return Math.round(price / 1000) * 1000;
 }
 
+/**
+ * Generates an array of numbers within a specified range.
+ *
+ * @param {number} start - The starting number of the range.
+ * @param {number} end - The ending number of the range.
+ * @return {Array} - An array of numbers within the specified range.
+ */
 export const generateRange = (start, end) => {
     const length = end + 1 - start; // 10 = 10 + 1 - 1
     return Array.from({ length }, (_, index) => start + index);
 };
 
+/**
+ * Generates a base64 representation of the given file.
+ *
+ * @param {Blob} file - The file to be converted to base64.
+ * @return {Promise} A promise that resolves with the base64 data of the file.
+ *                    If an error occurs, the promise is rejected with an error message.
+ */
 export function getBase64(file) {
     if (!(file instanceof Blob)) {
         return Promise.reject(new Error('Đầu vào không phải là đối tượng Blob hợp lệ'));

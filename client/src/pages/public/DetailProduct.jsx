@@ -22,6 +22,15 @@ import withBase from '../../HOCS/withBase';
 import { getUser } from '../../store/asyncUserAction';
 import path from '../../utils/path';
 
+/**
+ * Render the detail product view.
+ *
+ * @param {boolean} isQuickView - Whether the view is a quick view or not.
+ * @param {function} dispatch - The dispatch function.
+ * @param {function} navigate - The navigate function.
+ * @param {object} location - The location object.
+ * @return {JSX.Element} The detail product view.
+ */
 const DetailProduct = ({ isQuickView, dispatch, navigate, location }) => {
     const { pid, category } = useParams();
     const { current } = useSelector(state => state.userReducer);
@@ -61,6 +70,13 @@ const DetailProduct = ({ isQuickView, dispatch, navigate, location }) => {
                 price: product?.variants?.find(element => element.sku === variant)?.price,
                 images: product?.variants?.find(element => element.sku === variant)?.images,
                 color: product?.variants?.find(element => element.sku === variant)?.color
+            });
+        } else {
+            setCurrentProduct({
+                title: product?.title,
+                price: product?.price,
+                images: product?.images || [],
+                color: product?.color
             });
         }
     }, [variant])
@@ -132,10 +148,27 @@ const DetailProduct = ({ isQuickView, dispatch, navigate, location }) => {
             })
             return;
         }
-        const response = await apiUpdateUserCart({ p_id: pid, color: currentProduct.color, quantity });
+        console.log(currentProduct)
+        console.log({
+            p_id: pid || product._id,
+            color: currentProduct.color || product.color,
+            images: currentProduct.images || product.images,
+            quantity: quantity,
+            price: currentProduct.price || product.price
+        })
+        const response = await apiUpdateUserCart({
+            p_id: pid || product._id,
+            color: currentProduct.color || product.color,
+            images: currentProduct.images || product.images,
+            quantity: quantity,
+            price: currentProduct.price || product.price,
+            title: currentProduct.title || product.title
+        });
         if (response.message === 'Updated cart successfully') {
             toast.success('Thêm giỏ hàng thành công');
             dispatch(getUser());
+        } else if(response.message === 'Updated quantity') {
+            toast.success('Đã cập nhật số lượng');
         } else {
             toast.error('Thêm giỏ hàng thất bại');
         }

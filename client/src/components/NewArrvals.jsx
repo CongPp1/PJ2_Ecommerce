@@ -44,7 +44,6 @@ const NewArrivals = () => {
                 handleTabClick(smartPhoneCategory._id);
             }
         };
-
         loadCategories();
     }, []);
 

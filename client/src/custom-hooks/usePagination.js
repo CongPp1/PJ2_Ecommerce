@@ -1,6 +1,14 @@
 import { useMemo } from 'react';
 import { generateRange } from '../utils/helper';
 
+/**
+ * Generates a pagination for a given number of total products and current page.
+ *
+ * @param {number} totalProduct - The total number of products.
+ * @param {number} currentPage - The current page.
+ * @param {number} [siblingCount=1] - The number of sibling pages to show on each side of the current page.
+ * @return {Array} The generated pagination.
+ */
 const usePagination = (totalProduct, currentPage, siblingCount = 1) => {
      return useMemo(() => {
         const pageSize = 10;

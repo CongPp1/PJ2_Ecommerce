@@ -221,6 +221,8 @@ apiUpdateCurrentUser()
  * @return {Promise} A promise that resolves to the response data.
  */
 export const apiUpdateUserCart = (data) => {
+    console.log('ghghghg')
+    console.log(data)
     return axios({
         url: '/user/updateCart',
         method: 'PUT',
@@ -235,16 +237,18 @@ apiUpdateUserCart()
         console.error("API update user cart Error:", error);
     })
 
+
 /**
- * Removes a user's cart.
+ * Removes a user's cart item based on the given product ID and color.
  *
- * @param {object} data - The data object containing the user's information.
- * @return {Promise} A promise that resolves with the response from the server.
+ * @param {string} p_id - The product ID of the item to be removed from the cart.
+ * @param {string} color - The color of the item to be removed from the cart.
+ * @return {Promise} A Promise that resolves to the result of the API call.
  */
-export const apiRemoveUserCart = (p_id) => {
+export const apiRemoveUserCart = (p_id, color) => {
     console.log(p_id)
     return axios({
-        url: '/user/removeCart/' + p_id,
+        url: '/user/removeCart/' + p_id + '/'+ color,
         method: 'DELETE',
     });
 }

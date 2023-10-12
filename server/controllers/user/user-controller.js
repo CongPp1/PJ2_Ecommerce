@@ -495,14 +495,15 @@ const updateUserAddress = asyncHandler(async (req, res) => {
 const updateUserCart = asyncHandler(async (req, res) => {
     try {
         const { _id } = req.user;
-        const { p_id, quantity, color } = req.body;
+        const { p_id, quantity, color, images, price, title } = req.body;
+        console.log(req.body);
         if (!_id || !quantity || !color) {
             return res.status(400).json({
                 message: 'Please enter a quantity, a color and p_id'
             });
         }
         const user = await User.findById(_id);
-        const alreadyCart = user?.carts?.find((element) => element.product.toString() === p_id);
+        const alreadyCart = user?.carts?.find((element) => element.product.toString() === p_id && element.color === color);
         if (alreadyCart) {
             if (alreadyCart.color === color) {
                 const response = await User.updateOne({ carts: { $elemMatch: alreadyCart } }, { $set: { 'carts.$.quantity': quantity } }, { new: true });
@@ -510,10 +511,28 @@ const updateUserCart = asyncHandler(async (req, res) => {
                     message: 'Updated quantity',
                     UpdatedUser: response
                 });
+            } else {
+                console.log(1)
+                const response = await User.updateOne({ carts: { $elemMatch: alreadyCart } }, {
+                    $set:
+                    {
+                        'carts.$.quantity': quantity,
+                        'carts.$.color': color,
+                        'carts.$.images': images,
+                        'carts.$.price': price,
+                        'carts.$.title': title
+                    }
+                }, { new: true });
+                console.log(response);
+                return res.status(200).json({
+                    message: 'Updated cart successfully',
+                    UpdatedUser: response
+                });
             }
         } else {
+            console.log(2)
             const user = await User.findByIdAndUpdate(_id, {
-                $push: { carts: { product: p_id, color, quantity } }
+                $push: { carts: { product: p_id, color, quantity, price, images, color, title } }
             }, { new: true });
             return res.status(200).json({
                 message: 'Updated cart successfully',
@@ -532,7 +551,7 @@ const updateUserCart = asyncHandler(async (req, res) => {
 const removeUserCart = asyncHandler(async (req, res) => {
     try {
         const { _id } = req.user;
-        const { _id: p_id } = req.params;
+        const { _id: p_id, color } = req.params;
         const user = await User.findById(_id);
         const alreadyCart = user?.carts?.find((element) => element.product.toString() === p_id);
         if (!alreadyCart) {

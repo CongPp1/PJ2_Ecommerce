@@ -20,6 +20,8 @@ const Product = ({ productData, navigate, isNew, dispatch }) => {
     const { current } = useSelector(state => state.userReducer);
     const [isShowOption, setIsShowOption] = useState(false);
 
+    console.log(productData)
+
     const handleOnMouseEnter = (event) => {
         event.stopPropagation();
         setIsShowOption(true);
@@ -48,7 +50,14 @@ const Product = ({ productData, navigate, isNew, dispatch }) => {
             return;
         }
         if (flag === 'CART') {
-            const response = await apiUpdateUserCart({ p_id: productData?._id, color: productData?.color, quantity: 1 });
+            const response = await apiUpdateUserCart({
+                p_id: productData?._id,
+                color: productData?.color,
+                images: productData?.images,
+                title: productData?.title,
+                price: productData?.price,
+                quantity: 1
+            });
             if (response.message === 'Updated cart successfully') {
                 toast.success('Thêm giỏ hàng thành công');
                 dispatch(getUser());

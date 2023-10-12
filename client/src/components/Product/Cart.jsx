@@ -20,6 +20,7 @@ import path from '../../utils/path';
 const Cart = ({ dispatch, navigate }) => {
     const { AiFillCloseCircle, RiDeleteBin5Line } = icons;
     const { current } = useSelector(state => state.userReducer);
+    console.log(current)
     const { BsArrowRight } = icons;
 
     const handleCloseCart = () => {
@@ -31,8 +32,9 @@ const Cart = ({ dispatch, navigate }) => {
         navigate(`${path.DETAIL_CART}`);
     };
 
-    const handleRemoveUserCart = async (p_id) => {
-        const response = await apiRemoveUserCart(p_id);
+    const handleRemoveUserCart = async (p_id, color) => {
+        const response = await apiRemoveUserCart(p_id, color);
+        console.log(response)
         if (response.message === 'Remove cart successfully') {
             toast.success('Xoá giỏ hàng thành công');
             dispatch(getUser());
@@ -52,17 +54,18 @@ const Cart = ({ dispatch, navigate }) => {
                     <span className='text-xs italic'>Your cart is empty</span>
                 )}
                 {current?.carts.map((element, index) => (
+                    console.log(element),
                     <div key={index} className='flex gap-2'>
                         <div className='flex gap-2'>
-                            <img src={element.product.images[0]} alt="iamges" className='w-16 h-16 object-cover' />
+                            <img src={element.images[0]} alt="iamges" className='w-16 h-16 object-cover' />
                             <div className='flex flex-col gap-1'>
                                 <span className='text-main'>{element.product.title}</span>
                                 <span className='text-[10px]'>{element.color}</span>
-                                <span className='text-base'>{element.quantity} x {formatPrice(element.product.price)} VND</span>
+                                <span className='text-base'>{element.quantity} x {formatPrice(element.price)} VND</span>
                             </div>
                         </div>
                         <span
-                            onClick={() => handleRemoveUserCart(element.product._id)}
+                            onClick={() => handleRemoveUserCart(element.product._id, element.color)}
                             className='h-8 w-8 rounded-full flex items-center justify-center hover:bg-gray-500 cursor-pointer'
                         >
                             <RiDeleteBin5Line size={16} />
@@ -73,7 +76,7 @@ const Cart = ({ dispatch, navigate }) => {
             <div className=''>
                 <div className='flex justify-between items-center my-4 pt-4 border-t'>
                     <span>Subtotal: </span>
-                    <span>{formatPrice(current?.carts.reduce((sum, element) => sum + Number(element.product.price), 0)) + ' VND'}</span>
+                    <span>{formatPrice(current?.carts.reduce((sum, element) => sum + Number(element.price), 0)) + ' VND'}</span>
                 </div>
                 <span className='text-center text-gray-500 italic text-xs flex items-center justify-center'>Shipping, taxes, and discount calculated at checkout</span>
                 <div className='flex justify-center'>

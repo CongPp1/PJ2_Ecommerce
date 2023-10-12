@@ -7,7 +7,7 @@ export const productSlice = createSlice({
     initialState: {
         newProducts: null,
         current: null,
-        errorMessage: ''
+        errorMessage: '',
     },
     reducers: {
         logout: (state) => {
