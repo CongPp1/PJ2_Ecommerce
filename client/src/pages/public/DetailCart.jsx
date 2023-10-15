@@ -22,7 +22,7 @@ const DetailCart = ({ location, dispatch }) => {
             <div className='h-[81px] flex items-center justify-center bg-gray-100'>
                 <div className='w-main'>
                     <h3 className='font-semibold uppercase'>My Cart</h3>
-                    <BreadCrumb category={location?.pathname} />
+                    <BreadCrumb category={location?.pathname?.replace('/','').split('-').join(' ')} />
                 </div>
             </div>
             <div className='flex flex-col border-l border-r border-b mt-8 w-main mx-auto'>

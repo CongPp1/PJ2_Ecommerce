@@ -148,18 +148,12 @@ const DetailProduct = ({ isQuickView, dispatch, navigate, location }) => {
             })
             return;
         }
-        console.log(currentProduct)
-        console.log({
-            p_id: pid || product._id,
-            color: currentProduct.color || product.color,
-            images: currentProduct.images || product.images,
-            quantity: quantity,
-            price: currentProduct.price || product.price
-        })
+        console.log(currentProduct);
+        console.log(product)
         const response = await apiUpdateUserCart({
             p_id: pid || product._id,
             color: currentProduct.color || product.color,
-            images: currentProduct.images || product.images,
+            images: product?.images || currentProduct.images,
             quantity: quantity,
             price: currentProduct.price || product.price,
             title: currentProduct.title || product.title
@@ -167,11 +161,17 @@ const DetailProduct = ({ isQuickView, dispatch, navigate, location }) => {
         if (response.message === 'Updated cart successfully') {
             toast.success('Thêm giỏ hàng thành công');
             dispatch(getUser());
-        } else if(response.message === 'Updated quantity') {
+        } else if (response.message === 'Updated quantity') {
             toast.success('Đã cập nhật số lượng');
         } else {
             toast.error('Thêm giỏ hàng thất bại');
         }
+        setCurrentProduct({
+            title: '',
+            price: '',
+            images: [],
+            color: ''
+        })
     };
 
     return (
@@ -179,8 +179,10 @@ const DetailProduct = ({ isQuickView, dispatch, navigate, location }) => {
             {!isQuickView && (
                 <div className='h-[81px] bg-gray-100 flex items-center justify-center'>
                     <div className='w-main'>
-                        <h3 className='font-extrabold text-[20px]'>{`${currentProduct?.title} ${currentProduct?.color}` || product?.title}</h3>
-                        <BreadCrumb title={currentProduct?.title || product?.title} category={category} />
+                        <h3 className='font-extrabold text-[20px]'>
+                            {`${currentProduct?.title || product?.title} ${currentProduct?.color || ''}` || product?.title}
+                        </h3>
+                        <BreadCrumb title={currentProduct?.title || product?.title} category={category} /> 
                     </div>
                 </div>
             )}
@@ -191,10 +193,10 @@ const DetailProduct = ({ isQuickView, dispatch, navigate, location }) => {
                             smallImage: {
                                 alt: '',
                                 isFluidWidth: true,
-                                src: currentProduct.images[0] || product?.images[0]
+                                src: currentProduct?.title !== product?.title ? product?.images[0] : currentProduct?.images[0],
                             },
                             largeImage: {
-                                src: currentProduct.images[0] || product?.images[0],
+                                src: currentProduct?.title !== product?.title ? product?.images[0] : currentProduct?.images[0],
                                 width: 1200,
                                 height: 1800
                             }
