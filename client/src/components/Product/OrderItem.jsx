@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 const OrderItem = ({ element, index, getCount, defaultQuantity }) => {
     const { current } = useSelector(state => state.userReducer);
     const [quantity, setQuantity] = useState(defaultQuantity || 1);
+    console.log(element)
 
     const handleQuantity = useCallback((number) => {
         if (!Number(number) || Number(number) < 1) {

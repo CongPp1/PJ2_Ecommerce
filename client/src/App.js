@@ -30,6 +30,8 @@ import ShoppingHistory from './pages/members/ShoppingHistory';
 import Dashboard from './pages/admin/Dashboard';
 import Cart from './components/Product/Cart';
 import DetailCart from './pages/public/DetailCart';
+import CheckOut from './pages/members/CheckOut';
+import payment from '../../client/src/assets/payment.png';
 
 function App() {
   const dispatch = useDispatch();
@@ -48,6 +50,7 @@ function App() {
       )}
       {isShowModal && <Modal>{modalChildren}</Modal>}
       <Routes>
+        <Route path={path.CHECKOUT} element={<CheckOut />}/>
         <Route path={path.PUBLIC} element={<Public />}>
           <Route path={path.HOME} element={<Home />} />
           <Route path={path.DETAIL_PRODUCT__CATEGORY__PID__TITLE} element={<DetailProduct />} />
@@ -74,7 +77,6 @@ function App() {
         <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
         <Route path={path.FINAL_REGISTER} element={<FinalRegister />} />
         <Route path={path.LOGIN} element={<Login />} />
-
       </Routes>
       <ToastContainer
         position="top-center"

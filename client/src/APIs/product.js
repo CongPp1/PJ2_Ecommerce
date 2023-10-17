@@ -149,3 +149,19 @@ apiAddVariant()
     .catch(error => {
         console.log("API Add Variant Response:", error);
     })
+
+
+export const apiCreateOrder = (data) => {
+    return axios({
+        url: '/order/create',
+        method: 'POST',
+        data
+    });
+}
+apiCreateOrder()
+    .then(response => {
+        console.log("API Create Order Response:", response.data);
+    })
+    .catch(error => {
+        console.log("API Create Order Error:", error);
+    })

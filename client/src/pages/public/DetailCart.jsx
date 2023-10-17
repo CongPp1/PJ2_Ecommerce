@@ -7,6 +7,8 @@ import icons from '../../utils/icons';
 import OrderItem from '../../components/Product/OrderItem';
 import { updateCart } from '../../store/userSlice';
 import withBase from '../../HOCS/withBase.js';
+import path from '../../utils/path';
+import { Link } from 'react-router-dom';
 
 const DetailCart = ({ location, dispatch }) => {
     const { BsArrowRight } = icons;
@@ -56,11 +58,10 @@ const DetailCart = ({ location, dispatch }) => {
                         type='submit'
                         style={'p-2 px-2 w-150 text-white bg-black hover:bg-main mt-6 rounded-md'}
                     />
-                    <Button
-                        name={<div className='flex gap-2 justify-center items-center'>CHECK OUT<BsArrowRight /></div>}
-                        type='submit'
-                        style={'p-2 px-2 w-150 text-white bg-main hover:bg-black mt-6 rounded-md'}
-                    />
+                    <Link className='bg-main hover:bg-black text-white px-4 p-2 rounded-md flex justify-center items-center gap-1' to={`/${path.CHECKOUT}`}>
+                        CHECK OUT
+                        <BsArrowRight/>
+                    </Link>
                 </div>
             </div>
             <div className='h-[100px]'></div>

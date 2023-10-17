@@ -148,12 +148,10 @@ const DetailProduct = ({ isQuickView, dispatch, navigate, location }) => {
             })
             return;
         }
-        console.log(currentProduct);
-        console.log(product)
         const response = await apiUpdateUserCart({
             p_id: pid || product._id,
             color: currentProduct.color || product.color,
-            images: product?.images || currentProduct.images,
+            images: currentProduct.images[0] || product.images[0],
             quantity: quantity,
             price: currentProduct.price || product.price,
             title: currentProduct.title || product.title
@@ -166,12 +164,6 @@ const DetailProduct = ({ isQuickView, dispatch, navigate, location }) => {
         } else {
             toast.error('Thêm giỏ hàng thất bại');
         }
-        setCurrentProduct({
-            title: '',
-            price: '',
-            images: [],
-            color: ''
-        })
     };
 
     return (
@@ -180,9 +172,9 @@ const DetailProduct = ({ isQuickView, dispatch, navigate, location }) => {
                 <div className='h-[81px] bg-gray-100 flex items-center justify-center'>
                     <div className='w-main'>
                         <h3 className='font-extrabold text-[20px]'>
-                            {`${currentProduct?.title || product?.title} ${currentProduct?.color || ''}` || product?.title}
+                            {`${currentProduct?.title !== product?.title ? product?.title : currentProduct?.title}`}
                         </h3>
-                        <BreadCrumb title={currentProduct?.title || product?.title} category={category} /> 
+                        <BreadCrumb title={currentProduct?.title !== product?.title ? product?.title : currentProduct?.title} category={category} /> 
                     </div>
                 </div>
             )}
@@ -215,7 +207,7 @@ const DetailProduct = ({ isQuickView, dispatch, navigate, location }) => {
                 <div className=' flex-4'>
                     <div className='ml-5 mr-5 flex flex-col'>
                         <div className='flex justify-between'>
-                            <h2 className='text-[30px] font-semibold'>{`${formatPrice(currentProduct.price || product?.price)} VND`}</h2>
+                            <h2 className='text-[30px] font-semibold'>{`${formatPrice(currentProduct?.title !== product?.title ? product?.price : currentProduct?.price)} VND`}</h2>
                             <span className='text-sm text-main mt-3 mr-3'>{`Kho: ${product?.quantity}`}</span>
                         </div>
                         <div className='flex mt-4 gap-2'>
