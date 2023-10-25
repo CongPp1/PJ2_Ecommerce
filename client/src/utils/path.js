@@ -3,6 +3,7 @@ const path = {
     HOME: '',
     ALL: '*',
     LOGIN: 'login',
+    LOGIN_SUCCESS: 'login-success/:oauth2Id/:tokenLogin',
     PRODUCTS: ':category',
     OUR_SERVICES: 'our_services',
     FAQs: 'faqs',

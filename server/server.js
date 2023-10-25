@@ -4,6 +4,7 @@ const dbConnection = require('./config/db-connect.js');
 const routes = require('./routes');
 const cookieParser = require('cookie-parser')
 const cors = require('cors');
+require('./passport.js')
 
 dotenv.config();
 
@@ -21,9 +22,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api', routes);
 dbConnection();
 
-app.use("/", (req, res) => {
-    res.send("Hello World!");
-});
+// app.use("/", (req, res) => {
+//     res.send("Cong dep trai!");
+// });
 
 app.listen(port, () => {
     console.log(`Example app listening on port: ${port}!`);

@@ -1,8 +1,8 @@
 import { RiPhoneFill, RiTruckFill } from 'react-icons/ri';
 import { MdEmail, MdGroups, MdDeleteOutline } from 'react-icons/md';
 import { BsHandbagFill,BsFillSuitHeartFill, BsShieldShaded, BsReplyFill, BsFileBarGraph } from 'react-icons/bs';
-import { FaUserCircle, FaTty } from 'react-icons/fa';
-import { AiFillHome, AiFillStar, AiOutlineStar, AiFillEye, AiOutlineLogout, AiFillGift, AiOutlineDown, AiOutlinePhone, AiFillCloseCircle } from 'react-icons/ai';
+import { FaUserCircle, FaTty, FaFacebookF } from 'react-icons/fa';
+import { AiFillHome, AiFillStar, AiOutlineStar, AiFillEye, AiOutlineLogout, AiFillGift, AiOutlineDown, AiOutlinePhone, AiFillCloseCircle, AiOutlineLine } from 'react-icons/ai';
 import { IoIosMenu, IoIosArrowForward } from 'react-icons/io';
 import { IoTrashBinSharp } from 'react-icons/io5';
 import { CiLocationOn } from 'react-icons/ci';
@@ -44,7 +44,9 @@ const icons = {
     BsFillCartCheckFill,
     AiFillCloseCircle,
     BsArrowRight,
-    RiDeleteBin5Line
+    RiDeleteBin5Line,
+    FaFacebookF,
+    AiOutlineLine
 }
 
 export default icons;

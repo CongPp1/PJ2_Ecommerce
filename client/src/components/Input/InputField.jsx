@@ -27,7 +27,7 @@ const InputField = ({ value, setValue, nameKey, type, invalidFields, setInvalidF
             )}
             <input
                 type={type || 'text'}
-                className={clsx('px-4 py-2 w-full border my-2 border-none rounded-md placeholder:text-sm placeholder:italic', style)}
+                className={clsx('px-4 py-2 w-full border border-gray-200 my-2 rounded-md placeholder:text-sm placeholder:italic', style)}
                 placeholder={placeholder || nameKey.slice(0, 1).toUpperCase() + nameKey.slice(1)}
                 value={value}
                 onChange={handleOnChange}

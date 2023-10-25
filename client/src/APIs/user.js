@@ -111,6 +111,13 @@ apiFinalRegister()
     });
 
 
+export const apiOauth2LoginByGoogle = () => {
+    return axios({
+        url: 'http://localhost:4000/api/auth/login-success',
+        method: 'POST',
+    })
+}
+
 /**
  * Retrieves user data from the server.
  *

@@ -11,8 +11,11 @@ import { toast } from "react-toastify";
 import { validate } from "../../utils/helper";
 import { showModal } from "../../store/appReducer";
 import Loading from '../../components/Common/Loading';
+import google from '../../assets/google.png';
+import icons from "../../utils/icons";
 
 const Login = () => {
+    const { FaFacebookF } = icons;
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [isRegister, setIsRegister] = useState(false);
@@ -78,7 +81,6 @@ const Login = () => {
             } else {
                 try {
                     const response = await apiLogin(data);
-                    console.log('data', data);
                     if (response.message === 'User logged in successfully') {
                         loginSuccess(response.message);
                         dispatch(login({ isLogin: true, token: response.accessToken, userData: response.result }));
@@ -127,6 +129,10 @@ const Login = () => {
         } else {
             loginFail(response.message);
         }
+    };
+
+    const handleOauth2LoginByGoogle = (type) => {
+        window.open(`http://localhost:4000/api/auth/${type}`, '_self');
     };
 
     useEffect(() => {
@@ -205,26 +211,50 @@ const Login = () => {
                             />
                         </div>
                     )}
-                    <InputField
-                        value={payload.email}
-                        setValue={setPayload}
-                        nameKey='email'
-                        invalidFields={invalidFields}
-                        setInvalidFields={setInvalidFields}
-                    />
-                    <InputField
-                        value={payload.password}
-                        setValue={setPayload}
-                        nameKey='password'
-                        type='password'
-                        invalidFields={invalidFields}
-                        setInvalidFields={setInvalidFields}
-                    />
-                    <Button
-                        name={isRegister ? 'Create account' : 'Login'}
-                        handleOnClick={handleSubmit}
-                        fw
-                    />
+                    {!isRegister && (
+                        <>
+                            <div className="w-full py-8 flex flex-col justify-center gap-6 rounded-md border-none">
+                                <div
+                                    onClick={() => handleOauth2LoginByGoogle('google')}
+                                    className="flex p-2 rounded-md cursor-pointer hover:bg-red-400 items-start bg-main text-white justify-center gap-6"
+                                >
+                                    <div className="rounded-full w-[30px] h-[30px] bg-white">
+                                        <img className="h-[25px] w-[25px] mt-0.5 ml-0.5" src={google} alt="" />
+                                    </div>
+                                    <span className="mt-1">Sign in with Google</span>
+                                </div>
+                                <div className="flex p-2 rounded-md cursor-pointer hover:bg-blue-400 items-start bg-blue-500 text-white justify-center gap-6">
+                                    <div className="rounded-full w-[30px] h-[30px] bg-white">
+                                        <FaFacebookF color="blue" className="mt-2 mr-1.5 ml-1.5" />
+                                    </div>
+                                    <span className="mt-1">Sign in with Facebook</span>
+                                </div>
+                            </div>
+                            <span className="flex items-center justify-center mt-4 text-gray-400">Or</span>
+                        </>
+                    )}
+                    <div className="mt-8">
+                        <InputField
+                            value={payload.email}
+                            setValue={setPayload}
+                            nameKey='email'
+                            invalidFields={invalidFields}
+                            setInvalidFields={setInvalidFields}
+                        />
+                        <InputField
+                            value={payload.password}
+                            setValue={setPayload}
+                            nameKey='password'
+                            type='password'
+                            invalidFields={invalidFields}
+                            setInvalidFields={setInvalidFields}
+                        />
+                        <Button
+                            name={isRegister ? 'Create account' : 'Login'}
+                            handleOnClick={handleSubmit}
+                            fw
+                        />
+                    </div>
                     <div className="flex items-center justify-between my-2 w-full text-sm">
                         {!isRegister && (
                             <span

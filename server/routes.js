@@ -7,6 +7,8 @@ const blogCategoryRoutes = require('./routes/blog/blogCategory-routes.js');
 const brandRoutes = require('./routes/brand/brand-routes.js');
 const couponRoutes = require('./routes/coupon/coupon-routes.js');
 const orderRoutes = require('./routes/order/order-routes.js');
+const oauth2Router = require('./routes/oauth2Routes/oauth2Routers.js');  
+const oauth2UserRouter = require('./routes/oauth2Routes/oauth2UserRoutes.js');
 const router = express.Router();
 
 
@@ -18,5 +20,7 @@ router.use('/blogCategory', blogCategoryRoutes);
 router.use('/brand', brandRoutes);
 router.use('/coupon', couponRoutes);
 router.use('/order', orderRoutes);
+router.use('/auth', oauth2Router);
+router.use('/oauth2user', oauth2UserRouter);
 
 module.exports = router;

@@ -69,7 +69,7 @@ const userSchema = new mongoose.Schema({
     },
     registerToken: {
         type: String
-    }
+    },
 }, {
     timestamps: true
 });
@@ -88,13 +88,15 @@ userSchema.methods = {
     isCorrectEmail: async function (email) {
         return await this.email === email;
     },
-    createChangePasswordToken: async function() {
+    createChangePasswordToken: async function () {
         const resetPasswordToken = crypto.randomBytes(32).toString('hex'); //he thap luc phan
         this.passwordResetToken = crypto.createHash('sha256').update(resetPasswordToken).digest('hex');
-        this.passwordTokenExpiredIn = Date.now() + 15 * 60  * 1000;
+        this.passwordTokenExpiredIn = Date.now() + 15 * 60 * 1000;
         return resetPasswordToken;
-    }
-}
+    },
+};
+
+
 
 //Export the model
 module.exports = mongoose.model('User', userSchema);

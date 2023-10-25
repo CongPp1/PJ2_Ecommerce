@@ -32,6 +32,7 @@ import Cart from './components/Product/Cart';
 import DetailCart from './pages/public/DetailCart';
 import CheckOut from './pages/members/CheckOut';
 import payment from '../../client/src/assets/payment.png';
+import LoginSuccess from './pages/public/LoginSuccess';
 
 function App() {
   const dispatch = useDispatch();
@@ -50,7 +51,8 @@ function App() {
       )}
       {isShowModal && <Modal>{modalChildren}</Modal>}
       <Routes>
-        <Route path={path.CHECKOUT} element={<CheckOut />}/>
+        <Route path={path.CHECKOUT} element={<CheckOut />} />
+        <Route path={path.LOGIN_SUCCESS} element={<LoginSuccess />} />
         <Route path={path.PUBLIC} element={<Public />}>
           <Route path={path.HOME} element={<Home />} />
           <Route path={path.DETAIL_PRODUCT__CATEGORY__PID__TITLE} element={<DetailProduct />} />

@@ -5,6 +5,7 @@ const { sendMail } = require('../../utils/sendmail.js')
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto');
 const makeToken = require('uniqid');
+const{ v4: uuidv4 } = require('uuid');
 
 // const register = asyncHandler(async (req, res) => {
 //     const { firstName, lastName, email, password, mobile } = req.body;
@@ -591,5 +592,5 @@ module.exports = {
     updateUserAddress,
     updateUserCart,
     updateCurrentUser,
-    removeUserCart
+    removeUserCart,
 }
