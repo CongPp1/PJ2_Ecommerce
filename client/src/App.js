@@ -31,7 +31,6 @@ import Dashboard from './pages/admin/Dashboard';
 import Cart from './components/Product/Cart';
 import DetailCart from './pages/public/DetailCart';
 import CheckOut from './pages/members/CheckOut';
-import payment from '../../client/src/assets/payment.png';
 import LoginSuccess from './pages/public/LoginSuccess';
 
 function App() {

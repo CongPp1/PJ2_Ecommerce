@@ -131,8 +131,8 @@ const Login = () => {
         }
     };
 
-    const handleOauth2LoginByGoogle = (type) => {
-        window.open(`http://localhost:4000/api/auth/${type}`, '_self');
+    const handleOauth2Login = (type) => {
+        window.open(`http://localhost:4000/api/user/auth/${type}`, '_self');
     };
 
     useEffect(() => {
@@ -215,7 +215,7 @@ const Login = () => {
                         <>
                             <div className="w-full py-8 flex flex-col justify-center gap-6 rounded-md border-none">
                                 <div
-                                    onClick={() => handleOauth2LoginByGoogle('google')}
+                                    onClick={() => handleOauth2Login('google')}
                                     className="flex p-2 rounded-md cursor-pointer hover:bg-red-400 items-start bg-main text-white justify-center gap-6"
                                 >
                                     <div className="rounded-full w-[30px] h-[30px] bg-white">
@@ -223,7 +223,9 @@ const Login = () => {
                                     </div>
                                     <span className="mt-1">Sign in with Google</span>
                                 </div>
-                                <div className="flex p-2 rounded-md cursor-pointer hover:bg-blue-400 items-start bg-blue-500 text-white justify-center gap-6">
+                                <div
+                                    onClick={() => handleOauth2Login('facebook')}
+                                    className="flex p-2 rounded-md cursor-pointer hover:bg-blue-400 items-start bg-blue-500 text-white justify-center gap-6">
                                     <div className="rounded-full w-[30px] h-[30px] bg-white">
                                         <FaFacebookF color="blue" className="mt-2 mr-1.5 ml-1.5" />
                                     </div>

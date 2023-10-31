@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        // required: true,
     },
     role: {
         type: String,
@@ -70,6 +70,19 @@ const userSchema = new mongoose.Schema({
     registerToken: {
         type: String
     },
+    oauth2Id: {
+        type: Number,
+        default: 0
+    },
+    typeLogin: {
+        type: String
+    },
+    tokenLogin: {
+        type: String
+    },
+    avatarUrl: {
+        type: String
+    }
 }, {
     timestamps: true
 });
@@ -96,7 +109,23 @@ userSchema.methods = {
     },
 };
 
-
+/**
+ * Finds or creates a user based on the provided filter and defaults.
+ *
+ * @param {Object} filter - The filter to find the user.
+ * @param {Object} defaults - The default values for the new user.
+ * @return {Array} An array containing the user object and a boolean indicating if the user is new or not.
+ */
+userSchema.statics.findOrCreate = async function (filter, defaults) {
+    const user = await this.findOne(filter);
+    if (user) {
+        return [user, false]; // Người dùng đã tồn tại
+    } else {
+        const newUser = new this(defaults);
+        await newUser.save();
+        return [newUser, true]; // Người dùng mới đã được tạo
+    }
+};
 
 //Export the model
 module.exports = mongoose.model('User', userSchema);

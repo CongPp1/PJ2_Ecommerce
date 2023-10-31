@@ -5,7 +5,8 @@ const { sendMail } = require('../../utils/sendmail.js')
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto');
 const makeToken = require('uniqid');
-const{ v4: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require('uuid');
+require('dotenv').config();
 
 // const register = asyncHandler(async (req, res) => {
 //     const { firstName, lastName, email, password, mobile } = req.body;
@@ -259,9 +260,62 @@ const resetPassword = asyncHandler(async (req, res) => {
     }
 });
 
+const oauth2LoginSuccessController = asyncHandler(async (req, res) => {
+    console.log('abcmn')
+    try {
+        const newTokenLogin = uuidv4();
+        const { oauth2Id, tokenLogin } = req.body;
+        if (!oauth2Id || !tokenLogin) {
+            return res.status(400).json({
+                message: 'Please provide all fields',
+            });
+        }
+        let [response] = await Promise.all([
+            User.findOne({ oauth2Id, tokenLogin }).lean().exec(),
+            User.updateOne({ oauth2Id: oauth2Id }, { tokenLogin: newTokenLogin })
+        ]);
+        console.log('response', response)
+        const token = response && jwt.sign({ _id: response._id, oauth2Id: response.oauth2Id, email: response.email, role: response.role }, process.env.SECRET_KEY, { expiresIn: '1d' });
+        return res.status(200).json({
+            message: 'Token created successfully',
+            token
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: 'Internal server error',
+            error: error
+        });
+    }
+});
+
+const getOauth2User = asyncHandler(async (req, res) => {
+    try {
+        const { oauth2Id } = req.params;
+        const response = await User.findOne({ oauth2Id: oauth2Id }).lean().exec();
+        if (!response) {
+            return res.status(200).json({
+                message: 'User not found',
+            });
+        }
+        return res.status(200).json({
+            message: 'Success',
+            data: response
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: 'Internal server error',
+            error: error
+        });
+
+    }
+});
+
 const getUSer = asyncHandler(async (req, res) => {
     try {
         const { _id } = req.user;
+        console.log('req.user', req.user)
 
         const result = await User.findById(_id).select('-password -refreshToken').populate({
             path: 'carts.product',
@@ -593,4 +647,6 @@ module.exports = {
     updateUserCart,
     updateCurrentUser,
     removeUserCart,
+    oauth2LoginSuccessController,
+    getOauth2User
 }

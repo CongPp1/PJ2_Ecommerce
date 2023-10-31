@@ -1,7 +1,7 @@
 import React, { memo, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import path from '../../utils/path';
-import { getUser } from '../../store/asyncUserAction';
+import { getUser, getOauth2User } from '../../store/asyncUserAction';
 import { useDispatch, useSelector } from 'react-redux';
 import icons from '../../utils/icons';
 import { logout } from '../../store/userSlice';
@@ -9,12 +9,14 @@ import { logout } from '../../store/userSlice';
 const TopHeader = () => {
     const { AiOutlineLogout } = icons;
     const dispatch = useDispatch();
-    const { isLogin, current } = useSelector(state => state.userReducer);
+    const { isLogin, isOauth2Login, current, token } = useSelector(state => state.userReducer);
 
     useEffect(() => {
         const setTimeOutId = setTimeout(() => {
-            if (isLogin) {
+            if (isLogin && !isOauth2Login) {
+                console.log('da chay vao day 1')
                 dispatch(getUser());
+            // } 
             }
         }, 300);
         return () => {

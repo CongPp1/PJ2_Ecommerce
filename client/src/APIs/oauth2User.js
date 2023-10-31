@@ -33,21 +33,21 @@ apiOauth2Login({ oauth2Id: ``, tokenLogin: `` })
  * @param {string} token - The authentication token.
  * @return {Promise} A Promise that resolves to the user data.
  */
-export const apiGetOauth2User = (oauth2Id,token) => {
+export const apiGetOauth2User = (token) => {
     console.log('aaaa')
-    console.log(oauth2Id)
+    console.log(token)
     return axios({
-        url: 'http://localhost:4000/api/oauth2user/get-one/' + oauth2Id,
+        url: 'http://localhost:4000/api/oauth2user/get-one',
         method: 'GET',
         headers: {
-            authentication: token
+            'Authorization': `Bearer ${token}`
         }
     });
 }
-apiGetOauth2User('')
-    .then(response => {
-        console.log("API Get Oauth2 User Response:", response.data);
-    })
-    .catch(error => {
-        console.error("API Get Oauth2 User Error:", error);
-    })
+// apiGetOauth2User('')
+//     .then(response => {
+//         console.log("API Get Oauth2 User Response:", response.data);
+//     })
+//     .catch(error => {
+//         console.error("API Get Oauth2 User Error:", error);
+//     })

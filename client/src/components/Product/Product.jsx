@@ -20,8 +20,6 @@ const Product = ({ productData, navigate, isNew, dispatch }) => {
     const { current } = useSelector(state => state.userReducer);
     const [isShowOption, setIsShowOption] = useState(false);
 
-    console.log(productData)
-
     const handleOnMouseEnter = (event) => {
         event.stopPropagation();
         setIsShowOption(true);

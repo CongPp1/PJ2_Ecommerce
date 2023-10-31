@@ -220,7 +220,7 @@ const handleRatings = asyncHandler(async (req, res) => {
             });
         };
         const product = await Product.findById(p_id);
-        const isRated = product?.ratings?.find((element) => element.postedBy.toString() === _id);
+        const isRated = product?.ratings?.find((element) => element.postedBy?.toString() === _id);
         if (isRated) {
             //cap nhap so sao va binh luan:
             await Product.updateOne({

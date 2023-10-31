@@ -18,6 +18,7 @@ const ProductInfomation = ({ totalRatings, ratings, productName, pid, rerender }
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { isLogin } = useSelector(state => state.userReducer);
+    // const { isOauth2Login } = useSelector(state => state.oauth2Reducer);
 
     const handleSubmitVoteOptions = async ({ comment, score }) => {
         if (!comment || !score) {
@@ -43,6 +44,8 @@ const ProductInfomation = ({ totalRatings, ratings, productName, pid, rerender }
             _id: pid,
             updatedAt: Date.now()
         });
+        console.log(response);
+        console.log({ comment, score, pid })
         if (response.messagage === 'success') {
             toast.success('Digital World đã nhận được phản hồi của bạn!', {
                 position: "top-center",

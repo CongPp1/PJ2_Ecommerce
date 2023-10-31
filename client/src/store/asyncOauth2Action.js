@@ -11,10 +11,11 @@ export const oauth2Login = createAsyncThunk('oauth2/login', async ({ oauth2Id, t
     }
 });
 
-export const getOauth2User = createAsyncThunk('oauth2/user', async (oauth2Id, { rejectWithValue }) => {
-    const payload = await apiGetOauth2User(oauth2Id);
+export const getOauth2User = createAsyncThunk('oauth2/user', async (token, { rejectWithValue }) => {
+    console.log(token)
+    const payload = await apiGetOauth2User(token);
 
-    if(payload.message === 'Success') {
+    if (payload.message === 'Success') {
         return payload.data;
     } else {
         return rejectWithValue(payload.message);

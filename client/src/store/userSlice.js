@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getUser, updateUser, deleteUser } from "./asyncUserAction.js";
+import { getUser, updateUser, deleteUser, oauth2Login, getOauth2User  } from "./asyncUserAction.js";
 
 export const userSlice = createSlice({
     name: 'user',
     initialState: {
         isLogin: false,
+        isOauth2Login: false,
         current: null,
         currentCart: [],
         token: null,
@@ -14,10 +15,12 @@ export const userSlice = createSlice({
     reducers: {
         login: (state, action) => {
             state.isLogin = action.payload.isLogin;
+            state.isOauth2Login = false;
             state.token = action.payload.token;
         },
         logout: (state, action) => {
             state.isLogin = false;
+            state.isOauth2Login = false;
             state.token = null;
             state.current = null;
             state.isLoading = false;
@@ -80,6 +83,27 @@ export const userSlice = createSlice({
         builder.addCase(deleteUser.rejected, (state, action) => {
             state.isLoading = false;
             state.mes = action.error.message;
+        });
+        builder.addCase(oauth2Login.fulfilled, (state, action) => {
+            // Tự động chạy khi createAsyncThunk thành công
+            state.isLogin = true;
+            state.isOauth2Login = true;
+            state.token = action.payload;
+        });
+        builder.addCase(oauth2Login.rejected, (state) => {
+            // Tự động chạy khi createAsyncThunk thất bại
+            state.isLoading = false;
+            state.isLogin = false;
+            state.isOauth2Login = false;
+            state.token = null;
+        });
+        builder.addCase(getOauth2User.fulfilled, (state, action) => {
+            // Tự động chạy khi createAsyncThunk thành công
+            state.current = action.payload;
+        });
+        builder.addCase(getOauth2User.rejected, (state) => {
+            // Tự động chạy khi createAsyncThunk thất bị
+            state.isLoading = false;
         });
     },
 })

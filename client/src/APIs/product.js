@@ -48,6 +48,7 @@ apiGetProductById()
  * @return {Promise} A promise that resolves with the response from the server.
  */
 export const apiRating = (data) => {
+    console.log(data)
     return axios({
         url: '/product/rating',
         method: 'PUT',

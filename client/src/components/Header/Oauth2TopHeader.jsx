@@ -5,27 +5,36 @@ import { getOauth2User } from '../../store/asyncOauth2Action';
 import { useDispatch, useSelector } from 'react-redux';
 import icons from '../../utils/icons';
 import { logout } from '../../store/oauth2Reducer';
+import { apiGetOauth2User } from '../../APIs/oauth2User';
 
 const Oauth2TopHeader = () => {
     const { AiOutlineLogout } = icons;
     const dispatch = useDispatch();
-    const { isOauth2Login, oauth2Current } = useSelector(state => state.oauth2Reducer);
-    console.log(isOauth2Login)
+    const { isOauth2Login, oauth2Current, token } = useSelector(state => state.oauth2Reducer);
 
-    useEffect(() => {
-        const setTimeOutId = setTimeout(() => {
-            if (isOauth2Login) {
-                dispatch(getOauth2User());
-            }
-        }, 300);
-        return () => {
-            clearTimeout(setTimeOutId);
-        }
-    }, [dispatch, isOauth2Login]);
+    // useEffect(() => {
+    //     const setTimeOutId = setTimeout(() => {
+    //         if (isOauth2Login) {
+    //             console.log('da chay vao day')s
+    //             dispatch(getOauth2User(token));
+    //         }
+    //     }, 300);
+    //     return () => {
+    //         clearTimeout(setTimeOutId);
+    //     }
+    // }, [dispatch, isOauth2Login]);
 
     const handleLogout = () => {
         dispatch(logout());
     };
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const payload = await apiGetOauth2User(token);
+            console.log(payload)
+        }
+        fetchUser();
+    }, [isOauth2Login]);
 
     return (
         <div className='h-[50px] w-full bg-main flex items-center justify-center'>

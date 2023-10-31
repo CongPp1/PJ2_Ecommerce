@@ -11,9 +11,10 @@ import { showCart } from "../../store/appReducer";
 const Header = ({ dispatch }) => {
   const { RiPhoneFill, MdEmail, BsHandbagFill, FaUserCircle } = icons;
   const { current } = useSelector(state => state.userReducer);
-  const { isOauth2Login, oauth2Current } = useSelector(state => state.oauth2Reducer);
+  const {isLogin} = useSelector(state => state.userReducer);
+  // const { isOauth2Login, oauth2Current } = useSelector(state => state.oauth2Reducer);
   const [isShowOption, setIsShowOption] = useState(false);
-
+  // console.log(oauth2Current.role)
   const handleStopPropagation = (event) => {
     event.stopPropagation();
   }
@@ -95,7 +96,7 @@ const Header = ({ dispatch }) => {
             </div>
           </Fragment>
         )}
-        {(isOauth2Login && oauth2Current) && (
+        {/* {(isOauth2Login && oauth2Current) && (
           <Fragment>
             <div onClick={handleShowCart} className="flex items-center justify-center gap-2 px-6 border-r cursor-pointer">
               <BsHandbagFill color="red" />
@@ -111,7 +112,7 @@ const Header = ({ dispatch }) => {
               {isShowOption && (
                 <div onClick={handleStopPropagation} className="absolute top-full flex flex-col left-[16px] bg-gray-100 border min-w-[50px] py-2">
                   <Link className="p-2 hover:bg-sky-100 w-full" to={`/${path.MEMBER}/${path.PERSONAL}`}>Personal</Link>
-                  {current?.role === 'admin' && (
+                  {oauth2Current?.role === 'admin' && (
                     <Link className="p-2 hover:bg-sky-100 w-full" to={`/${path.ADMIN}/${path.DASHBOARD}`}>Admin Workspace</Link>
                   )}
                   <span className="p-2 hover:bg-sky-100 w-full" onClick={handleLogOut}>Logout</span>
@@ -119,7 +120,7 @@ const Header = ({ dispatch }) => {
               )}
             </div>
           </Fragment>
-        )}
+        )} */}
       </div>
     </div>
   );

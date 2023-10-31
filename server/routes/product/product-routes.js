@@ -1,6 +1,7 @@
 const productController = require('../../controllers/product/product-controller.js');
 const router = require('express').Router();
 const { verifyAccessToken } = require('../../middlewares/verifyToken.js');
+// const { verifyOauth2AccessToken} = require('../../middlewares/verifyOauth2Token.js');
 const uploader = require('../../config/cloundinary-config.js');
 
 router.post('/createProduct', verifyAccessToken, uploader.fields([{ name: 'images', maxCount: 10 }]), productController.createProduct);
