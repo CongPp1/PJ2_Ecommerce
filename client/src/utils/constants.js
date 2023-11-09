@@ -108,3 +108,8 @@ export const memberSidebars = [
     { id: 4, text: 'Wish list', type: 'single', path: `/${path.MEMBER}/${path.WISHLIST}`, icon: <BsFileBarGraph /> },
 
 ]
+
+export const statusOrder = [
+    { label: 'Cancelled', value: 'Cancelled' },
+    { label: 'Success', value: 'Success' }
+]

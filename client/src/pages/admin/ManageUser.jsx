@@ -129,7 +129,7 @@ const ManageUser = () => {
                                 <td className='py-2 px-4'><span>{element.lastName}</span></td>
                                 <td className='py-2 px-4'><span>{element.role}</span></td>
                                 <td className='py-2 px-4'><span>{element.mobile}</span></td>
-                                <td className='py-2 px-4'><span>{element.isBlocked ? 'Blocked' : 'Active'}</span></td>
+                                <td className='py-2 px-4'><span>{element.isActive ? 'Active' : 'Blocked'}</span></td>
                                 <td className='py-2 px-4'>{moment(element.createdAt).format('DD/MM/YYYY')}</td>
                                 <td className='py-2 px-4'>
                                     <span

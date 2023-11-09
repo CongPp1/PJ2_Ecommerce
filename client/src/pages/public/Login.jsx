@@ -58,7 +58,7 @@ const Login = () => {
     const loginFail = (result) => {
         Swal.fire({
             icon: 'error',
-            title: `${isRegister ? 'Ban da dang ky tai khoan that bai' : 'Ban da dang nhap that bai'}`,
+            title: `${isRegister ? 'Ban da dang ky tai khoan that bai' : 'Đăng nhập thất bại'}`,
             text: result
         })
     }
@@ -82,9 +82,13 @@ const Login = () => {
                 try {
                     const response = await apiLogin(data);
                     if (response.message === 'User logged in successfully') {
-                        loginSuccess(response.message);
-                        dispatch(login({ isLogin: true, token: response.accessToken, userData: response.result }));
-                        searchParams.get('redirect') ? navigate(searchParams.get('redirect')) : navigate(`/${path.HOME}`);
+                        if (response.result.isActive === true) {
+                            loginSuccess(response.message);
+                            dispatch(login({ isLogin: true, token: response.accessToken, userData: response.result }));
+                            searchParams.get('redirect') ? navigate(searchParams.get('redirect')) : navigate(`/${path.HOME}`);
+                        } else {
+                            loginFail('Tài khoản của bạn đã bị khóa, vui lòng liên hệ admin để biết thêm thông tin chi tiết');
+                        }
                     }
                 } catch (error) {
                     loginFail(error);
@@ -225,7 +229,8 @@ const Login = () => {
                                 </div>
                                 <div
                                     onClick={() => handleOauth2Login('facebook')}
-                                    className="flex p-2 rounded-md cursor-pointer hover:bg-blue-400 items-start bg-blue-500 text-white justify-center gap-6">
+                                    className="flex p-2 rounded-md cursor-pointer hover:bg-blue-400 items-start bg-blue-500 text-white justify-center gap-6"
+                                >
                                     <div className="rounded-full w-[30px] h-[30px] bg-white">
                                         <FaFacebookF color="blue" className="mt-2 mr-1.5 ml-1.5" />
                                     </div>

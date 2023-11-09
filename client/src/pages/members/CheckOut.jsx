@@ -82,7 +82,8 @@ const CheckOut = ({ dispatch }) => {
                         <small className="error-container text-main">Your address is required</small>
                     )}
                 </div>
-                {(address && address?.length > 10) && (
+                {(
+                    console.log('address', address),
                     <div className='w-main mx-auto'>
                         <Paypal
                             amount={Math.round(+currentCart?.reduce((sum, element) => +element?.price * +element?.quantity + sum, 0) / 23500)}

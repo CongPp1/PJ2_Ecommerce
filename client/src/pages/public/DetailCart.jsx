@@ -14,7 +14,6 @@ const DetailCart = ({ location, dispatch }) => {
     const { BsArrowRight } = icons;
     const { current, currentCart } = useSelector(state => state.userReducer);
 
-    console.log(currentCart)
     const getCount = (p_id, quantity, color) => {
         dispatch(updateCart({ p_id, quantity, color }));
     };

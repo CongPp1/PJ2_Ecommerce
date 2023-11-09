@@ -48,9 +48,9 @@ const userSchema = new mongoose.Schema({
     wishLists: [
         { type: mongoose.Types.ObjectId, ref: 'Product' },
     ],
-    isBlocked: {
+    isActive: {
         type: Boolean,
-        default: false
+        default: true
     },
     refreshToken: {
         type: String

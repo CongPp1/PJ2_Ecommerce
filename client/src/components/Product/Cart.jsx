@@ -19,8 +19,7 @@ import path from '../../utils/path';
  */
 const Cart = ({ dispatch, navigate }) => {
     const { AiFillCloseCircle, RiDeleteBin5Line } = icons;
-    const { current } = useSelector(state => state.userReducer);
-    console.log(current)
+    const { current, currentCart } = useSelector(state => state.userReducer);
     const { BsArrowRight } = icons;
 
     const handleCloseCart = () => {
@@ -28,13 +27,25 @@ const Cart = ({ dispatch, navigate }) => {
     };
 
     const handleNavigate = () => {
-        dispatch(showCart());
-        navigate(`${path.DETAIL_CART}`);
+        if (currentCart.length > 0) {
+            dispatch(showCart());
+            navigate(`${path.DETAIL_CART}`);
+        } else {
+            toast.error('Vui lòng chọn sản phẩm bạn cần mua', {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+        }
     };
 
     const handleRemoveUserCart = async (p_id, color) => {
         const response = await apiRemoveUserCart(p_id, color);
-        console.log(response)
         if (response.message === 'Remove cart successfully') {
             toast.success('Xoá giỏ hàng thành công');
             dispatch(getUser());

@@ -26,6 +26,7 @@ const ButtonWrapper = ({ showSpinner, amount, currency, payload, setIsPaymentSuc
     }, [currency, showSpinner]);
 
     const handleSaveOrder = async () => {
+        console.log('payload: ', payload);
         const response = await apiCreateOrder({ ...payload, status: 'success' });
         if (response.message === 'Order created successfully') {
             setIsPaymentSuccessful(true);

@@ -200,7 +200,6 @@ const forgotPassword = asyncHandler(async (req, res) => {
             });
         }
         const resetToken = await user.createChangePasswordToken();
-        console.log(resetToken);
         await user.save({ validateBeforeSave: false });
         const html = `Xin vui lòng click vào link dưới đây để đổi mật khẩu:
          <a href=${process.env.CLIENT_URL}/resetPassword/${resetToken}>Click Here</a>`;
@@ -261,7 +260,6 @@ const resetPassword = asyncHandler(async (req, res) => {
 });
 
 const oauth2LoginSuccessController = asyncHandler(async (req, res) => {
-    console.log('abcmn')
     try {
         const newTokenLogin = uuidv4();
         const { oauth2Id, tokenLogin } = req.body;
@@ -274,7 +272,6 @@ const oauth2LoginSuccessController = asyncHandler(async (req, res) => {
             User.findOne({ oauth2Id, tokenLogin }).lean().exec(),
             User.updateOne({ oauth2Id: oauth2Id }, { tokenLogin: newTokenLogin })
         ]);
-        console.log('response', response)
         const token = response && jwt.sign({ _id: response._id, oauth2Id: response.oauth2Id, email: response.email, role: response.role }, process.env.SECRET_KEY, { expiresIn: '1d' });
         return res.status(200).json({
             message: 'Token created successfully',

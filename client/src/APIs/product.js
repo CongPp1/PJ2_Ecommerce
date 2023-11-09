@@ -13,13 +13,6 @@ export const apiGetProducts = async (params) => {
         params
     })
 };
-apiGetProducts()
-    .then(response => {
-        console.log("API getProducts Response:", response.data);
-    })
-    .catch(error => {
-        console.error("API getProducts Error:", error);
-    });
 
 /**
  * Retrieves product data from the API based on the provided ID.
@@ -33,13 +26,6 @@ export const apiGetProductById = (id) => {
         method: 'GET',
     })
 };
-apiGetProductById()
-    .then(response => {
-        console.log("API getProductById Response:", response.data);
-    })
-    .catch(error => {
-        console.error("API getProductById Error:", error);
-    });
 
 /**
  * Sends a PUT request to the '/product/rating' endpoint with the provided data.
@@ -55,13 +41,6 @@ export const apiRating = (data) => {
         data
     });
 };
-apiRating()
-    .then(response => {
-        console.log("API Rating Response:", response.data);
-    })
-    .catch(error => {
-        console.error("API Rating Error:", error);
-    });
 
 
 /**
@@ -77,13 +56,6 @@ export const apiCreateProduct = (data) => {
         data
     });
 }
-apiCreateProduct()
-    .then(response => {
-        console.log("API Create Product Response:", response.data);
-    })
-    .catch(error => {
-        console.error("API Create Product Error:", error);
-    })
 
 
 /**
@@ -95,18 +67,11 @@ apiCreateProduct()
  */
 export const apiUpdateProduct = (productId, data) => {
     return axios({
-        url:'/product/updateProduct/' + productId,
+        url: '/product/updateProduct/' + productId,
         method: 'PUT',
         data
     });
 }
-apiUpdateProduct()
-    .then(response => {
-        console.log("API Update Product Response:", response.data);
-    })
-    .catch(error => {
-        console.log("API Delete Product Response:", error);
-    })
 
 /**
  * Deletes a product from the server.
@@ -120,13 +85,6 @@ export const apiDeleteProduct = (productId) => {
         method: 'DELETE',
     });
 }
-apiDeleteProduct()
-    .then(response => {
-        console.log("API Delete Product Response:", response.data);
-    })
-    .catch(error => {
-        console.log("API Delete Product Response:", error);
-    })
 
 
 /**
@@ -136,33 +94,43 @@ apiDeleteProduct()
  * @param {string} id - The ID of the product.
  * @return {Promise} A promise that resolves with the result of the API call.
  */
-export const apiAddVariant = (data ,id) => {
+export const apiAddVariant = (data, id) => {
     return axios({
         url: '/product/variant/' + id,
         method: 'PUT',
         data
     });
 }
-apiAddVariant()
-    .then(response => {
-        console.log("API Add Variant Response:", response.data);
-    })
-    .catch(error => {
-        console.log("API Add Variant Response:", error);
-    })
 
 
+
+/**
+ * Creates an order using the provided data.
+ *
+ * @param {Object} data - The data for creating the order.
+ * @return {Promise} A promise that resolves to the created order.
+ */
 export const apiCreateOrder = (data) => {
+    console.log('dddddd')
+    console.log('data: ', data)
     return axios({
         url: '/order/create',
         method: 'POST',
         data
     });
 }
-apiCreateOrder()
-    .then(response => {
-        console.log("API Create Order Response:", response.data);
-    })
-    .catch(error => {
-        console.log("API Create Order Error:", error);
-    })
+
+
+/**
+ * Retrieves orders from the server based on the provided parameters.
+ *
+ * @param {Object} params - The parameters to filter the orders.
+ * @return {Promise} A promise that resolves to the response from the server.
+ */
+export const apiGetUserOrders = (params) => {
+    return axios({
+        url: '/order/orders',
+        method: 'GET',
+        params
+    });
+}

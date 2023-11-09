@@ -1,27 +1,29 @@
-import React, { memo, useEffect } from 'react';
-import { useRef } from 'react'; 
+import React, { memo, useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '../../components/Button/Button';
+import Switch from 'react-switch';
 
-
-/**
- * Renders a popup for editing a user.
- *
- * @param {Object} data - The user data to be edited.
- * @param {function} handleUpdate - The function to handle the update of the user data.
- * @return {JSX.Element} The JSX element representing the editing user popup.
- */
 const EditingUserPopup = ({ data, handleUpdate }) => {
     const { handleSubmit, register, formState: { errors } } = useForm();
     const modalRef = useRef();
 
+    // Sử dụng trạng thái "isActive" từ dữ liệu người dùng làm trạng thái ban đầu của switch
+    const [checked, setChecked] = useState(data.isActive);
+
     const handleStopPropagation = (event) => {
         event.stopPropagation();
-    }
+    };
+
+    // Sửa hàm handleChange để cập nhật trạng thái "isActive" của người dùng
+    const handleChange = (newChecked) => {
+        setChecked(newChecked);
+    };
 
     const onSubmit = (formData) => {
+        formData.isActive = checked;
         handleUpdate(data._id, formData);
-    }
+    };
 
     useEffect(() => {
         modalRef.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -81,13 +83,20 @@ const EditingUserPopup = ({ data, handleUpdate }) => {
                                 )}
                             </div>
                         </div>
+                        <div>
+                            <label htmlFor="">Status</label>
+                            <Switch
+                                onChange={handleChange}
+                                checked={checked}
+                                defaultValue={data.isActive}
+                            />
+                        </div>
                     </div>
                     <div className='flex gap-4 mt-5 items-center justify-center'>
                         <Button name={'Submit'} type='submit' style={'p-1 px-2 text-white bg-main hover:bg-red-400 rounded-md '} />
                         <Button name={'Back'} style={'p-1 px-4 text-white bg-main hover:bg-red-400 rounded-md '} />
                     </div>
                 </form>
-
             </div>
         </div>
     );
