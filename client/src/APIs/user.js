@@ -326,3 +326,11 @@ apiGetOauth2User(12)
     .catch(error => {
         console.error("API Get Oauth2 User Error:", error);
     })
+
+export const apiAddBills = (data) => {
+    return axios({
+        url: '/user/addBill',
+        method: 'POST',
+        data
+    });
+}

@@ -3,18 +3,36 @@ import {
     PayPalButtons,
     usePayPalScriptReducer
 } from "@paypal/react-paypal-js";
-import { useEffect } from "react";
+import { useEffect, useReducer } from "react";
 import { apiCreateOrder } from "../../APIs/product";
 import Swal from "sweetalert2";
 import path from '../../utils/path';
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { apiAddBills } from "../../APIs/user";
 
 // This value is from the props in the UI
 const style = { "layout": "vertical" };
 
 // Custom component to wrap the PayPalButtons and show loading spinner
 const ButtonWrapper = ({ showSpinner, amount, currency, payload, setIsPaymentSuccessful }) => {
+    const {currentCart, current} = useSelector(state => state.userReducer); 
     const [{ isPending, options }, dispatch] = usePayPalScriptReducer();
+
+    var el_1 = {};
+
+    // console.log('quantity: ', quantity);
+    
+    for (let i = 0; i < currentCart.length; i++) {
+        console.log('a: ', currentCart[i]); 
+        if (i === 1) {
+            el_1 = currentCart[i];
+        }
+    }
+
+    console.log('el_1: ' , el_1.quantity);
+    
+
     const navigate = useNavigate();
     useEffect(() => {
         dispatch({
@@ -39,6 +57,9 @@ const ButtonWrapper = ({ showSpinner, amount, currency, payload, setIsPaymentSuc
                 .then(result => {
                     if (result.isConfirmed) {
                         navigate(`/${path.HOME}`);
+                        console.log('da chay vao day')
+                        // console.log('current_cart: ', currentCart.map((element, index) => ( element.price) ));
+                        // console.log('bill: ', bill);
                     }
                 })
             }, 0.5);

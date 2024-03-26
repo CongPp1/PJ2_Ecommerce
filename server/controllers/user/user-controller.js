@@ -600,6 +600,55 @@ const updateUserCart = asyncHandler(async (req, res) => {
     }
 });
 
+const userBill = asyncHandler(async (req, res) => {
+    try {
+        const { _id } = req.user;
+        const billDataArray = req.body;
+
+        console.log('req.body: ', req.body);
+
+        if (!billDataArray || !Array.isArray(billDataArray) || billDataArray.length === 0) {
+            return res.status(400).json({
+                message: 'Please provide an array of bill data in the request body.'
+            });
+        }
+
+        // Tìm người dùng theo _id
+        const user = await User.findById(_id);
+        if (!user) {
+            return res.status(404).json({
+                message: 'User not found'
+            });
+        }
+
+        // Tạo một đối tượng hóa đơn mới chứa các sản phẩm có cùng products title
+        const newBill = { products: [] };
+
+        // Thêm các sản phẩm vào đối tượng hóa đơn mới
+        for (const billData of billDataArray) {
+            const { quantity, price, title } = billData;
+            newBill.products.push({ quantity, price, title });
+        }
+
+        // Thêm đối tượng hóa đơn mới vào mảng bills của người dùng
+        user.bills.push(newBill);
+
+        // Lưu lại người dùng sau khi thêm hóa đơn mới
+        await user.save();
+
+        return res.status(200).json({
+            message: 'Updated bills successfully',
+            UpdatedUser: user
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: 'Internal server error',
+            error: error
+        });
+    }
+});
+
 const removeUserCart = asyncHandler(async (req, res) => {
     try {
         const { _id } = req.user;
@@ -642,6 +691,7 @@ module.exports = {
     deleteUserById,
     updateUserAddress,
     updateUserCart,
+    userBill,
     updateCurrentUser,
     removeUserCart,
     oauth2LoginSuccessController,

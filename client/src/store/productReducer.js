@@ -8,6 +8,7 @@ export const productSlice = createSlice({
         newProducts: null,
         current: null,
         errorMessage: '',
+        isPaid: false
     },
     reducers: {
         logout: (state) => {

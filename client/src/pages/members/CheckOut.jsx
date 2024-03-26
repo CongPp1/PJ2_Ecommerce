@@ -23,6 +23,9 @@ const CheckOut = ({ dispatch }) => {
     const address = watch('address');
     const { width, height } = useWindowSize();
 
+    console.log('current cart: ', currentCart);
+
+    
     useEffect(() => {
         setValue('address', current?.address);
     }, [current.address]);

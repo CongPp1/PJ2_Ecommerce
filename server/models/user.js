@@ -38,6 +38,15 @@ const userSchema = new mongoose.Schema({
         title: String,
         images: Array
     }],
+    bills: [{
+        products: [{
+            quantity: Number,
+            price: Number,
+            title: String,
+        }],
+        // Các trường khác của hóa đơn (nếu có)
+    }],
+    
     addresses: {
         type: Array,
         default: []
@@ -96,6 +105,7 @@ userSchema.pre('save', async function (next) {
 
 userSchema.methods = {
     isCorrectPassword: async function (password) {
+        console.log('password: ', password)
         return await bcrypt.compare(password, this.password);
     },
     isCorrectEmail: async function (email) {

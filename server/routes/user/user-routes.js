@@ -53,6 +53,7 @@ router.delete('/delete/:_id',verifyAccessToken, userController.deleteUserById);
 router.put('/updateAddress/',verifyAccessToken, userController.updateUserAddress);
 router.put('/updateCart', verifyAccessToken, userController.updateUserCart);
 router.delete('/removeCart/:_id/:color', verifyAccessToken, userController.removeUserCart);
+router.post('/addBill',verifyAccessToken, userController.userBill);
 
 module.exports = router;
 
